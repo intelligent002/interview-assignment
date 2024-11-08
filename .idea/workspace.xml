@@ -5,23 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/packages/data-gov-il-client/.npmrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/data-gov-il-client/src/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/starter.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sub/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pub/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pub/src/config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pub/src/kafkaProducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sub/src/mongoClient.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pub/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/StreetsService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/data-gov-il-client/src/StreetsService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/cities.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/getCities.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/translatesd.cities.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pub/main.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/streetsContract/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/pub/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/data-gov-il-client/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/data-gov-il-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/data-gov-il-client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/data-gov-il-client/src/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/data-gov-il-client/src/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/data-gov-il-client/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/data-gov-il-client/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pub/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pub/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/pub/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sub/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/sub/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +57,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.build.executor": "Run",
+    "npm.dev.executor": "Run",
     "npm.pub.executor": "Run",
     "npm.publish.executor": "Run",
     "ts.external.directory.path": "D:\\www\\testedrecruits\\interview-assignment\\packages\\data-gov-il-client\\node_modules\\typescript\\lib",
@@ -74,10 +72,7 @@
       <recent name="D:\www\testedrecruits\interview-assignment\packages\data-gov-il-streets\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.pub">
-    <configuration name="main.ts" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/streetsContract/src/main.ts" typescript-loader="bundled" working-dir="$PROJECT_DIR$/streetsContract/src">
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="npm.dev">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -108,6 +103,16 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/pub/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="pub" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/packages/data-gov-il-client/package.json" />
       <command value="run" />
@@ -130,11 +135,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.dev" />
         <item itemvalue="npm.pub" />
         <item itemvalue="npm.build" />
         <item itemvalue="npm.publish" />
         <item itemvalue="Docker.docker-compose.yml.npm: Compose Deployment" />
-        <item itemvalue="Node.js.main.ts" />
       </list>
     </recent_temporary>
   </component>
@@ -159,6 +164,8 @@
       <workItem from="1731014080428" duration="735000" />
       <workItem from="1731014839873" duration="6436000" />
       <workItem from="1731021550916" duration="2731000" />
+      <workItem from="1731050752493" duration="3598000" />
+      <workItem from="1731058371051" duration="3852000" />
     </task>
     <servers />
   </component>

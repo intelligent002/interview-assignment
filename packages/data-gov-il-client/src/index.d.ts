@@ -1,5 +1,5 @@
 // Declare the module for the 'data-gov-il-client' package
-declare module 'src/index' {
+declare module 'data-gov-il-client' {
     import { Axios } from 'axios';
 
     // Define the Street interface, based on the given code

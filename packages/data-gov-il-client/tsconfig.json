@@ -9,7 +9,7 @@
     "sourceMap": true,
     "noImplicitReturns": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "noUnusedLocals": false,
     "rootDir": "src",
     "outDir": "dist",
