@@ -5,16 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/israeliStreets/StreetsService.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/israeliStreets/cities.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/israeliStreets/getCities.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/israeliStreets/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/data-gov-il-client/.npmrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/data-gov-il-client/src/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/starter.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sub/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pub/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/StreetsService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/data-gov-il-client/src/StreetsService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/cities.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/getCities.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/src/israeliStreets/translatesd.cities.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pub/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/streetsContract/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/pub/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,10 +31,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2oWTpzJpIEggp0etYQ6GS3u5nGh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -36,30 +47,94 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Docker.docker-compose.yml.npm: Compose Deployment.executor": "Run",
     "Node.js.getCities.ts.executor": "Run",
     "Node.js.main.ts.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/www/testedrecruits/interview-assignment/packages/data-gov-il-client/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "D:\\www\\testedrecruits\\dm-interview-assignment\\streetsContract\\node_modules\\typescript\\lib",
+    "npm.build.executor": "Run",
+    "npm.pub.executor": "Run",
+    "npm.publish.executor": "Run",
+    "ts.external.directory.path": "D:\\www\\testedrecruits\\interview-assignment\\packages\\data-gov-il-client\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Node.js.main.ts">
-    <configuration name="getCities.ts" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/streetsContract/src/israeliStreets/getCities.ts" typescript-loader="bundled" working-dir="$PROJECT_DIR$/streetsContract/src/israeliStreets">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\www\testedrecruits\interview-assignment\packages\data-gov-il-client\src" />
+      <recent name="D:\www\testedrecruits\interview-assignment\sub" />
+      <recent name="D:\www\testedrecruits\interview-assignment\pub" />
+      <recent name="D:\www\testedrecruits\interview-assignment\packages\data-gov-il-streets\src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.pub">
+    <configuration name="main.ts" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/streetsContract/src/main.ts" typescript-loader="bundled" working-dir="$PROJECT_DIR$/streetsContract/src">
       <method v="2" />
     </configuration>
-    <configuration name="main.ts" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/streetsContract/src/main.ts" typescript-loader="bundled" working-dir="$PROJECT_DIR$/streetsContract/src">
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.npm: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="services">
+            <list>
+              <option value="npm" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/packages/data-gov-il-client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="pub" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/packages/data-gov-il-client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="pub" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="publish" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/packages/data-gov-il-client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="publish" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.pub" />
+        <item itemvalue="npm.build" />
+        <item itemvalue="npm.publish" />
+        <item itemvalue="Docker.docker-compose.yml.npm: Compose Deployment" />
         <item itemvalue="Node.js.main.ts" />
-        <item itemvalue="Node.js.getCities.ts" />
       </list>
     </recent_temporary>
   </component>
@@ -79,6 +154,11 @@
       <option name="presentableId" value="Default" />
       <updated>1730984520775</updated>
       <workItem from="1730984524217" duration="6182000" />
+      <workItem from="1731011637446" duration="1781000" />
+      <workItem from="1731013470926" duration="577000" />
+      <workItem from="1731014080428" duration="735000" />
+      <workItem from="1731014839873" duration="6436000" />
+      <workItem from="1731021550916" duration="2731000" />
     </task>
     <servers />
   </component>

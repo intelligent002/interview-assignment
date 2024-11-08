@@ -15,7 +15,6 @@
     "noUnusedLocals": false,
     "rootDir": "src",
     "outDir": "dist",
-    "watch": false,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
