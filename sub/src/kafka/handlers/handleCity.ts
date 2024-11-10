@@ -15,7 +15,7 @@ export async function handleCity(message: KafkaMessage) {
     console.log(`Handling city [${cityName}], attempt [${attempt}]`);
 
     try {
-        const response = await StreetsService.getStreetsInCity(cityName, 10);
+        const response = await StreetsService.getStreetsInCity(cityName, 100000);
         const streetIds = response.streets.map((street) => street.streetId.toString());
 
         // Push all received street IDs to the "streets" topic

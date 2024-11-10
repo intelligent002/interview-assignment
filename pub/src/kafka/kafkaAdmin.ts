@@ -2,11 +2,12 @@ import {Admin, Kafka} from 'kafkajs';
 import {
     KAFKA_APP,
     KAFKA_BROKER,
-    KAFKA_PARTITIONS,
     KAFKA_TOPIC_CITIES,
     KAFKA_TOPIC_CITIES_DLQ,
+    KAFKA_TOPIC_CITIES_PARTITIONS,
     KAFKA_TOPIC_STREETS,
-    KAFKA_TOPIC_STREETS_DLQ
+    KAFKA_TOPIC_STREETS_DLQ,
+    KAFKA_TOPIC_STREETS_PARTITIONS
 } from '../config';
 
 let kafka: Kafka;
@@ -30,10 +31,10 @@ export async function kafkaAdminInit() {
         await admin.connect();
 
         // Create topics
-        await createTopic({topic: KAFKA_TOPIC_CITIES, numPartitions: KAFKA_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: KAFKA_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_STREETS, numPartitions: KAFKA_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: KAFKA_PARTITIONS});
+        await createTopic({topic: KAFKA_TOPIC_CITIES, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
+        await createTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
+        await createTopic({topic: KAFKA_TOPIC_STREETS, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
+        await createTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
 
     } catch (error) {
         console.error('Error during Kafka initialization:', error);

@@ -29,7 +29,7 @@ services:
     env_file:
       - .env
     deploy:
-      replicas: 2
+      replicas: 10
       restart_policy:
         condition: on-failure
     depends_on:
