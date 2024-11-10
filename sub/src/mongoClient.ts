@@ -1,11 +1,11 @@
 import { MongoClient } from 'mongodb';
-import { MONGO_URI, MONGO_DB_NAME, MONGO_COLLECTION } from './config';
+import { MONGO_DSN, MONGO_DB_NAME, MONGO_COLLECTION } from './config';
 
 let client: MongoClient;
 
 export const connectToMongo = async () => {
     if (!client) {
-        client = new MongoClient(MONGO_URI);
+        client = new MongoClient(MONGO_DSN);
         await client.connect();
         console.log('Connected to MongoDB');
     }

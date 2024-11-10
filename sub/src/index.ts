@@ -1,22 +1,27 @@
-import { StreetsService } from 'data-gov-il-client';
-import { connectToMongo, closeMongoConnection } from './mongoClient';
-import { consumeFromKafka } from './kafkaConsumer';
+import {closeMongoConnection, connectToMongo} from './mongoClient';
+import {consumeFromKafka} from './kafka/kafkaConsumer';
+import {startMetricsServer} from './metrics';
+import {Collection} from 'mongodb';
+import {kafkaProducerConnect, kafkaProducerDisconnect} from "./kafka/kafkaProducer";
 
-const processStreetId = async (streetId: string) => {
-    try {
-        const streetData = await StreetsService.getStreetInfoById(parseInt(streetId));
-        const collection = await connectToMongo();
-        await collection.insertOne(streetData);
-        console.log('Inserted street data into MongoDB:', streetData);
-    } catch (error) {
-        console.error('Error processing street ID:', error);
-    }
-};
+let mongoCollection: Collection
 
 const main = async () => {
-    await consumeFromKafka(processStreetId);
+    // Start the metrics server
+    startMetricsServer();
+
+    // get mongo
+    mongoCollection = await connectToMongo();
+
+    // prepare to reproduce
+    await kafkaProducerConnect();
+
+    // consume and reproduce
+    await consumeFromKafka(mongoCollection);
+
     process.on('SIGINT', async () => {
         await closeMongoConnection();
+        await kafkaProducerDisconnect();
         process.exit();
     });
 };

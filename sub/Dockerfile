@@ -1,0 +1,31 @@
+# Stage 1: Build the React application
+FROM node:16.20.0-alpine3.18 AS build
+
+# add some coziness
+RUN apk update && apk add --no-cache \
+    curl \
+    jq \
+    nano \
+    wget \
+    && rm -rf /var/cache/apk/* /tmp/*
+
+# Set working directory in the container
+WORKDIR /app
+
+# Copy the package.json and package-lock.json files
+COPY package*json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy the rest of the app files into the container
+COPY . .
+
+# Build the app
+RUN npm run build
+
+# Entrypoint without params
+ENTRYPOINT ["node", "/app/dist/index.js"]
+
+# Default param
+CMD ["Jerusalem"]

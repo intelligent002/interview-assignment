@@ -21,7 +21,7 @@
   "homepage": "https://github.com/dataloop-ai/data-managment-interview#readme",
   "dependencies": {
     "kafkajs": "^2.2.3",
-    "data-gov-il-client": "^1.0.35"
+    "data-gov-il-client": "^1.0.39"
   },
   "devDependencies": {
     "@types/node": "^16",
