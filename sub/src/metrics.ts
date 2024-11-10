@@ -6,18 +6,20 @@ import {PROMETHEUS_METRICS_PORT} from './config';
 const register = new client.Registry();
 
 // Define and register metrics
-const processedMessagesCounter = new client.Counter({
-    name: 'processed_messages_total',
-    help: 'Total number of processed Kafka messages',
+export const counterCities = new client.Counter({
+    name: 'processed_cities',
+    help: 'Total number of processed Kafka messages about cities',
+    labelNames: ['status']
 });
 
-const processingErrorsCounter = new client.Counter({
-    name: 'processing_errors_total',
-    help: 'Total number of errors during Kafka message processing',
+export const counterStreets = new client.Counter({
+    name: 'processed_streets',
+    help: 'Total number of processed Kafka messages about streets',
+    labelNames: ['status']
 });
 
-register.registerMetric(processedMessagesCounter);
-register.registerMetric(processingErrorsCounter);
+register.registerMetric(counterCities);
+register.registerMetric(counterStreets);
 
 // Collect default metrics
 client.collectDefaultMetrics({ register });
@@ -33,13 +35,4 @@ export const startMetricsServer = (port = PROMETHEUS_METRICS_PORT) => {
     app.listen(port, () => {
         console.log(`Metrics server listening on http://localhost:${port}/metrics`);
     });
-};
-
-// Export metric increment functions
-export const incrementProcessedMessages = () => {
-    processedMessagesCounter.inc();
-};
-
-export const incrementProcessingErrors = () => {
-    processingErrorsCounter.inc();
 };

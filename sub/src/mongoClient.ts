@@ -1,20 +1,21 @@
-import { MongoClient } from 'mongodb';
-import { MONGO_DSN, MONGO_DB_NAME, MONGO_COLLECTION } from './config';
+import {Collection, Document, MongoClient} from 'mongodb';
+import {MONGO_COLLECTION, MONGO_DB_NAME, MONGO_DSN} from './config';
 
-let client: MongoClient;
+let client: MongoClient | null = null;
 
-export const connectToMongo = async () => {
+export async function mongoConnect(): Promise<Collection<Document>> {
     if (!client) {
         client = new MongoClient(MONGO_DSN);
         await client.connect();
-        console.log('Connected to MongoDB');
+        console.log('MongoDB connected.');
     }
     return client.db(MONGO_DB_NAME).collection(MONGO_COLLECTION);
-};
+}
 
-export const closeMongoConnection = async () => {
+export async function mongoDisconnect() {
     if (client) {
         await client.close();
-        console.log('MongoDB connection closed');
+        console.log('MongoDB disconnected');
+        client = null;
     }
-};
+}

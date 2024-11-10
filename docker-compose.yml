@@ -1,6 +1,10 @@
 volumes:
-  mongo:
-  redpanda:
+  mongo-data:
+  mongo-config:
+  redpanda-data:
+  grafana-data:
+  prometheus-data:
+
 networks:
   default:
     driver: bridge
@@ -8,6 +12,7 @@ networks:
     ipam:
       config:
         - subnet: 172.16.57.0/24
+
 services:
   pub:
     build:
@@ -29,9 +34,11 @@ services:
     env_file:
       - .env
     deploy:
-      replicas: 10
+      replicas: 8
       restart_policy:
         condition: on-failure
+    expose:
+      - "8080"
     depends_on:
       - redpanda
     networks:
@@ -40,6 +47,8 @@ services:
   redpanda:
     image: docker.redpanda.com/vectorized/redpanda:latest
     restart: always
+    networks:
+      - default
     command:
       - redpanda start
       - --smp 1
@@ -55,7 +64,7 @@ services:
       - --rpc-addr 0.0.0.0:33145
       - --advertise-rpc-addr redpanda:33145
     volumes:
-      - redpanda:/var/lib/redpanda/data
+      - redpanda-data:/var/lib/redpanda/data
     ports:
       - "8081:8081"
       - "8082:8082"
@@ -67,6 +76,8 @@ services:
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     restart: always
+    networks:
+      - default
     environment:
       CONFIG_FILEPATH: /tmp/config.yml
       CONSOLE_CONFIG_FILE: |
@@ -92,7 +103,57 @@ services:
   mongo:
     image: mongo:4.2
     restart: always
+    networks:
+      - default
     ports: 
       - "27017:27017"
     volumes:
-      - mongo:/data/db
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+
+  # Prometheus
+  prometheus:
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.enable-lifecycle
+    healthcheck:
+      # Test availability of Prometheus service, listening & actually serving
+      interval: 60s
+      retries: 3
+      start_period: 3s
+      test: [ "CMD-SHELL", "curl -f http://localhost:9090/-/healthy || exit 1" ]
+      timeout: 10s
+    networks:
+      - default
+    ports:
+      - "9091:9090"
+    restart: always
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules/:/etc/prometheus/rules/
+      - prometheus-data:/prometheus
+
+  grafana:
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=very-secret
+    healthcheck:
+      # Test availability of Grafana service, listening & actually serving
+      interval: 60s
+      retries: 3
+      start_period: 3s
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      timeout: 10s
+    image: grafana/grafana:11.2.2
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+    restart: always
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - grafana-data:/var/lib/grafana

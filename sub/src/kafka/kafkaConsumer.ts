@@ -2,14 +2,13 @@ import {Kafka} from 'kafkajs';
 import {KAFKA_APP, KAFKA_BROKER, KAFKA_CONSUMER_GROUP, KAFKA_TOPIC_CITIES, KAFKA_TOPIC_STREETS} from '../config';
 import {handleCity} from "./handlers/handleCity";
 import {handleStreet} from "./handlers/handleStreet";
-import {Collection} from "mongodb";
+import {Collection, Document} from "mongodb";
 
 const kafka = new Kafka({
-    clientId: KAFKA_APP,
-    brokers: [KAFKA_BROKER],
+    clientId: KAFKA_APP, brokers: [KAFKA_BROKER],
 });
 
-export async function consumeFromKafka(mongoCollection: Collection) {
+export async function consumeFromKafka(mongo: Collection<Document>) {
     const consumer = kafka.consumer({
         groupId: KAFKA_CONSUMER_GROUP
     });
@@ -31,7 +30,7 @@ export async function consumeFromKafka(mongoCollection: Collection) {
                     await handleCity(message);
                     break;
                 case KAFKA_TOPIC_STREETS:
-                    await handleStreet(message, mongoCollection);
+                    await handleStreet(message, mongo);
                     break;
                 default:
                     console.warn(`Received message for unexpected topic: [${topic}]`);
