@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/dataloop-ai/data-managment-interview#readme",
   "dependencies": {
-    "data-gov-il-client": "^1.0.39",
+    "data-gov-il-client": "^1.0.40",
     "express": "^4.21.1",
     "kafkajs": "^2.2.3",
     "mongodb": "^4.14.0",

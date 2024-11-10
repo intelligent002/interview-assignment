@@ -30,8 +30,8 @@ export class StreetsService {
     }
 
     private static handleAxiosError(error: AxiosError): never {
-        if (error.response && error.response.status === 429) {
-            console.error('Caught 429 error: we`ve just reached the RateLimit');
+        if (error.response && error.response.status === 503) {
+            console.error('Caught 503 error (instead of 429): we`ve just reached the RateLimit');
             throw new ErrorRateLimit('Streets rate limit');
         } else {
             console.error('An HTTP error occurred:', error.response?.status, error.message);
