@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "infra": "start.infra.ps1",
+    "code": "start.code.ps1"
+  }
+}
