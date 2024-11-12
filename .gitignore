@@ -1,4 +1,5 @@
 # Ignore build directory
+.idea
 dist
 # Logs
 logs
