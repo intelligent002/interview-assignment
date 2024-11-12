@@ -18,14 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
       "datasource": {
         "default": true,
-        "type": "prometheus",
-        "uid": "be3jlamgwtukgb"
+        "type": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -94,7 +93,8 @@
           "calcs": [],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "width": 200
         },
         "tooltip": {
           "mode": "single",
@@ -108,7 +108,7 @@
             "uid": "be3jlamgwtukgb"
           },
           "editorMode": "code",
-          "expr": "sum(processed_cities{job=\"sub\"}) by (status)",
+          "expr": "sum(rate(processed_cities{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -121,8 +121,7 @@
     {
       "datasource": {
         "default": true,
-        "type": "prometheus",
-        "uid": "be3jlamgwtukgb"
+        "type": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -191,7 +190,8 @@
           "calcs": [],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "width": 200
         },
         "tooltip": {
           "mode": "single",
@@ -205,7 +205,7 @@
             "uid": "be3jlamgwtukgb"
           },
           "editorMode": "code",
-          "expr": "sum(processed_streets{job=\"sub\"}) by (status)",
+          "expr": "sum(rate(processed_streets{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -230,6 +230,6 @@
   "timezone": "browser",
   "title": "Processed items",
   "uid": "ee3jlxappuqrkf",
-  "version": 9,
+  "version": 5,
   "weekStart": ""
 }
