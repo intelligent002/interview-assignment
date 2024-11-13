@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="minimum">
-      <change beforePath="$PROJECT_DIR$/.idea/dm-interview-assignment.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dm-interview-assignment.iml" afterDir="false" />
+    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="lints">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub/src/redis/redisLeadership.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/redis/redisLeadership.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sub/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sub/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sub/src/throttler/rateAdjust.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/throttler/rateAdjust.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -190,7 +191,7 @@
       <workItem from="1731442914061" duration="206000" />
       <workItem from="1731443152422" duration="3550000" />
       <workItem from="1731482954743" duration="31895000" />
-      <workItem from="1731538429473" duration="1769000" />
+      <workItem from="1731538429473" duration="2014000" />
     </task>
     <task id="LOCAL‎-00001" summary="infra">
       <option name="closed" value="true" />
@@ -240,7 +241,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1731540161789</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL‎-00007" summary="lints">
+      <option name="closed" value="true" />
+      <created>1731540271620</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL‎-00007" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1731540271620</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,6 +258,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="infra" />
     <MESSAGE value="minimum" />
-    <option name="LAST_COMMIT_MESSAGE" value="minimum" />
+    <MESSAGE value="lints" />
+    <option name="LAST_COMMIT_MESSAGE" value="lints" />
   </component>
 </project>

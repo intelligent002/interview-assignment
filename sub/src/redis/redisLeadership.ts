@@ -5,7 +5,7 @@ export class redisLeadership {
 
     private redisClient: Redis;
     private readonly responsibility: string;
-    private readonly ttl: number; // Time-to-live in milliseconds
+    private readonly ttl: number;
     private readonly instanceId: string;
     private renewInterval: NodeJS.Timeout | null = null;
 

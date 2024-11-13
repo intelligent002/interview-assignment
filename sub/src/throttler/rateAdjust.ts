@@ -34,7 +34,7 @@ async function autoAdjustThrottler(
     }) {
     try {
         if (!await leader.isLeader()) {
-            console.log(`Hostname [${hostname}] stinky peasants like me are disallowed from update the holy Rate Limit!`);
+            console.log(`Hostname [${hostname}] stinky peasants like me are disallowed get close to Rate Limit!`);
             return;
         }
 

@@ -4,7 +4,7 @@ import {startMetricsServer} from './metrics';
 import {kafkaProducerConnect, kafkaProducerDisconnect} from "./kafka/kafkaProducer";
 import {getThrottler, updateThrottler} from "./throttler/rateLimit";
 import {getRedisClient, getRedisSubscriber, redisDisconnect, redisSubscribe} from "./redis/redisConnectivity";
-import {REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE} from "./config";
+import {RATE_LIMIT_LEADER_DURATION, REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE} from "./config";
 import {scheduleThrottlerAdjustments, unscheduleThrottlerAdjustments} from "./throttler/rateAdjust";
 import {redisLeadership} from "./redis/redisLeadership";
 
@@ -33,7 +33,7 @@ const main = async () => {
         callback: () => updateThrottler({redisClient, throttler})
     });
 
-    const leader = new redisLeadership({redisClient, responsibility: 'general', ttl: 30000});
+    const leader = new redisLeadership({redisClient, responsibility: 'general', ttl: RATE_LIMIT_LEADER_DURATION});
     await leader.scheduleLeaderAmbitions();
 
     // get throttler
