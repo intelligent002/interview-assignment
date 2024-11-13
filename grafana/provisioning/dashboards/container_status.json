@@ -26,8 +26,7 @@
     {
       "collapsed": true,
       "datasource": {
-        "type": "prometheus",
-        "uid": "be2yax7uvwj5sa"
+        "type": "prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -39,9 +38,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "This metric measures the total CPU time consumed by the container across all its cores, combining both system and user time. It provides an overall picture of CPU usage.\n\n**Use Cases:**\n\n* It's a common metric to gauge overall CPU consumption per container.\n* Useful for setting alert thresholds to prevent over-utilization of CPU resources.\n* Often used in conjunction with other CPU metrics for trend analysis and capacity planning.",
           "fieldConfig": {
@@ -130,8 +127,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -149,9 +145,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "This metric records the cumulative time spent by the container's CPU in user mode. User mode represents time spent executing application code rather than operating system kernel code.\n\n**Use Cases:**\n\n* Useful for analyzing the CPU time consumed by applications and processes within the container itself.\n\n* High values can indicate that the application is performing significant computation, making it suitable for performance profiling and optimization.",
           "fieldConfig": {
@@ -238,8 +232,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_cpu_user_seconds_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name) *100",
@@ -255,9 +248,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "This metric records the cumulative time spent by the container's CPU in system (kernel) mode. System mode represents time spent on kernel-level operations, such as handling I/O requests or managing system calls.\n\n**Use Cases:**\n\n* Useful to identify when containers are spending too much time in the kernel, which could indicate inefficiencies in system calls or potential issues with I/O operations.\n* Monitoring this can help detect whether excessive system overhead affects container performance.",
           "fieldConfig": {
@@ -341,8 +332,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_cpu_system_seconds_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name) *100",
@@ -360,8 +350,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "refId": "A"
         }
@@ -372,8 +361,7 @@
     {
       "collapsed": true,
       "datasource": {
-        "type": "prometheus",
-        "uid": "be2yax7uvwj5sa"
+        "type": "prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -385,9 +373,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total memory usage, including all memory in use by the container (active, cached, etc.). This provides a high-level view of memory consumption.\n\n**Use Cases:**\n\n* Useful for tracking overall memory footprint.\n* Allows you to monitor and manage the container’s total memory consumption and detect any sudden increases that might indicate memory leaks.",
           "fieldConfig": {
@@ -471,8 +457,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_usage_bytes{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -488,9 +473,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Memory that is actively used by the container, excluding cache and unused memory. This shows the actual memory demand of the container.\n\n**Use Cases:**\n\n* Indicates the real memory demand of a container.\n* Helps prevent over-provisioning, as this metric focuses on memory actually being used for active processes rather than cached or unused memory.",
           "fieldConfig": {
@@ -574,8 +557,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_working_set_bytes{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -591,9 +573,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Peak memory usage since the container started. This helps in understanding historical maximum memory demand, useful for right-sizing containers.\n\n**Use Cases:**\n\n* Useful for capacity planning and identifying if a container’s memory usage spikes close to its limits.\n* Helps you assess historical memory demands and adjust container memory allocation accordingly.",
           "fieldConfig": {
@@ -677,8 +657,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_max_usage_bytes{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -696,8 +675,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "refId": "A"
         }
@@ -717,9 +695,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Resident Set Size memory, representing non-swappable physical memory used by the container. This is memory that is actively in use and cannot be swapped out.\n\n**Use Cases:**\n\n* Shows memory that cannot be swapped to disk and is essential for the container’s operation.\n* Helpful to monitor for assessing memory pressure, as high RSS usage may mean the container is approaching its memory limit.",
           "fieldConfig": {
@@ -803,8 +779,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_rss{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -820,9 +795,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Cached memory, which includes data the container has used and stored in RAM for faster access. This memory can be freed if necessary.\n\n**Use Cases:**\n\n* Cached memory can be freed when needed, so high cache usage is generally not a concern.\n* Monitoring cache usage helps distinguish between memory actively in use and memory that can be freed.",
           "fieldConfig": {
@@ -908,8 +881,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_cache{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -925,9 +897,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Memory used for memory-mapped files, often used for accessing large files quickly. This provides insight into specific types of memory allocation used by the container.\n\n**Use Cases:**\n\n* Useful in understanding memory consumption related to memory-mapped file usage, common in applications that access large files frequently.\n* Allows fine-tuning if memory-mapped files significantly contribute to memory usage.",
           "fieldConfig": {
@@ -1036,8 +1006,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_mapped_file{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -1067,9 +1036,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Memory used by kernel processes on behalf of the container, such as system calls or kernel space processes.\n\n**Use Cases:**\n\n* Helpful in monitoring memory consumed by kernel processes on behalf of the container.\n* High kernel memory usage might suggest a high rate of system calls or other kernel-intensive operations within the container.",
           "fieldConfig": {
@@ -1153,8 +1120,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_kernel_usage{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -1170,9 +1136,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Amount of swap memory used by the container, indicating when it exceeds physical memory limits.\n\n**Use Cases:**\n\n* Indicates when the container has exceeded its physical memory limits and is using swap, which can lead to performance degradation.\n* High swap usage can indicate that more RAM should be allocated or that the container’s memory limits should be adjusted.",
           "fieldConfig": {
@@ -1256,8 +1220,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_memory_swap{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -1287,9 +1250,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Count of memory allocation failures due to reaching memory limits. Useful for identifying if the container’s memory settings are too restrictive.\n\n**Use Cases:**\n\n* Helps in identifying memory bottlenecks in real-time.\n* Provides insight into whether memory limits are too restrictive for the container’s needs.",
           "fieldConfig": {
@@ -1374,8 +1335,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_memory_failcnt{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)",
@@ -1391,9 +1351,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total count of all memory allocation failures, offering a broader view of memory pressure within the container.\n\n**Use Cases:**\n\n* Useful for detecting memory pressure within the container, indicating when it couldn’t allocate more memory.\n* Helps troubleshoot memory limits and evaluate if more memory should be allocated to prevent application failures.",
           "fieldConfig": {
@@ -1479,8 +1437,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_memory_failures_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)",
@@ -1501,8 +1458,7 @@
     {
       "collapsed": true,
       "datasource": {
-        "type": "prometheus",
-        "uid": "be2yax7uvwj5sa"
+        "type": "prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -1515,8 +1471,7 @@
         {
           "datasource": {
             "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1599,8 +1554,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_receive_bytes_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -1616,9 +1570,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1701,8 +1653,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -1719,8 +1670,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "refId": "A"
         }
@@ -1740,9 +1690,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1825,8 +1773,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_receive_packets_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -1842,9 +1789,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1927,8 +1872,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_transmit_packets_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -1958,9 +1902,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+                        "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -2043,8 +1985,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_receive_errors_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -2060,9 +2001,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -2145,8 +2084,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_transmit_errors_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -2162,9 +2100,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -2247,8 +2183,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_receive_packets_dropped_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -2264,9 +2199,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -2349,8 +2282,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_network_transmit_packets_dropped_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -2380,9 +2312,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Cumulative I/O usage for block devices, typically representing the number of I/O operations or the amount of data (in bytes) read from or written to storage devices associated with the container.\n\n**Use Cases:**\n\n* Performance Monitoring: Helps monitor storage performance, especially important for I/O-intensive applications that frequently read and write data to disk.\n* Troubleshooting: High values in block I/O metrics may indicate heavy disk usage, which could lead to performance bottlenecks, especially in shared or limited storage environments.\n* Capacity Planning: Useful for understanding the container's disk utilization patterns and planning resource allocation based on usage trends.",
           "fieldConfig": {
@@ -2466,8 +2396,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_blkio_device_usage_total{name=~\"$container\",name=~\".+\"}[$__rate_interval])) by (name)",
@@ -2497,9 +2426,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total available filesystem space for the container in bytes.\n\n**Use Cases:**\n\n* Capacity Planning: Useful for planning resource allocation to prevent overuse.\n* Monitoring: Tracks the total storage capacity to ensure sufficient space is available for container operations.",
           "fieldConfig": {
@@ -2583,8 +2510,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_fs_limit_bytes{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -2600,9 +2526,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total filesystem space currently in use by the container in bytes.\n\n**Use Cases:**\n\n* Usage Tracking: Helps monitor storage consumption trends.\n* Troubleshooting: Detects overuse that could lead to storage exhaustion.",
           "fieldConfig": {
@@ -2686,8 +2610,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_fs_usage_bytes{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -2703,9 +2626,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total inodes available in the filesystem.\n\n**Use Cases:**\n\n* Capacity Planning, Monitoring.",
           "fieldConfig": {
@@ -2790,8 +2711,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_fs_inodes_total{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -2807,9 +2727,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Free inodes available in the filesystem.\n\n**Use Cases:**\n\n* File System Health, Troubleshooting.",
           "fieldConfig": {
@@ -2894,8 +2812,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_fs_inodes_free{name=~\"$container\",name=~\".+\"}) by (name)",
@@ -2925,9 +2842,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total number of read operations.\n\n**Use Cases:**\n\n* Read Activity Monitoring\n* Performance Tuning.",
           "fieldConfig": {
@@ -3012,8 +2927,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_reads_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3029,9 +2943,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total bytes read.\n\n**Use Cases:**\n\n* Data Transfer Analysis, Resource Optimization.",
           "fieldConfig": {
@@ -3116,8 +3028,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_reads_bytes_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3133,9 +3044,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total time spent on read operations.\n\n**Use Cases:**\n\n* Performance Monitoring, Troubleshooting.",
           "fieldConfig": {
@@ -3220,8 +3129,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_read_seconds_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3237,9 +3145,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total merged read operations.\n\n**Use Cases:**\n\n* Efficiency Tracking, Troubleshooting.",
           "fieldConfig": {
@@ -3324,8 +3230,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_reads_merged_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3341,9 +3246,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total sectors read.\n\n**Use Cases:**\n\n* Storage Analysis, Optimization.",
           "fieldConfig": {
@@ -3428,8 +3331,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_sector_reads_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3459,9 +3361,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total write operations.\n\n**Use Cases:**\n\n* Write Activity Monitoring, Performance Optimization.",
           "fieldConfig": {
@@ -3546,8 +3446,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_writes_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3563,9 +3462,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total bytes written.\n\n**Use Cases:**\n\n* Data Transfer Analysis, Resource Planning.",
           "fieldConfig": {
@@ -3650,8 +3547,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_writes_bytes_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3667,9 +3563,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Time spent on writes.\n\n**Use Cases:**\n\n* Performance Monitoring, Troubleshooting.",
           "fieldConfig": {
@@ -3754,8 +3648,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_write_seconds_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3771,9 +3664,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total merged writes.\n\n**Use Cases:**\n\n* Efficiency Tracking, Optimization.",
           "fieldConfig": {
@@ -3858,8 +3749,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_writes_merged_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3875,9 +3765,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Total sectors written.\n\n**Use Cases:**\n\n* Storage Tuning, Performance Analysis.",
           "fieldConfig": {
@@ -3962,8 +3850,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_sector_writes_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -3993,9 +3880,7 @@
       "panels": [
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Number of ongoing I/O operations.\n\n**Use Cases:**\n\n* I/O Load Monitoring, Troubleshooting.",
           "fieldConfig": {
@@ -4080,8 +3965,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(container_fs_io_current{name=~\"$container\", name=~\".+\"}) by (name)\r\n",
@@ -4097,9 +3981,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Time spent on all I/O operations.\n\n**Use Cases:**\n\n* Performance Analysis, Troubleshooting.",
           "fieldConfig": {
@@ -4184,8 +4066,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_io_time_seconds_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -4201,9 +4082,7 @@
         },
         {
           "datasource": {
-            "default": true,
-            "type": "prometheus",
-            "uid": "be2yax7uvwj5sa"
+            "type": "prometheus"
           },
           "description": "Weighted I/O time that considers both duration and volume.\n\n**Use Cases:**\n\n* Comprehensive I/O Analysis, Optimization.",
           "fieldConfig": {
@@ -4288,8 +4167,7 @@
           "targets": [
             {
               "datasource": {
-                "type": "prometheus",
-                "uid": "be2yax7uvwj5sa"
+                "type": "prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(container_fs_io_time_weighted_seconds_total{name=~\"$container\", name=~\".+\"}[$__rate_interval])) by (name)\r\n",
@@ -4324,8 +4202,7 @@
           "value": "$__all"
         },
         "datasource": {
-          "type": "prometheus",
-          "uid": "be2yax7uvwj5sa"
+          "type": "prometheus"
         },
         "definition": "label_values({__name__=~\"container.*\"},name)",
         "hide": 0,

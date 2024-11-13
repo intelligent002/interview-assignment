@@ -1,17 +1,19 @@
 import {Kafka, Producer} from 'kafkajs';
 import {KAFKA_APP, KAFKA_BROKER} from '../config';
 
+let kafka: Kafka;
 let producer: Producer;
 
 // Function to initialize and connect the Kafka producer with idempotency
 export async function kafkaProducerConnect() {
-    const kafka = new Kafka({
+
+    kafka = new Kafka({
         clientId: KAFKA_APP,
         brokers: [KAFKA_BROKER],
     });
 
     producer = kafka.producer({
-        idempotent: true, // Enables idempotency
+        idempotent: true,
         maxInFlightRequests: 5, // Ensures no more than 5 in-flight requests to maintain idempotency
     });
 

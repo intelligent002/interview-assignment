@@ -23,7 +23,6 @@
   "panels": [
     {
       "datasource": {
-        "default": true,
         "type": "prometheus"
       },
       "fieldConfig": {
@@ -104,8 +103,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "be3jlamgwtukgb"
+            "type": "prometheus"
           },
           "editorMode": "code",
           "expr": "sum(rate(processed_cities{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval",
@@ -120,7 +118,6 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "prometheus"
       },
       "fieldConfig": {
@@ -201,8 +198,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "be3jlamgwtukgb"
+            "type": "prometheus"
           },
           "editorMode": "code",
           "expr": "sum(rate(processed_streets{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval",
@@ -229,7 +225,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Processed items",
-  "uid": "ee3jlxappuqrkf",
   "version": 5,
   "weekStart": ""
 }

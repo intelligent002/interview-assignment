@@ -43,6 +43,7 @@ services:
     depends_on:
       - redpanda
       - redis
+      - mongo
     networks:
       - default
 
@@ -141,8 +142,14 @@ services:
       - prometheus-data:/prometheus
 
   grafana:
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
     depends_on:
       - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=very-secret
+      - GF_USERS_DEFAULT_THEME=light
     healthcheck:
       # Test availability of Grafana service, listening & actually serving
       interval: 60s
@@ -150,28 +157,27 @@ services:
       start_period: 3s
       test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
       timeout: 10s
-    image: grafana/grafana:11.2.2
     networks:
       - default
     ports:
       - "3000:3000"
     restart: always
     volumes:
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - grafana-data:/var/lib/grafana
 
   # Redis for rate-limiting
   redis:
-    #image: redis
     build:
       context: ./redis
       dockerfile: Dockerfile
+    env_file:
+      - ./redis/.env
     healthcheck:
       # Test availability of Redis service, listening & serving - via inline redis-cli request
       interval: 60s
       retries: 3
       start_period: 3s
-      test: ["CMD-SHELL", "response=$$(redis-cli -u redis://@127.0.0.1:6379 ping); \
+      test: ["CMD-SHELL", "response=$$(redis-cli -u redis://user:pass@127.0.0.1:6379 ping); \
                 if [ \"$$response\" != \"PONG\" ]; then echo \"Status is not OK\" && exit 1; else echo \"Status is OK\" && exit 0; fi"]
       timeout: 10s
     networks:
@@ -182,14 +188,15 @@ services:
     volumes:
       - redis-data:/data
 
-  redis-commander:
-    container_name: redis-commander
-    hostname: redis-commander
-    image: rediscommander/redis-commander:latest
-    restart: always
-    environment:
-      - REDIS_PASSWORD=pass
-      - REDIS_HOST=redis
-    ports:
-      - "8084:8081"
-
+#  redis-commander:
+#    container_name: redis-commander
+#    hostname: redis-commander
+#    image: rediscommander/redis-commander:latest
+#    restart: always
+#    environment:
+#      - REDIS_USERNAME=user
+#      - REDIS_PASSWORD=pass
+#      - REDIS_HOST=redis
+#    ports:
+#      - "8084:8081"
+#

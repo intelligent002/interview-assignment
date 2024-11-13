@@ -3,12 +3,24 @@ import {KAFKA_APP, KAFKA_BROKER, KAFKA_CONSUMER_GROUP, KAFKA_TOPIC_CITIES, KAFKA
 import {handleCity} from "./handlers/handleCity";
 import {handleStreet} from "./handlers/handleStreet";
 import {Collection, Document} from "mongodb";
+import Redis from "ioredis";
+import Bottleneck from "bottleneck";
 
 const kafka = new Kafka({
     clientId: KAFKA_APP, brokers: [KAFKA_BROKER],
 });
 
-export async function consumeFromKafka(mongo: Collection<Document>) {
+export async function consumeFromKafka(
+    {
+        mongo,
+        throttler,
+        redisClient
+    }:
+    {
+        mongo: Collection<Document>,
+        throttler: Bottleneck,
+        redisClient: Redis
+    }) {
     const consumer = kafka.consumer({
         groupId: KAFKA_CONSUMER_GROUP
     });
@@ -27,10 +39,18 @@ export async function consumeFromKafka(mongo: Collection<Document>) {
             // what are we actually doing
             switch (topic) {
                 case KAFKA_TOPIC_CITIES:
-                    await handleCity(message);
+                    try {
+                        await throttler.schedule(() => handleCity({message, redisClient}));
+                    } catch (error) {
+                        console.error('Error scheduling handleCity:', error);
+                    }
                     break;
                 case KAFKA_TOPIC_STREETS:
-                    await handleStreet(message, mongo);
+                    try {
+                        await throttler.schedule(() => handleStreet({message, redisClient, mongo}));
+                    } catch (error) {
+                        console.error('Error scheduling handleStreet:', error);
+                    }
                     break;
                 default:
                     console.warn(`Received message for unexpected topic: [${topic}]`);

@@ -12,7 +12,7 @@ if [ -n "${REDIS_USERNAME}" ] && [ -n "${REDIS_PASSWORD}" ]; then
 fi
 
 # Configure the default user
-if [ "$(echo ${REDIS_DISABLE_DEFAULT_USER})" == "true" ]; then
+if [ "$(echo ${REDIS_DEFAULT_USER_DISABLE})" == "true" ]; then
     # Disable the default user if specified
     echo "user default off nopass nocommands" >> /usr/local/etc/redis/custom_aclfile.acl
 else
