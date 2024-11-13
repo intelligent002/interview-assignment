@@ -41,10 +41,10 @@ export class redisLeadership {
     }
 
     async claimLeadership(): Promise<boolean> {
-        if (await this.isLeader())
+        if (await this.isLeader()) {
             return true;
-        // @ts-ignore
-        const result = await this.redisClient.set(this.responsibility, this.instanceId, 'NX', 'PX', this.ttl);
+        }
+        const result = await this.redisClient.set(this.responsibility, this.instanceId, 'PX', this.ttl, 'NX');
         if (result === 'OK') {
             console.log(`Hostname [${this.instanceId}] is the horde leader now!`);
             this.scheduleRenewal();
@@ -76,7 +76,7 @@ export class redisLeadership {
         this.renewInterval = setInterval(async () => {
             if (await this.isLeader()) {
                 await this.redisClient.pexpire(this.responsibility, this.ttl);
-                console.log(`Hostname [${this.instanceId}] has its leadership renewed`);
+                console.log(`Hostname [${this.instanceId}] had its leadership extended`);
             } else {
                 clearInterval(this.renewInterval!);
                 this.renewInterval = null;

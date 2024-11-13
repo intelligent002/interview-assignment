@@ -81,7 +81,7 @@ export function scheduleThrottlerAdjustments(
     const millisecondsUntilNextMinute = 60_000 - (now % 60_000);
 
     // Schedule the first timeout
-    const timeoutId = setTimeout(() => {
+    setTimeout(() => {
         // Schedule the interval after the initial timeout runs
         intervalId = setInterval(() => autoAdjustThrottler({
             redisClient, leader
