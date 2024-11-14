@@ -3,7 +3,7 @@ import {MONGO_COLLECTION, MONGO_DB_NAME, MONGO_DSN} from './config';
 
 let client: MongoClient | null = null;
 
-export async function mongoConnection(): Promise<Collection<Document>> {
+export async function mongoCollection(): Promise<Collection<Document>> {
     if (!client) {
         client = new MongoClient(MONGO_DSN);
         await client.connect();

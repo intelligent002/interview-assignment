@@ -1,26 +1,25 @@
-import {Kafka, Producer} from 'kafkajs';
-import {KAFKA_APP, KAFKA_BROKER} from '../config';
+import {Producer} from 'kafkajs';
+import {kafka} from "./kafka";
 
-let kafka: Kafka;
 let producer: Producer;
 
 // Function to initialize and connect the Kafka producer with idempotency
 export async function kafkaProducerConnect() {
 
-    kafka = new Kafka({
-        clientId: KAFKA_APP,
-        brokers: [KAFKA_BROKER],
-    });
-
+    // Prepare producer
     producer = kafka.producer({
         idempotent: true,
         maxInFlightRequests: 5, // Ensures no more than 5 in-flight requests to maintain idempotency
     });
 
+    // Connect producer
     await producer.connect();
+
+    // Report
     console.log('Kafka producer connected with idempotency enabled.');
 }
 
+// Produce with retries
 export async function kafkaProduce(
     {
         topic,
@@ -40,11 +39,11 @@ export async function kafkaProduce(
             await kafkaProduceOnce({topic, messages, attempt});
             return; // Exit if successful
         } catch (error) {
-            if (retry < retries) {
+            if (retry <= retries) {
                 console.warn(`Retrying to send messages to Kafka, retry [${retry}/${retries}]...`);
                 await new Promise(resolve => setTimeout(resolve, delay * retry)); // Exponential backoff
             } else {
-                console.error('All retry attempts failed, kafka is unavailable:', error);
+                console.error('All retry attempts failed, i give up ... kafka is unavailable:', error);
             }
         }
     }
@@ -70,7 +69,7 @@ async function kafkaProduceOnce(
         topic, messages: payload
     });
 
-    console.log('Messages sent to Kafka:', messages);
+    console.log('Message(s) sent to Kafka:', messages);
 }
 
 // Function to gracefully disconnect the producer

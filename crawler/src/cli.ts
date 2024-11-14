@@ -1,13 +1,9 @@
 import {city} from 'data-gov-il-client';
-import {kafkaAdminInit} from './kafka/kafkaAdmin';
 import {kafkaProduce, kafkaProducerConnect, kafkaProducerDisconnect} from './kafka/kafkaProducer';
 import {KAFKA_TOPIC_CITIES} from "./config";
 
 const main = async () => {
     try {
-        // Create required topics if they are not created yet.
-        await kafkaAdminInit();
-
         // Connect producer
         await kafkaProducerConnect()
 
