@@ -25,6 +25,9 @@ const main = async () => {
     // during which other commands are unavailable
     const redisSubscriber = await getRedisSubscriber();
 
+    // get throttler
+    const throttler = await getThrottler();
+
     // subscribe for throttler updates
     await redisSubscribe({
         client: redisSubscriber,
@@ -35,9 +38,6 @@ const main = async () => {
 
     const leader = new redisLeadership({redisClient, responsibility: 'general', ttl: RATE_LIMIT_LEADER_DURATION});
     await leader.scheduleLeaderAmbitions();
-
-    // get throttler
-    const throttler = await getThrottler();
 
     // schedule throttler adjustments
     scheduleThrottlerAdjustments({redisClient, leader});
