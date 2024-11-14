@@ -59,5 +59,5 @@ const main = async () => {
 };
 
 main()
-    .then(() => console.log("done the main"))
+    .then(() => console.log("Crawler dispatched"))
     .catch((error) => console.log(error));
