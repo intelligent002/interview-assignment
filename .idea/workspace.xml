@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="merged">
-      <change afterPath="$PROJECT_DIR$/cli.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crawler/Dockerfile-worker" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crawler/src/cli.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crawler/src/kafka/kafkaAdmin.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawler/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/.dockerignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawler/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/Dockerfile-cli" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawler/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawler/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawler/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/src/config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/src/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/src/kafka/kafkaAdmin.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/src/kafka/kafkaProducer.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pub/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/start.pub.ps1" beforeDir="false" />
-    </list>
+    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="cleanup" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,42 +33,42 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.docker-compose-code.yml.pub: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose-code.yml.sub: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.grafana: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.npm: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.prometheus: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.redis-commander: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.redis: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.bar.ts.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.getCities.ts.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.index.ts.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.main.ts.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.redisElections.ts.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;unite-ms&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/www/testedrecruits/interview-assignment/sub/src&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.build.executor&quot;: &quot;Run&quot;,
-    &quot;npm.code.executor&quot;: &quot;Run&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;npm.infra.executor&quot;: &quot;Run&quot;,
-    &quot;npm.lint.executor&quot;: &quot;Run&quot;,
-    &quot;npm.pub.executor&quot;: &quot;Run&quot;,
-    &quot;npm.publish.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;proofread&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\www\\testedrecruits\\interview-assignment\\crawler\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.docker-compose-code.yml.pub: Compose Deployment.executor": "Run",
+    "Docker.docker-compose-code.yml.sub: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.grafana: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.npm: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.prometheus: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.redis-commander: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.redis: Compose Deployment.executor": "Run",
+    "Node.js.bar.ts.executor": "Run",
+    "Node.js.getCities.ts.executor": "Run",
+    "Node.js.index.ts.executor": "Run",
+    "Node.js.main.ts.executor": "Run",
+    "Node.js.redisElections.ts.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "logs",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/www/testedrecruits/interview-assignment/sub/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
+    "npm.code.executor": "Run",
+    "npm.dev.executor": "Run",
+    "npm.infra.executor": "Run",
+    "npm.lint.executor": "Run",
+    "npm.pub.executor": "Run",
+    "npm.publish.executor": "Run",
+    "settings.editor.selected.configurable": "proofread",
+    "ts.external.directory.path": "D:\\www\\testedrecruits\\interview-assignment\\crawler\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\www\testedrecruits\interview-assignment\sub\src" />
@@ -343,6 +320,7 @@
     <MESSAGE value="dashboards" />
     <MESSAGE value="metrics" />
     <MESSAGE value="merged" />
-    <option name="LAST_COMMIT_MESSAGE" value="merged" />
+    <MESSAGE value="cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleanup" />
   </component>
 </project>
