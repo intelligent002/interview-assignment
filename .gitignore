@@ -1,5 +1,5 @@
 # Ignore build directory
-.idea/*
+/.idea
 dist
 # Logs
 logs
@@ -10,4 +10,4 @@ yarn-error.log*
 
 # Dependency directories
 node_modules/
-/.idea
+
