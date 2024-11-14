@@ -30,14 +30,14 @@ export async function handleStreet(
     } catch (error) {
 
         if (error instanceof ErrorEmptyResponse) {
-            logger.warning('Caught an ErrorEmptyResponse, no further action needed.');
+            logger.warn('Caught an ErrorEmptyResponse, no further action needed.');
             metricCounterStreets.inc({status: 'Error-Empty'});
             await registerRateLimitSuccess(redisClient);
             return; // don`t do anything, street not found or the like
         }
 
         if (error instanceof ErrorRateLimit) {
-            logger.warning('Caught an ErrorRateLimit, re-queue with same attempt #');
+            logger.warn('Caught an ErrorRateLimit, re-queue with same attempt #');
             metricCounterStreets.inc({status: 'Error-RateLimited'});
             await registerRateLimitFailure(redisClient);
             await kafkaProduce({
@@ -56,7 +56,7 @@ export async function handleStreet(
             });
         } else {
             // DLQ
-            logger.warning('Max retry attempts reached. Moving message to DLQ');
+            logger.warn('Max retry attempts reached. Moving message to DLQ');
             metricCounterStreets.inc({status: 'Error-DLQ'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_STREETS_DLQ, messages: [streetId.toString()], attempt: (attempt + 1).toString()

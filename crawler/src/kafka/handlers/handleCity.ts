@@ -64,7 +64,7 @@ export async function handleCity(
             });
         } else {
             // DLQ
-            logger.warning('Max retry attempts reached. Moving message to DLQ');
+            logger.warn('Max retry attempts reached. Moving message to DLQ');
             metricsCounterCities.inc({status: 'Error-DLQ'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_CITIES_DLQ, messages: [cityName], attempt: (attempt + 1).toString()

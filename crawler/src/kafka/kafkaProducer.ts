@@ -41,7 +41,7 @@ export async function kafkaProduce(
             return; // return if successful
         } catch (error) {
             if (retry <= retries) {
-                logger.warning(`Retrying to send messages to Kafka, retry [${retry}/${retries}]...`);
+                logger.warn(`Retrying to send messages to Kafka, retry [${retry}/${retries}]...`);
                 await new Promise(resolve => setTimeout(resolve, delay * retry)); // Exponential backoff
             } else {
                 logger.error('All retry attempts exhausted, i give up ... kafka is simply unavailable.');

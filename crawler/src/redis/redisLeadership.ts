@@ -1,10 +1,10 @@
 import Redis from 'ioredis';
-import os from "os";
+import {hostname} from "os";
 import logger from "../logger";
 
 export class redisLeadership {
 
-    private redisClient: Redis;
+    private readonly redisClient: Redis;
     private readonly responsibility: string;
     private readonly ttl: number;
     private readonly instanceId: string;
@@ -23,7 +23,7 @@ export class redisLeadership {
         this.redisClient = redisClient;
         this.responsibility = responsibility;
         this.ttl = ttl;
-        this.instanceId = os.hostname(); // Unique identifier for this instance
+        this.instanceId = hostname(); // Unique identifier for this instance
     }
 
     async isLeader(): Promise<boolean> {
@@ -71,9 +71,7 @@ export class redisLeadership {
     }
 
     private scheduleRenewal(): void {
-        if (this.renewInterval) {
-            clearInterval(this.renewInterval);
-        }
+        clearInterval(this.renewInterval!);
 
         // Schedule renewal at half the TTL to ensure leadership retention
         this.renewInterval = setInterval(async () => {
@@ -83,7 +81,7 @@ export class redisLeadership {
             } else {
                 clearInterval(this.renewInterval!);
                 this.renewInterval = null;
-                logger.warning(`Hostname [${this.instanceId}] has lost its leadership`);
+                logger.warn(`Hostname [${this.instanceId}] has lost its leadership`);
             }
         }, this.ttl / 2);
     }

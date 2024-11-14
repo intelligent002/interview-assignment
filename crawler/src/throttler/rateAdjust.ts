@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import os from 'os';
+import {hostname} from "node:os";
 import {
     RATE_LIMIT_ADJUST_EVERY_SECONDS,
     RATE_LIMIT_GLOBAL_INIT,
@@ -15,7 +15,7 @@ import {redisLeadership} from "../redis/redisLeadership";
 import logger from "../logger";
 
 // Other peripherals ...
-const hostname = os.hostname();
+const host = hostname();
 
 // let's define those for further cancellation
 let intervalId: NodeJS.Timeout | null;
@@ -36,7 +36,7 @@ async function autoAdjustThrottler(
     }) {
     try {
         if (!await leader.isLeader()) {
-            logger.debug(`Hostname [${hostname}] stinky peasants like me are disallowed get close to Rate Limit!`);
+            logger.debug(`Hostname [${host}] stinky peasants like me are disallowed get close to Rate Limit!`);
             return;
         }
 
@@ -57,14 +57,14 @@ async function autoAdjustThrottler(
                 ? Math.max(currentLimit - 3, RATE_LIMIT_GLOBAL_MIN)
                 : Math.min(currentLimit + 1, RATE_LIMIT_GLOBAL_MAX);
             if (adjustedRate === RATE_LIMIT_GLOBAL_MIN) {
-                logger.warning('The calculated rate limit is equal to minimum, seems like the minimum need to be lowered')
+                logger.warn('The calculated rate limit is equal to minimum, seems like the minimum need to be lowered')
             }
             if (adjustedRate === RATE_LIMIT_GLOBAL_MAX) {
-                logger.warning('The calculated rate limit is equal to maximum, seems like the maximum can to be enlarged')
+                logger.warn('The calculated rate limit is equal to maximum, seems like the maximum can to be enlarged')
             }
             await redisClient.set(RATE_LIMIT_REDIS_LIMIT, adjustedRate);
             await redisClient.publish(REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE);
-            logger.info(`Hostname [${hostname}] has demanded a new Rate Limit of [${adjustedRate}] requests per minute.`);
+            logger.info(`Hostname [${host}] has demanded a new Rate Limit of [${adjustedRate}] requests per minute.`);
         }
     } catch (error) {
         const err = error as Error;

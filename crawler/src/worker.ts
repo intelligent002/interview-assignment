@@ -8,7 +8,7 @@ import {RATE_LIMIT_LEADER_DURATION, REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE
 import {scheduleThrottlerAdjustments, unscheduleThrottlerAdjustments} from "./throttler/rateAdjust";
 import {redisLeadership} from "./redis/redisLeadership";
 import {kafkaAdmin, kafkaAdminDisconnect} from "./kafka/kafkaAdmin";
-import {hostname} from "node:os";
+import {hostname} from "os";
 import {Collection, Document} from "mongodb";
 import Redis from "ioredis";
 import logger from "./logger";
@@ -18,6 +18,7 @@ let redisClient: Redis;
 let redisSubscriber: Redis;
 let leader: redisLeadership;
 let isShuttingDown = false;
+const host = hostname();
 
 const main = async () => {
     // Start the metrics server
@@ -65,7 +66,7 @@ const main = async () => {
 
     // Let them fight!
     while (!await leader.isLeaderElected()) {
-        logger.debug(`Hostname [${hostname()}] there can be only one!`)
+        logger.debug(`Hostname [${host}] there can be only one!`)
         await new Promise(f => setTimeout(f, 1000));
     }
 
