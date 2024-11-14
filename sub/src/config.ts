@@ -16,6 +16,7 @@ export const PROMETHEUS_METRICS_PORT = parseInt(process.env.PROMETHEUS_METRICS_P
 export const RATE_LIMIT_ADJUST_EVERY_SECONDS = parseInt(process.env.RATE_LIMIT_ADJUST_EVERY_SECONDS as string) || 10;
 export const RATE_LIMIT_GLOBAL_MAX = parseInt(process.env.RATE_LIMIT_GLOBAL_MAX as string) || 1000;
 export const RATE_LIMIT_GLOBAL_MIN = parseInt(process.env.RATE_LIMIT_GLOBAL_MIN as string) || 10;
+export const RATE_LIMIT_GLOBAL_INIT = parseInt(process.env.RATE_LIMIT_GLOBAL_INIT as string) || 50;
 export const RATE_LIMIT_LEADER_DURATION = parseInt(process.env.RATE_LIMIT_LEADER_DURATION as string) || 60_000;
 export const RATE_LIMIT_REDIS_FAILURE = process.env.RATE_LIMIT_REDIS_FAILURE || 'count_failure';
 export const RATE_LIMIT_REDIS_LIMIT = process.env.RATE_LIMIT_REDIS_LIMIT || 'global_limit';
