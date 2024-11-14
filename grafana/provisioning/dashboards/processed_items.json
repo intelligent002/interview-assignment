@@ -18,13 +18,15 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 1,
   "links": [],
   "panels": [
     {
       "datasource": {
-        "type": "prometheus"
+        "default": true,
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
+      "description": "## Status of Processed Cities\n\n- Cities requiring processing are submitted to Kafka through the CLI.\n- This approach prevents immediate processing and helps avoid rate limit issues when making city requests, which could lead to failed responses that cannot be retried.\n- Using Kafka as a queue allows requests to be automatically retried until they are successful, minimizing manual intervention and simplifying the resolution process.\n- Mistyped city entries are filtered out and do not enter the queue, ensuring that only valid cities are queried through the data.gov.il API.\n- The system uses two separate queues: one for cities and one for streets. Workers listen to both queues and process messages based on the origin topic. Messages from the cities queue are naturally prioritized over those from the streets queue, as the cities queue is typically empty during runtime, ensuring cities are processed as soon as new messages arrive.\n",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -81,7 +83,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 5,
         "w": 24,
         "x": 0,
         "y": 0
@@ -118,8 +120,11 @@
     },
     {
       "datasource": {
-        "type": "prometheus"
+        "default": true,
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
+      "description": "## Status of Processed Streets\n\n- **\"OK\"**: Successfully processed streets are stored in MongoDB.\n  - No further actions are taken on this data within the scope of this proof of concept (POC).\n\n- **\"Error-Recoverables\"**: Streets that encountered recoverable errors are re-added to the queue with an incremented attempt counter. If the number of attempts reaches 3 (as specified in the `.env` file), they are moved to the Dead Letter Queue (DLQ).\n  - No further actions are taken on DLQ entries within the scope of this POC.\n\n- **\"Error-RateLimited\"**: Streets that hit rate limits are re-added to the queue with no restriction on the number of retry attempts.\n\n- **\"Error-Empty\"**: Streets that yield no data (e.g., unknown streets with no information) are discarded immediately, as they are considered non-productive and do not contribute to processing.\n",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -179,7 +184,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 5
       },
       "id": 2,
       "options": {
@@ -191,7 +196,7 @@
           "width": 200
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -201,7 +206,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(processed_streets{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval",
+          "expr": "ceil(sum(rate(processed_streets{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval)\r\n",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -209,6 +214,104 @@
         }
       ],
       "title": "Streets",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "default": true,
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "## Status of Rate Limit\n\n- Every 60 seconds, as specified in the `.env` file, the leader component evaluates the OK/RateLimit ratio to determine whether to adjust the request frequency up or down. This process follows the predefined safety margins for minimum and maximum rate limits, which are also set in the `.env` file. Once a decision is reached, the leader communicates the updated rate limit to all workers, including itself, using Redis multicast pub/sub.\n\n- Each worker, upon receiving the multicast message, updates its rate limit according to the leader’s instructions, ensuring uniform adjustments across the distributed system.\n\n- The data.gov.il service applies a request limit using a Fixed Window algorithm, with a rate that changes dynamically throughout the day.\n- Additionally, the service’s system clock runs at least 5 seconds behind, meaning that rate evaluations are performed at the start of each full minute.\n- This 5-second delay can result in over-rate penalties carrying over into the next evaluation cycle, which can affect performance by causing rate limits to persist during the subsequent iteration.\n",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "width": 200
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate_limit{job=\"sub\"}) by (host)",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Rate Limit",
       "type": "timeseries"
     }
   ],
@@ -219,12 +322,13 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Processed items",
-  "version": 5,
+  "uid": "ee3vdgl4msl4wc",
+  "version": 1,
   "weekStart": ""
 }
