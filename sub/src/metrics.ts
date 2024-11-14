@@ -6,20 +6,27 @@ import {PROMETHEUS_METRICS_PORT} from './config';
 const register = new client.Registry();
 
 // Define and register metrics
-export const counterCities = new client.Counter({
+export const metricsCounterCities = new client.Counter({
     name: 'processed_cities',
     help: 'Total number of processed Kafka messages about cities',
     labelNames: ['status']
 });
 
-export const counterStreets = new client.Counter({
+export const metricCounterStreets = new client.Counter({
     name: 'processed_streets',
     help: 'Total number of processed Kafka messages about streets',
     labelNames: ['status']
 });
 
-register.registerMetric(counterCities);
-register.registerMetric(counterStreets);
+export const metricRateLimit = new client.Gauge({
+    name: 'rate_limit',
+    help: 'Global rate limit applied to all requests towards data.gov.il',
+    labelNames: ['host']
+});
+
+register.registerMetric(metricsCounterCities);
+register.registerMetric(metricCounterStreets);
+register.registerMetric(metricRateLimit);
 
 // Collect default metrics
 client.collectDefaultMetrics({ register });
