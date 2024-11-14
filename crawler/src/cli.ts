@@ -1,4 +1,4 @@
-import {city, StreetsService} from 'data-gov-il-client';
+import {city} from 'data-gov-il-client';
 import {kafkaAdminInit} from './kafka/kafkaAdmin';
 import {kafkaProduce, kafkaProducerConnect, kafkaProducerDisconnect} from './kafka/kafkaProducer';
 import {KAFKA_TOPIC_CITIES} from "./config";

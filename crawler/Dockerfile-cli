@@ -25,7 +25,7 @@ COPY . .
 RUN npm run build
 
 # Entrypoint without params
-ENTRYPOINT ["node", "/app/dist/index.js"]
+ENTRYPOINT ["node", "/app/dist/cli.js"]
 
 # Default param
-# CMD ["Jerusalem"]
+CMD ["Jerusalem"]

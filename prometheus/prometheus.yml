@@ -7,10 +7,10 @@ scrape_configs:
     - targets:
       - localhost:9090
 
-  - job_name: 'sub'
+  - job_name: 'crawler'
     dns_sd_configs:
       - names:
-          - 'sub'
+          - 'crawler'
         type: 'A'
         port: 8080
 

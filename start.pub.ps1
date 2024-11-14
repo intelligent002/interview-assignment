@@ -1,1 +1,0 @@
-docker run  --env KAFKA_BROKER="redpanda:29092" --network interview-assignment_default interview-assignment-pub:latest Jerusalem
