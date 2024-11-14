@@ -1,7 +1,7 @@
 import Redis from 'ioredis';
 import os from 'os';
 import {
-    RATE_LIMIT_ADJUST_EVERY_SECONDS,
+    RATE_LIMIT_ADJUST_EVERY_SECONDS, RATE_LIMIT_GLOBAL_INIT,
     RATE_LIMIT_GLOBAL_MAX,
     RATE_LIMIT_GLOBAL_MIN,
     RATE_LIMIT_REDIS_FAILURE,
@@ -39,19 +39,21 @@ async function autoAdjustThrottler(
         }
 
         // proceed with rate limit adjustments (to be on the safe side, use minimal value as fallback when redis data unavailable)
-        const currentLimit = parseInt(await redisClient.get(RATE_LIMIT_REDIS_LIMIT) || RATE_LIMIT_GLOBAL_MIN.toString());
+        const currentLimit = parseInt(await redisClient.get(RATE_LIMIT_REDIS_LIMIT) || RATE_LIMIT_GLOBAL_INIT.toString());
         const successCount = parseInt(await redisClient.get(RATE_LIMIT_REDIS_SUCCESS) || '0');
         const failureCount = parseInt(await redisClient.get(RATE_LIMIT_REDIS_FAILURE) || '0');
 
-        // reset counters during the first second of a minute
-        if (Date.now() % 60_000 < 1_000) {
-            await redisClient.set(RATE_LIMIT_REDIS_SUCCESS, 0);
-            await redisClient.set(RATE_LIMIT_REDIS_FAILURE, 0);
-        }
+        // reset counters during the first 10 seconds of a minute
+        //if (Date.now() % 60_000 < 10_000) {
+        await redisClient.set(RATE_LIMIT_REDIS_SUCCESS, 0);
+        await redisClient.set(RATE_LIMIT_REDIS_FAILURE, 0);
+        //}
 
         // proceed only if there are some stats, otherwise we will continuously increment the rate during idle mode
         if (successCount + failureCount > 0) {
-            const adjustedRate = failureCount > 0 ? Math.max(currentLimit - 3, RATE_LIMIT_GLOBAL_MIN) : Math.min(currentLimit + 1, RATE_LIMIT_GLOBAL_MAX);
+            const adjustedRate = failureCount > 0
+                ? Math.max(currentLimit - 3, RATE_LIMIT_GLOBAL_MIN)
+                : Math.min(currentLimit + 1, RATE_LIMIT_GLOBAL_MAX);
             if (adjustedRate === RATE_LIMIT_GLOBAL_MIN) {
                 console.error('The calculated rate limit is equal to minimum, seems like the minimum need to be lowered')
             }
