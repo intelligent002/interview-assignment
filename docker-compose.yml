@@ -35,7 +35,7 @@ services:
     env_file:
       - .env
     deploy:
-      replicas: 3
+      replicas: 4
       restart_policy:
         condition: on-failure
     expose:
@@ -110,7 +110,7 @@ services:
     restart: always
     networks:
       - default
-    ports: 
+    ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
@@ -199,4 +199,4 @@ services:
 #      - REDIS_HOST=redis
 #    ports:
 #      - "8084:8081"
-#
+
