@@ -6,6 +6,7 @@ import {Collection, Document} from "mongodb";
 import Redis from "ioredis";
 import Bottleneck from "bottleneck";
 import {kafka} from "./kafka";
+import logger from "../logger";
 
 let consumer: Consumer;
 
@@ -19,7 +20,7 @@ export async function kafkaConsumerConnect() {
     await consumer.connect();
 
     // Report
-    console.log('Kafka consumer connected.');
+    logger.info('Kafka consumer connected.');
 }
 
 // Combo method
@@ -47,7 +48,7 @@ export async function kafkaConsume(
         eachMessage: async ({topic, message}) => {
             const messageContent = message.value?.toString();
             if (!messageContent) {
-                console.error('Received an empty message');
+                logger.error('Received an empty message from kafka');
                 return;
             }
 
@@ -57,30 +58,30 @@ export async function kafkaConsume(
                     try {
                         await throttler.schedule(() => handleCity({message, redisClient}));
                     } catch (error) {
-                        console.error('Error scheduling handleCity:', error);
+                        logger.error('Error scheduling handleCity:', error);
                     }
                     break;
                 case KAFKA_TOPIC_STREETS:
                     try {
                         await throttler.schedule(() => handleStreet({message, redisClient, mongo}));
                     } catch (error) {
-                        console.error('Error scheduling handleStreet:', error);
+                        logger.error('Error scheduling handleStreet:', error);
                     }
                     break;
                 default:
-                    console.warn(`Received message for unexpected topic: [${topic}]`);
+                    logger.error(`Received message for unexpected topic: [${topic}]`);
             }
         },
     });
 
     // report
-    console.log('Kafka consumer is running');
+    logger.info('Kafka consumer is running');
 }
 
 // Gracefully disconnect
 export async function kafkaConsumerDisconnect() {
     if (consumer) {
         await consumer.disconnect();
-        console.log('Kafka Consumer disconnected.');
     }
+    logger.info('Kafka Consumer disconnected.');
 }

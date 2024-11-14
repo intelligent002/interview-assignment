@@ -10,6 +10,7 @@ import {
 import {metricsCounterCities} from "../../metrics";
 import {registerRateLimitFailure, registerRateLimitSuccess} from "../../throttler/rateAdjust";
 import Redis from "ioredis";
+import logger from "../../logger";
 
 export async function handleCity(
     {
@@ -21,8 +22,8 @@ export async function handleCity(
     }) {
 
     const cityName = <city>(message.value ?? '').toString();
-    const attempt: number = message.headers?.attempts ? parseInt(message.headers.attempts.toString()) : 0;
-    console.log(`Handling city [${cityName}], attempt [${attempt}/${KAFKA_TOPIC_CITIES_THRESHOLD}]`);
+    const attempt: number = message.headers?.attempts ? parseInt(message.headers.attempts.toString()) : 1;
+    logger.debug(`Handling city [${cityName}], attempt [${attempt}/${KAFKA_TOPIC_CITIES_THRESHOLD}]`);
 
     try {
         const response = await StreetsService.getStreetsInCity(cityName, 1000000);
@@ -37,14 +38,14 @@ export async function handleCity(
     } catch (error) {
 
         if (error instanceof ErrorEmptyResponse) {
-            console.error('Caught an ErrorEmptyResponse, no further action needed.');
+            logger.info('Caught an ErrorEmptyResponse, no further action needed.');
             metricsCounterCities.inc({status: 'empty'});
             await registerRateLimitSuccess(redisClient);
             return; // don`t do anything, no such city or no streets in that city
         }
 
         if (error instanceof ErrorRateLimit) {
-            console.error('Caught an ErrorRateLimit, re-queue with same attempt #');
+            logger.info('Caught an ErrorRateLimit, re-queue with same attempt #');
             metricsCounterCities.inc({status: 'Error-RateLimited'});
             await registerRateLimitFailure(redisClient);
             await kafkaProduce({
@@ -56,14 +57,14 @@ export async function handleCity(
         // Handle other recoverable errors with retry logic that leads to Dead Letter Queue
         if (attempt < KAFKA_TOPIC_CITIES_THRESHOLD) {
             // requeue with incremented attempt #
-            console.log(`Re-queue message, attempt [${attempt}]/[${KAFKA_TOPIC_CITIES_THRESHOLD}]`);
+            logger.debug(`Re-queue message, attempt [${attempt}]/[${KAFKA_TOPIC_CITIES_THRESHOLD}]`);
             metricsCounterCities.inc({status: 'Error-Recoverable'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_CITIES, messages: [cityName], attempt: (attempt + 1).toString()
             });
         } else {
             // DLQ
-            console.warn('Max retry attempts reached. Moving message to DLQ');
+            logger.warning('Max retry attempts reached. Moving message to DLQ');
             metricsCounterCities.inc({status: 'Error-DLQ'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_CITIES_DLQ, messages: [cityName], attempt: (attempt + 1).toString()

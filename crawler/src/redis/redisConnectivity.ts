@@ -1,11 +1,12 @@
 import Redis from "ioredis";
 import {REDIS_HOST, REDIS_PASS, REDIS_PORT, REDIS_USER} from "../config";
+import logger from "../logger";
 
 let client: Redis | null = null;
 let subscriber: Redis | null = null;
 
 // combo method
-export async function redisConnect(){
+export async function redisConnect() {
     await getRedisClient();
     await getRedisSubscriber();
 }
@@ -40,7 +41,7 @@ async function getConnection(type: 'client' | 'subscriber'): Promise<Redis> {
     // Return a promise that resolves with the Redis connection
     return new Promise<Redis>((resolve, reject) => {
         redisConnection.on('connect', () => {
-            console.log(`Connected to Redis (${type})`);
+            logger.info(`Connected to Redis (${type})`);
             if (type === 'client') {
                 client = redisConnection;
             } else {
@@ -49,7 +50,7 @@ async function getConnection(type: 'client' | 'subscriber'): Promise<Redis> {
             resolve(redisConnection);
         });
         redisConnection.on('error', (err) => {
-            console.error(`Redis connection error (${type}):`, err);
+            logger.error(`Redis connection error (${type}):`, err);
             reject(err);
         });
     });
@@ -71,9 +72,9 @@ export async function redisSubscribe(
     // Subscribe to some channel
     client.subscribe(channel, (err, count) => {
         if (err) {
-            console.error(`Redis subscription to channel [${channel}] failed:`, err);
+            logger.error(`Redis subscription to channel [${channel}] failed:`, err);
         } else {
-            console.log(`Redis subscribed to [${count}] channel(s).`);
+            logger.info(`Redis subscribed to [${count}] channel(s).`);
         }
     });
 
@@ -81,7 +82,9 @@ export async function redisSubscribe(
     client.on('message', (receivedChannel, ReceivedMessage) => {
         if (receivedChannel === channel && ReceivedMessage === message) {
             callback();
-        } else console.error(`Redis subscription received unexpected message [${ReceivedMessage}] via channel [${receivedChannel}]`)
+        } else {
+            logger.error(`Redis subscription received unexpected message [${ReceivedMessage}] via channel [${receivedChannel}]`)
+        }
     });
 }
 
@@ -92,7 +95,7 @@ export async function redisDisconnect() {
         if (subscriber)
             await subscriber.quit();
     } catch (error) {
-        console.error('Error disconnecting from Redis:', error);
+        logger.error('Error disconnecting from Redis:', error);
     }
-    console.log('Redis disconnected.');
+    logger.info('Redis disconnected.');
 }

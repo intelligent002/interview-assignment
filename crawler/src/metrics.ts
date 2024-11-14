@@ -1,6 +1,7 @@
 import client from 'prom-client';
 import express from 'express';
 import {PROMETHEUS_METRICS_PORT} from './config';
+import logger from "./logger";
 
 // Create an instance of the registry
 const register = new client.Registry();
@@ -40,6 +41,6 @@ export const startMetricsServer = (port = PROMETHEUS_METRICS_PORT) => {
     });
 
     app.listen(port, () => {
-        console.log(`Metrics server listening on http://localhost:${port}/metrics`);
+        logger.info(`Metrics server listening on http://localhost:${port}/metrics`);
     });
 };
