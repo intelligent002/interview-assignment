@@ -1,5 +1,6 @@
 import {Producer} from 'kafkajs';
 import {kafka} from "./kafka";
+import logger from "../logger";
 
 let producer: Producer;
 
@@ -16,7 +17,7 @@ export async function kafkaProducerConnect() {
     await producer.connect();
 
     // Report
-    console.log('Kafka producer connected with idempotency enabled.');
+    logger.info('Kafka producer connected with idempotency enabled.');
 }
 
 // Produce with retries
@@ -24,7 +25,7 @@ export async function kafkaProduce(
     {
         topic,
         messages,
-        attempt = '0',
+        attempt = '1',
         retries = 3,
         delay = 1000
     }: {
@@ -40,10 +41,10 @@ export async function kafkaProduce(
             return; // return if successful
         } catch (error) {
             if (retry <= retries) {
-                console.warn(`Retrying to send messages to Kafka, retry [${retry}/${retries}]...`);
+                logger.warning(`Retrying to send messages to Kafka, retry [${retry}/${retries}]...`);
                 await new Promise(resolve => setTimeout(resolve, delay * retry)); // Exponential backoff
             } else {
-                console.error('All retry attempts exhausted, i give up ... kafka is simply unavailable.');
+                logger.error('All retry attempts exhausted, i give up ... kafka is simply unavailable.');
             }
         }
     }
@@ -69,13 +70,13 @@ async function kafkaProduceOnce(
         topic, messages: payload
     });
 
-    console.log('Message(s) sent to Kafka:', messages);
+    logger.debug('Message(s) sent to Kafka:', messages);
 }
 
 // Gracefully disconnect
 export async function kafkaProducerDisconnect() {
     if (producer) {
         await producer.disconnect();
-        console.log('Kafka producer disconnected.');
     }
+    logger.info('Kafka producer disconnected.');
 }

@@ -11,6 +11,7 @@ import {kafkaAdmin, kafkaAdminDisconnect} from "./kafka/kafkaAdmin";
 import {hostname} from "node:os";
 import {Collection, Document} from "mongodb";
 import Redis from "ioredis";
+import logger from "./logger";
 
 let mongo: Collection<Document>;
 let redisClient: Redis;
@@ -26,7 +27,7 @@ const main = async () => {
     try {
         mongo = await mongoCollection();
     } catch (error) {
-        console.error('Failed to connect to MongoDB:', error);
+        logger.error('Failed to connect to MongoDB:', error);
         process.exit(1);
     }
 
@@ -34,7 +35,7 @@ const main = async () => {
     try {
         redisClient = await getRedisClient();
     } catch (error) {
-        console.error('Failed to connect to Redis as client:', error);
+        logger.error('Failed to connect to Redis as client:', error);
         process.exit(1);
     }
 
@@ -43,7 +44,7 @@ const main = async () => {
     try {
         redisSubscriber = await getRedisSubscriber();
     } catch (error) {
-        console.error('Failed to connect to Redis as subscriber:', error);
+        logger.error('Failed to connect to Redis as subscriber:', error);
         process.exit(1);
     }
 
@@ -64,7 +65,7 @@ const main = async () => {
 
     // Let them fight!
     while (!await leader.isLeaderElected()) {
-        console.log(`Hostname [${hostname()}] there can be only one!`)
+        logger.debug(`Hostname [${hostname()}] there can be only one!`)
         await new Promise(f => setTimeout(f, 1000));
     }
 
@@ -99,54 +100,54 @@ async function gracefulShutdown() {
         try {
             await mongoDisconnect();
         } catch (error) {
-            console.error('Error during mongoDisconnect:', error);
+            logger.error('Error during mongoDisconnect:', error);
         }
 
         try {
             await kafkaAdminDisconnect();
         } catch (error) {
-            console.error('Error during kafkaAdminDisconnect:', error);
+            logger.error('Error during kafkaAdminDisconnect:', error);
         }
 
         try {
             await kafkaProducerDisconnect();
         } catch (error) {
-            console.error('Error during kafkaProducerDisconnect:', error);
+            logger.error('Error during kafkaProducerDisconnect:', error);
         }
 
         try {
             await kafkaConsumerDisconnect();
         } catch (error) {
-            console.error('Error during kafkaConsumerDisconnect:', error);
+            logger.error('Error during kafkaConsumerDisconnect:', error);
         }
 
         try {
             await unscheduleThrottlerAdjustments();
         } catch (error) {
-            console.error('Error during unscheduleThrottlerAdjustments:', error);
+            logger.error('Error during unscheduleThrottlerAdjustments:', error);
         }
 
         try {
             await leader.relinquishLeadership();
         } catch (error) {
-            console.error('Error during relinquishLeadership:', error);
+            logger.error('Error during relinquishLeadership:', error);
         }
 
         try {
             await redisDisconnect();
         } catch (error) {
-            console.error('Error during redisDisconnect:', error);
+            logger.error('Error during redisDisconnect:', error);
         }
     };
 
     // Use Promise.race to apply a timeout to the entire shutdown sequence
     await Promise.race([executeShutdownTasksSequentially(), new Promise((_, reject) => setTimeout(() => reject(new Error('Shutdown timeout')), shutdownTimeout)),])
         .then(() => {
-            console.log('Graceful shutdown completed.');
+            logger.info('Graceful shutdown completed.');
             setTimeout(() => process.exit(0), 100);
         })
         .catch((error) => {
-            console.error('Error during graceful shutdown:', error);
+            logger.error('Error during graceful shutdown:', error);
             setTimeout(() => process.exit(1), 100);
         });
 }
@@ -155,18 +156,18 @@ async function gracefulShutdown() {
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 process.on('uncaughtException', async (error) => {
-    console.error('Uncaught Exception:', error);
+    logger.error('Uncaught Exception:', error);
     await gracefulShutdown();
 });
 process.on('unhandledRejection', async (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
     await gracefulShutdown();
 });
 
 // Summon the Kraken!
 main()
-    .then(() => console.log("Crawler dispatched"))
+    .then(() => logger.info("Crawler dispatched"))
     .catch(async (error) => {
-        console.error('Error during crawler dispatch:', error);
+        logger.error('Error during crawler dispatch:', error);
         await gracefulShutdown();
     });

@@ -6,6 +6,7 @@ import {metricCounterStreets} from "../../metrics";
 import {Collection, Document} from "mongodb";
 import {registerRateLimitFailure, registerRateLimitSuccess} from "../../throttler/rateAdjust";
 import Redis from "ioredis";
+import logger from "../../logger";
 
 export async function handleStreet(
     {
@@ -18,8 +19,8 @@ export async function handleStreet(
         mongo: Collection<Document>,
     }) {
     const streetId: number = parseInt((message.value ?? '').toString());
-    const attempt: number = message.headers?.attempts ? parseInt(message.headers.attempts.toString()) : 0;
-    console.log(`Handling street [${streetId}], attempt [${attempt}/${KAFKA_TOPIC_STREETS_THRESHOLD}]`);
+    const attempt: number = message.headers?.attempts ? parseInt(message.headers.attempts.toString()) : 1;
+    logger.info(`Handling street [${streetId}], attempt [${attempt}/${KAFKA_TOPIC_STREETS_THRESHOLD}]`);
 
     try {
         const response = await StreetsService.getStreetInfoById(streetId);
@@ -29,14 +30,14 @@ export async function handleStreet(
     } catch (error) {
 
         if (error instanceof ErrorEmptyResponse) {
-            console.error('Caught an ErrorEmptyResponse, no further action needed.');
+            logger.warning('Caught an ErrorEmptyResponse, no further action needed.');
             metricCounterStreets.inc({status: 'Error-Empty'});
             await registerRateLimitSuccess(redisClient);
             return; // don`t do anything, street not found or the like
         }
 
         if (error instanceof ErrorRateLimit) {
-            console.error('Caught an ErrorRateLimit, re-queue with same attempt #');
+            logger.warning('Caught an ErrorRateLimit, re-queue with same attempt #');
             metricCounterStreets.inc({status: 'Error-RateLimited'});
             await registerRateLimitFailure(redisClient);
             await kafkaProduce({
@@ -48,14 +49,14 @@ export async function handleStreet(
         // Handle other recoverable errors with retry logic that leads to Dead Letter Queue
         if (attempt < KAFKA_TOPIC_STREETS_THRESHOLD) {
             // requeue with incremented attempt #
-            console.log(`Re-queue message, attempt [${attempt}]/[${KAFKA_TOPIC_STREETS_THRESHOLD}]`);
+            logger.info(`Re-queue message, attempt [${attempt}]/[${KAFKA_TOPIC_STREETS_THRESHOLD}]`);
             metricCounterStreets.inc({status: 'Error-Recoverable'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_STREETS, messages: [streetId.toString()], attempt: (attempt + 1).toString()
             });
         } else {
             // DLQ
-            console.warn('Max retry attempts reached. Moving message to DLQ');
+            logger.warning('Max retry attempts reached. Moving message to DLQ');
             metricCounterStreets.inc({status: 'Error-DLQ'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_STREETS_DLQ, messages: [streetId.toString()], attempt: (attempt + 1).toString()

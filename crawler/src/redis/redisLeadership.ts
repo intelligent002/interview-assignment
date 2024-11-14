@@ -1,5 +1,6 @@
 import Redis from 'ioredis';
 import os from "os";
+import logger from "../logger";
 
 export class redisLeadership {
 
@@ -46,11 +47,11 @@ export class redisLeadership {
         }
         const result = await this.redisClient.set(this.responsibility, this.instanceId, 'PX', this.ttl, 'NX');
         if (result === 'OK') {
-            console.log(`Hostname [${this.instanceId}] is the horde leader now!`);
+            logger.info(`Hostname [${this.instanceId}] is the horde leader now!`);
             this.scheduleRenewal();
             return true;
         }
-        console.log(`Hostname [${this.instanceId}] is just a sidekick, dreaming of the Big Chair!`);
+        logger.debug(`Hostname [${this.instanceId}] is just a sidekick, dreaming of the Big Chair!`);
         return false;
     }
 
@@ -66,7 +67,7 @@ export class redisLeadership {
             clearInterval(this.renewInterval);
             this.renewInterval = null;
         }
-        console.log(`Hostname [${this.instanceId}] has relinquished its leadership`);
+        logger.info(`Hostname [${this.instanceId}] has relinquished its leadership`);
     }
 
     private scheduleRenewal(): void {
@@ -78,11 +79,11 @@ export class redisLeadership {
         this.renewInterval = setInterval(async () => {
             if (await this.isLeader()) {
                 await this.redisClient.pexpire(this.responsibility, this.ttl);
-                console.log(`Hostname [${this.instanceId}] had its leadership extended`);
+                logger.info(`Hostname [${this.instanceId}] had its leadership extended`);
             } else {
                 clearInterval(this.renewInterval!);
                 this.renewInterval = null;
-                console.log(`Hostname [${this.instanceId}] has lost its leadership`);
+                logger.warning(`Hostname [${this.instanceId}] has lost its leadership`);
             }
         }, this.ttl / 2);
     }

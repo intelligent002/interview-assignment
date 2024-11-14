@@ -3,6 +3,7 @@ import Bottleneck from 'bottleneck';
 import Redis from "ioredis";
 import {hostname} from "node:os";
 import {metricRateLimit} from "../metrics";
+import logger from "../logger";
 
 // Main item
 let limiter: Bottleneck;
@@ -22,7 +23,7 @@ export async function getThrottler() {
         minTime,
     })
     metricRateLimit.set({host: hostname()}, rateLimit);
-    console.log(`Hostname [${hostname()}] configured its Rate Limit with [${rateLimit}] requests per minute, which is [${minTime}] ms.`);
+    logger.debug(`Hostname [${hostname()}] configured its Rate Limit with [${rateLimit}] requests per minute, which is [${minTime}] ms.`);
 
     // return singleton
     return limiter;
@@ -44,7 +45,7 @@ export async function updateThrottler(
         minTime: minTime
     });
     metricRateLimit.set({host: hostname()}, rateLimit);
-    console.log(`Hostname [${hostname()}] updated its Rate Limit with [${rateLimit}] requests per minute, which is [${minTime}] ms.`);
+    logger.debug(`Hostname [${hostname()}] updated its Rate Limit with [${rateLimit}] requests per minute, which is [${minTime}] ms.`);
 }
 
 

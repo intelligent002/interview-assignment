@@ -1,7 +1,8 @@
 import Redis from 'ioredis';
 import os from 'os';
 import {
-    RATE_LIMIT_ADJUST_EVERY_SECONDS, RATE_LIMIT_GLOBAL_INIT,
+    RATE_LIMIT_ADJUST_EVERY_SECONDS,
+    RATE_LIMIT_GLOBAL_INIT,
     RATE_LIMIT_GLOBAL_MAX,
     RATE_LIMIT_GLOBAL_MIN,
     RATE_LIMIT_REDIS_FAILURE,
@@ -11,6 +12,7 @@ import {
     REDIS_UPDATES_MESSAGE
 } from "../config";
 import {redisLeadership} from "../redis/redisLeadership";
+import logger from "../logger";
 
 // Other peripherals ...
 const hostname = os.hostname();
@@ -34,7 +36,7 @@ async function autoAdjustThrottler(
     }) {
     try {
         if (!await leader.isLeader()) {
-            console.log(`Hostname [${hostname}] stinky peasants like me are disallowed get close to Rate Limit!`);
+            logger.debug(`Hostname [${hostname}] stinky peasants like me are disallowed get close to Rate Limit!`);
             return;
         }
 
@@ -55,20 +57,18 @@ async function autoAdjustThrottler(
                 ? Math.max(currentLimit - 3, RATE_LIMIT_GLOBAL_MIN)
                 : Math.min(currentLimit + 1, RATE_LIMIT_GLOBAL_MAX);
             if (adjustedRate === RATE_LIMIT_GLOBAL_MIN) {
-                console.error('The calculated rate limit is equal to minimum, seems like the minimum need to be lowered')
+                logger.warning('The calculated rate limit is equal to minimum, seems like the minimum need to be lowered')
             }
             if (adjustedRate === RATE_LIMIT_GLOBAL_MAX) {
-                console.error('The calculated rate limit is equal to maximum, seems like the maximum can to be enlarged')
+                logger.warning('The calculated rate limit is equal to maximum, seems like the maximum can to be enlarged')
             }
             await redisClient.set(RATE_LIMIT_REDIS_LIMIT, adjustedRate);
             await redisClient.publish(REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE);
-            console.log(`Hostname [${hostname}] has demanded a new Rate Limit of [${adjustedRate}] requests per minute.`);
+            logger.info(`Hostname [${hostname}] has demanded a new Rate Limit of [${adjustedRate}] requests per minute.`);
         }
     } catch (error) {
         const err = error as Error;
-        console.error('Error adjusting global rate limit:', err);
-        console.error('An error occurred:', err.message);
-        console.error('Stack trace:', err.stack);
+        logger.error('Error adjusting global rate limit:', err);
     }
 }
 
@@ -90,7 +90,7 @@ export function scheduleThrottlerAdjustments(
         }), RATE_LIMIT_ADJUST_EVERY_SECONDS * 1_000);
     }, millisecondsUntilNextMinute);
 
-    console.log(`Scheduled first rate adjustment in [${millisecondsUntilNextMinute}] ms from now to align with the start of the next minute.`);
+    logger.info(`Scheduled first rate adjustment in [${millisecondsUntilNextMinute}] ms from now to align with the start of the next minute.`);
 }
 
 export async function unscheduleThrottlerAdjustments() {
@@ -99,7 +99,7 @@ export async function unscheduleThrottlerAdjustments() {
         clearInterval(intervalId);
         intervalId = null;
     }
-    console.log('Throttler adjustments unscheduled.');
+    logger.info('Throttler adjustments unscheduled.');
     return true;
 }
 

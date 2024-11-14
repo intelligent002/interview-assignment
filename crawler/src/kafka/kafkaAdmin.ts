@@ -8,6 +8,7 @@ import {
     KAFKA_TOPIC_STREETS_PARTITIONS
 } from '../config';
 import {kafka} from "./kafka";
+import logger from "../logger";
 
 let admin: Admin;
 
@@ -18,7 +19,7 @@ export async function kafkaAdmin() {
         await kafkaAdminInit();
         await kafkaAdminDisconnect();
     } catch (error) {
-        console.error("Error during kafkaAdmin: ", error);
+        logger.error("Error during kafkaAdmin: ", error);
     }
 }
 
@@ -32,7 +33,7 @@ async function kafkaAdminConnect() {
     await admin.connect();
 
     // Report
-    console.log('Kafka admin connected.');
+    logger.info('Kafka admin connected.');
 }
 
 // init topics
@@ -58,7 +59,7 @@ async function kafkaCreateTopic(
         // Check if the topic already exists
         const topics = await admin.listTopics();
         if (topics.includes(topic)) {
-            console.log(`Topic [${topic}] already exists.`);
+            logger.info(`Topic [${topic}] already exists.`);
             return;
         }
 
@@ -75,17 +76,19 @@ async function kafkaCreateTopic(
         });
 
         if (result) {
-            console.log(`Topic [${topic}] created successfully.`);
+            logger.info(`Topic [${topic}] created successfully.`);
         } else {
-            console.log(`Topic [${topic}] creation did not occur, possibly already exists.`);
+            logger.info(`Topic [${topic}] creation did not occur, possibly already exists.`);
         }
     } catch (error) {
-        console.error(`Error creating topic [${topic}]:`, error);
+        logger.error(`Error creating topic [${topic}]:`, error);
     }
 }
 
 // Graceful shutdown
 export async function kafkaAdminDisconnect() {
-    await admin.disconnect();
-    console.log("Kafka Admin gracefully disconnected");
+    if (admin) {
+        await admin.disconnect();
+    }
+    logger.info("Kafka Admin disconnected");
 }

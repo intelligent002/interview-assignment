@@ -9,6 +9,7 @@ export const KAFKA_TOPIC_STREETS = process.env.KAFKA_TOPIC_STREETS || 'topic-str
 export const KAFKA_TOPIC_STREETS_DLQ = process.env.KAFKA_TOPIC_STREETS_DLQ || 'topic-streets-dlq';
 export const KAFKA_TOPIC_STREETS_PARTITIONS = parseInt(process.env.KAFKA_TOPIC_STREETS_PARTITIONS as string) || 2;
 export const KAFKA_TOPIC_STREETS_THRESHOLD = parseInt(process.env.KAFKA_TOPIC_STREETS_THRESHOLD as string) || 1;
+export const LOG_LEVEL = (process.env.LOG_LEVEL || 'info').toLowerCase();
 export const MONGO_COLLECTION = process.env.MONGO_COLLECTION || 'streets';
 export const MONGO_DB_NAME = process.env.MONGO_DB_NAME || 'streetDB';
 export const MONGO_DSN = process.env.MONGO_DSN || 'mongodb://localhost:27017';
