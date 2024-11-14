@@ -1,7 +1,5 @@
-import {Admin, Kafka} from 'kafkajs';
+import {Admin} from 'kafkajs';
 import {
-    KAFKA_APP,
-    KAFKA_BROKER,
     KAFKA_TOPIC_CITIES,
     KAFKA_TOPIC_CITIES_DLQ,
     KAFKA_TOPIC_CITIES_PARTITIONS,
@@ -9,43 +7,43 @@ import {
     KAFKA_TOPIC_STREETS_DLQ,
     KAFKA_TOPIC_STREETS_PARTITIONS
 } from '../config';
+import {kafka} from "./kafka";
 
-let kafka: Kafka;
 let admin: Admin;
 
-export async function kafkaAdminInit() {
-    // Who am I, where am I going to?
-    console.log('will talk to kafka on [' + KAFKA_BROKER + ']');
-
-    // Here we go ...
-    kafka = new Kafka({
-        clientId: KAFKA_APP,
-        brokers: [KAFKA_BROKER]
-    });
-
-    // Prepare to admin
-    admin = kafka.admin()
-
+// combo function
+export async function kafkaAdmin() {
     try {
-        // Connect to Admin
-        await admin.connect();
-
-        // Create topics
-        await createTopic({topic: KAFKA_TOPIC_CITIES, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_STREETS, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
-
+        await kafkaAdminConnect();
+        await kafkaAdminInit();
+        await kafkaAdminDisconnect();
     } catch (error) {
-        console.error('Error during Kafka initialization:', error);
+        console.log("Error in kafkaAdmin(): ", error);
     } finally {
-        // Disconnect the admin client after creating topics
-        await admin.disconnect();
+        console.log("Done with administrative preparations.")
     }
 }
 
-// Function to create a topic
-async function createTopic(
+async function kafkaAdminConnect() {
+    // Prepare Admin
+    admin = kafka.admin()
+    // Connect Admin
+    await admin.connect();
+    console.log('Kafka admin connected.');
+}
+
+// Create required applicative topics
+async function kafkaAdminInit() {
+
+    // Create topics
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_CITIES, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_STREETS, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
+}
+
+// Function that creates a topic
+async function kafkaCreateTopic(
     {
         topic,
         numPartitions
@@ -55,8 +53,8 @@ async function createTopic(
     }) {
     try {
         // Check if the topic already exists
-        const existingTopics = await admin.listTopics();
-        if (existingTopics.includes(topic)) {
+        const topics = await admin.listTopics();
+        if (topics.includes(topic)) {
             console.log(`Topic [${topic}] already exists.`);
             return;
         }
@@ -80,5 +78,13 @@ async function createTopic(
         }
     } catch (error) {
         console.error(`Error creating topic [${topic}]:`, error);
+    }
+}
+
+// Gracefully disconnect
+export async function kafkaAdminDisconnect() {
+    if (admin) {
+        await admin.disconnect();
+        console.log('Kafka Admin disconnected.');
     }
 }

@@ -108,7 +108,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(processed_cities{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval",
+          "expr": "sum(rate(processed_cities{job=\"worker\"}[$__rate_interval])) by (status) * $__rate_interval",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -206,7 +206,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "ceil(sum(rate(processed_streets{job=\"sub\"}[$__rate_interval])) by (status) * $__rate_interval)\r\n",
+          "expr": "ceil(sum(rate(processed_streets{job=\"worker\"}[$__rate_interval])) by (status) * $__rate_interval)\r\n",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -304,7 +304,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate_limit{job=\"sub\"}) by (host)",
+          "expr": "sum(rate_limit{job=\"worker\"}) by (host)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,

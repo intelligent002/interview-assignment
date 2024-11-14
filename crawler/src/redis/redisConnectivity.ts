@@ -94,4 +94,5 @@ export async function redisDisconnect() {
     } catch (error) {
         console.error('Error disconnecting from Redis:', error);
     }
+    console.log('Redis disconnected.');
 }

@@ -4,9 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="">
+    <list default="true" id="ee82ca8e-eea8-4529-8138-d733494f30be" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/crawler/src/kafka/kafka.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dm-interview-assignment.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/cli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/cli.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/kafka/kafkaAdmin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/kafka/kafkaAdmin.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/kafka/kafkaConsumer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/kafka/kafkaConsumer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/kafka/kafkaProducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/kafka/kafkaProducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/mongoClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/mongoClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/redis/redisConnectivity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/redis/redisConnectivity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/redis/redisLeadership.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/redis/redisLeadership.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/throttler/rateAdjust.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/throttler/rateAdjust.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crawler/src/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grafana/provisioning/dashboards/processed_items.json" beforeDir="false" afterPath="$PROJECT_DIR$/grafana/provisioning/dashboards/processed_items.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prometheus/prometheus.yml" beforeDir="false" afterPath="$PROJECT_DIR$/prometheus/prometheus.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,161 +27,58 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="unite-ms" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="KubernetesApiPersistence">{}</component>
-  <component name="KubernetesApiProvider">{
-  &quot;isMigrated&quot;: true
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="2oWTpzJpIEggp0etYQ6GS3u5nGh" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2oqIMLyCaKLkKzwUVwGSKfxW2q7" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
-    <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Docker.docker-compose.yml.npm: Compose Deployment.executor": "Run",
-    "Node.js.getCities.ts.executor": "Run",
-    "Node.js.main.ts.executor": "Run",
+    "Node.js.worker.ts.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/www/testedrecruits/interview-assignment/pub/src/kafka",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "npm.build.executor": "Run",
-    "npm.dev.executor": "Run",
-    "npm.pub.executor": "Run",
-    "npm.publish.executor": "Run",
     "ts.external.directory.path": "D:\\www\\testedrecruits\\interview-assignment\\crawler\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\www\testedrecruits\interview-assignment\pub\src\kafka" />
-      <recent name="D:\www\testedrecruits\interview-assignment\packages\data-gov-il-client\src\errors" />
-      <recent name="D:\www\testedrecruits\interview-assignment\sub\src\handlers" />
-      <recent name="D:\www\testedrecruits\interview-assignment\sub\src" />
-      <recent name="D:\www\testedrecruits\interview-assignment\pub\src" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\www\testedrecruits\interview-assignment\packages\data-gov-il-client\src\errors" />
-      <recent name="D:\www\testedrecruits\interview-assignment\sub\src\kafka" />
-      <recent name="D:\www\testedrecruits\interview-assignment\pub\src\kafka" />
-    </key>
-  </component>
-  <component name="RunManager" selected="npm.infra">
-    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
-      <deployment type="docker-compose.yml">
-        <settings />
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="docker-compose-code.yml.pub: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="pub" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose-code.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="docker-compose-code.yml.sub: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="sub" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose-code.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/packages/data-gov-il-client/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="infra" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="infra" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="pub" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/packages/data-gov-il-client/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="pub" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
+  <component name="RunManager">
+    <configuration name="worker.ts" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/crawler/src/worker.ts" typescript-loader="bundled" working-dir="$PROJECT_DIR$/crawler/src">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.pub" />
-        <item itemvalue="npm.infra" />
-        <item itemvalue="npm.build" />
-        <item itemvalue="Docker.docker-compose-code.yml.sub: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose-code.yml.pub: Compose Deployment" />
+        <item itemvalue="Node.js.worker.ts" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23726.96" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-WS-243.21565.180" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="" />
-      <created>1730984520775</created>
+      <changelist id="ee82ca8e-eea8-4529-8138-d733494f30be" name="Changes" comment="" />
+      <created>1731590631490</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1730984520775</updated>
-      <workItem from="1730984524217" duration="6182000" />
-      <workItem from="1731011637446" duration="1781000" />
-      <workItem from="1731013470926" duration="577000" />
-      <workItem from="1731014080428" duration="735000" />
-      <workItem from="1731014839873" duration="6436000" />
-      <workItem from="1731021550916" duration="2731000" />
-      <workItem from="1731050752493" duration="3598000" />
-      <workItem from="1731058371051" duration="3852000" />
-      <workItem from="1731148057424" duration="17521000" />
-      <workItem from="1731234507255" duration="27601000" />
+      <updated>1731590631490</updated>
+      <workItem from="1731590634124" duration="5431000" />
     </task>
     <servers />
   </component>

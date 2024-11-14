@@ -1,16 +1,26 @@
-import {Kafka} from 'kafkajs';
-import {KAFKA_APP, KAFKA_BROKER, KAFKA_CONSUMER_GROUP, KAFKA_TOPIC_CITIES, KAFKA_TOPIC_STREETS} from '../config';
+import {Consumer} from 'kafkajs';
+import {KAFKA_CONSUMER_GROUP, KAFKA_TOPIC_CITIES, KAFKA_TOPIC_STREETS} from '../config';
 import {handleCity} from "./handlers/handleCity";
 import {handleStreet} from "./handlers/handleStreet";
 import {Collection, Document} from "mongodb";
 import Redis from "ioredis";
 import Bottleneck from "bottleneck";
+import {kafka} from "./kafka";
 
-const kafka = new Kafka({
-    clientId: KAFKA_APP, brokers: [KAFKA_BROKER],
-});
+let consumer: Consumer;
 
-export async function consumeFromKafka(
+export async function kafkaConsumerConnect() {
+    // Prepare Consumer
+    consumer = kafka.consumer({
+        groupId: KAFKA_CONSUMER_GROUP
+    });
+    // Connect Consumer
+    await consumer.connect();
+    console.log('Kafka consumer connected.');
+}
+
+// combo function
+export async function kafkaConsume(
     {
         mongo,
         throttler,
@@ -21,13 +31,15 @@ export async function consumeFromKafka(
         throttler: Bottleneck,
         redisClient: Redis
     }) {
-    const consumer = kafka.consumer({
-        groupId: KAFKA_CONSUMER_GROUP
-    });
-    await consumer.connect();
+
+    // connect
+    await kafkaConsumerConnect();
+
+    // subscribe
     await consumer.subscribe({topic: KAFKA_TOPIC_CITIES, fromBeginning: false});
     await consumer.subscribe({topic: KAFKA_TOPIC_STREETS, fromBeginning: false});
 
+    // run
     await consumer.run({
         eachMessage: async ({topic, message}) => {
             const messageContent = message.value?.toString();
@@ -59,4 +71,12 @@ export async function consumeFromKafka(
     });
 
     console.log('Kafka consumer is running');
+}
+
+// Gracefully disconnect
+export async function kafkaConsumerDisconnect() {
+    if (consumer) {
+        await consumer.disconnect();
+        console.log('Kafka Consumer disconnected.');
+    }
 }

@@ -1,26 +1,23 @@
-import {Kafka, Producer} from 'kafkajs';
-import {KAFKA_APP, KAFKA_BROKER} from '../config';
+import {Producer} from 'kafkajs';
+import {kafka} from "./kafka";
 
-let kafka: Kafka;
 let producer: Producer;
 
-// Function to initialize and connect the Kafka producer with idempotency
+// Connect to kafka with idempotency
 export async function kafkaProducerConnect() {
 
-    kafka = new Kafka({
-        clientId: KAFKA_APP,
-        brokers: [KAFKA_BROKER],
-    });
-
+    // Prepare Producer
     producer = kafka.producer({
         idempotent: true,
         maxInFlightRequests: 5, // Ensures no more than 5 in-flight requests to maintain idempotency
     });
 
+    // Connect Producer
     await producer.connect();
     console.log('Kafka producer connected with idempotency enabled.');
 }
 
+// Produce with retries
 export async function kafkaProduce(
     {
         topic,
@@ -38,19 +35,19 @@ export async function kafkaProduce(
     for (let retry = 1; retry <= retries; retry++) {
         try {
             await kafkaProduceOnce({topic, messages, attempt});
-            return; // Exit if successful
+            return; // return if successful
         } catch (error) {
             if (retry < retries) {
                 console.warn(`Retrying to send messages to Kafka, retry [${retry}/${retries}]...`);
                 await new Promise(resolve => setTimeout(resolve, delay * retry)); // Exponential backoff
             } else {
-                console.error('All retry attempts failed, kafka is unavailable:', error);
+                console.error('All retry attempts failed, i give up ... kafka is simply unavailable.');
             }
         }
     }
 }
 
-// send once
+// Produce once
 async function kafkaProduceOnce(
     {
         topic,
@@ -73,7 +70,7 @@ async function kafkaProduceOnce(
     console.log('Messages sent to Kafka:', messages);
 }
 
-// Function to gracefully disconnect the producer
+// Gracefully disconnect
 export async function kafkaProducerDisconnect() {
     if (producer) {
         await producer.disconnect();
