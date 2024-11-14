@@ -1,7 +1,0 @@
-# IntelliJ
-.idea
-# Virtual environment
-dist
-node_modules
-.angular
-.vscode

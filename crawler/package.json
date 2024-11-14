@@ -2,11 +2,12 @@
   "name": "pub",
   "version": "1.0.0",
   "description": "publisher that pulls the street names from data.gov.il and pushes them into kafka queue",
-  "main": "dist/index.js",
+  "main": "dist/worker.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "start": "node dist/worker.js",
+    "cli": "ts-node src/cli.ts",
+    "worker": "ts-node src/worker.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

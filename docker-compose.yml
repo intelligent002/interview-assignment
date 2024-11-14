@@ -15,10 +15,10 @@ networks:
         - subnet: 172.16.57.0/24
 
 services:
-  pub:
+  cli:
     build:
-      context: ./pub
-      dockerfile: Dockerfile
+      context: ./crawler
+      dockerfile: Dockerfile-cli
     restart: no
     env_file:
       - .env
@@ -27,10 +27,10 @@ services:
     networks:
       - default
 
-  sub:
+  worker:
     build:
-      context: crawler
-      dockerfile: Dockerfile
+      context: ./crawler
+      dockerfile: Dockerfile-worker
     restart: always
     env_file:
       - .env

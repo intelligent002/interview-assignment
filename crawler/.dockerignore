@@ -1,7 +1,4 @@
-# IntelliJ
+# IDE
 .idea
-# Virtual environment
-dist
+# mess
 node_modules
-.angular
-.vscode

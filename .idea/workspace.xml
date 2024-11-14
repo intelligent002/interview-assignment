@@ -4,14 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="metrics">
+    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="merged">
+      <change afterPath="$PROJECT_DIR$/cli.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/Dockerfile-worker" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/src/cli.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/src/kafka/kafkaAdmin.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grafana/provisioning/dashboards/processed_items.json" beforeDir="false" afterPath="$PROJECT_DIR$/grafana/provisioning/dashboards/processed_items.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grafana/provisioning/datasources/prometheus.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/grafana/provisioning/datasources/prometheus.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prometheus/prometheus.yml" beforeDir="false" afterPath="$PROJECT_DIR$/prometheus/prometheus.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub/src/throttler/rateAdjust.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/throttler/rateAdjust.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub/src/throttler/rateLimit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/throttler/rateLimit.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/.dockerignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/Dockerfile-cli" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/src/worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/src/config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/src/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/src/kafka/kafkaAdmin.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/src/kafka/kafkaProducer.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pub/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/start.pub.ps1" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +72,7 @@
     &quot;Node.js.redisElections.ts.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;rateLimit&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;unite-ms&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/www/testedrecruits/interview-assignment/sub/src&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -73,7 +88,7 @@
     &quot;npm.pub.executor&quot;: &quot;Run&quot;,
     &quot;npm.publish.executor&quot;: &quot;Run&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;proofread&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\www\\testedrecruits\\interview-assignment\\pub\\node_modules\\typescript\\lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\www\\testedrecruits\\interview-assignment\\crawler\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -206,6 +221,7 @@
       <workItem from="1731482954743" duration="31895000" />
       <workItem from="1731538429473" duration="10813000" />
       <workItem from="1731574323203" duration="2021000" />
+      <workItem from="1731587225860" duration="346000" />
     </task>
     <task id="LOCAL‎-00001" summary="infra">
       <option name="closed" value="true" />
@@ -326,6 +342,7 @@
     <MESSAGE value="replicas 4" />
     <MESSAGE value="dashboards" />
     <MESSAGE value="metrics" />
-    <option name="LAST_COMMIT_MESSAGE" value="metrics" />
+    <MESSAGE value="merged" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged" />
   </component>
 </project>
