@@ -1,5 +1,5 @@
 # Ignore build directory
-.idea
+.idea/*
 dist
 # Logs
 logs
