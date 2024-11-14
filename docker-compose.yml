@@ -29,7 +29,7 @@ services:
 
   sub:
     build:
-      context: ./sub
+      context: crawler
       dockerfile: Dockerfile
     restart: always
     env_file:
