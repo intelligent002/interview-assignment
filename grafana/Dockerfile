@@ -9,7 +9,7 @@ RUN CURL_SHA256="e1cd382311300fe1cef7bf99fbb88a015cd634a5516a21f8d8d16c3c257606d
  && echo "${CURL_SHA256} /usr/bin/curl" | sha256sum -c \
  && chmod +x /usr/bin/curl
 
-#COPY --chown=grafana:grafana provisioning/dashboards /etc/grafana/provisioning/dashboards
+COPY --chown=grafana:grafana provisioning/dashboards /etc/grafana/provisioning/dashboards
 COPY --chown=grafana:grafana provisioning/datasources/prometheus.yaml /etc/grafana/provisioning/datasources/prometheus.yaml
 
 # Switch back to non-root user (nobody)
