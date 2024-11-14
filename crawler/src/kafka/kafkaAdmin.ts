@@ -11,28 +11,31 @@ import {kafka} from "./kafka";
 
 let admin: Admin;
 
-// combo function
+// Combo method
 export async function kafkaAdmin() {
     try {
         await kafkaAdminConnect();
         await kafkaAdminInit();
         await kafkaAdminDisconnect();
     } catch (error) {
-        console.log("Error in kafkaAdmin(): ", error);
-    } finally {
-        console.log("Done with administrative preparations.")
+        console.error("Error during kafkaAdmin: ", error);
     }
 }
 
+// connect
 async function kafkaAdminConnect() {
+
     // Prepare Admin
-    admin = kafka.admin()
+    admin = kafka.admin();
+
     // Connect Admin
     await admin.connect();
+
+    // Report
     console.log('Kafka admin connected.');
 }
 
-// Create required applicative topics
+// init topics
 async function kafkaAdminInit() {
 
     // Create topics
@@ -81,10 +84,8 @@ async function kafkaCreateTopic(
     }
 }
 
-// Gracefully disconnect
+// Graceful shutdown
 export async function kafkaAdminDisconnect() {
-    if (admin) {
-        await admin.disconnect();
-        console.log('Kafka Admin disconnected.');
-    }
+    await admin.disconnect();
+    console.log("Kafka Admin gracefully disconnected");
 }

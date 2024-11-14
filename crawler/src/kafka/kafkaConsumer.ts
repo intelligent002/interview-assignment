@@ -10,16 +10,19 @@ import {kafka} from "./kafka";
 let consumer: Consumer;
 
 export async function kafkaConsumerConnect() {
-    // Prepare Consumer
+
+    // Prepare consumer
     consumer = kafka.consumer({
         groupId: KAFKA_CONSUMER_GROUP
     });
-    // Connect Consumer
+    // Connect consumer
     await consumer.connect();
+
+    // Report
     console.log('Kafka consumer connected.');
 }
 
-// combo function
+// Combo method
 export async function kafkaConsume(
     {
         mongo,
@@ -32,10 +35,10 @@ export async function kafkaConsume(
         redisClient: Redis
     }) {
 
-    // connect
-    await kafkaConsumerConnect();
+    // Connect
+    await kafkaConsumerConnect()
 
-    // subscribe
+    // Subscribe
     await consumer.subscribe({topic: KAFKA_TOPIC_CITIES, fromBeginning: false});
     await consumer.subscribe({topic: KAFKA_TOPIC_STREETS, fromBeginning: false});
 
@@ -70,6 +73,7 @@ export async function kafkaConsume(
         },
     });
 
+    // report
     console.log('Kafka consumer is running');
 }
 

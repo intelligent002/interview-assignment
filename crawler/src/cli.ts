@@ -4,7 +4,7 @@ import {KAFKA_TOPIC_CITIES} from "./config";
 
 const main = async () => {
     try {
-        // get producer
+        // Get producer
         await kafkaProducerConnect()
 
         // Get the city from the command line argument

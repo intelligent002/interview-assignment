@@ -143,7 +143,7 @@ async function gracefulShutdown() {
     await Promise.race([executeShutdownTasksSequentially(), new Promise((_, reject) => setTimeout(() => reject(new Error('Shutdown timeout')), shutdownTimeout)),])
         .then(() => {
             console.log('Graceful shutdown completed.');
-            process.exit(0);
+            setTimeout(() => process.exit(0), 100);
         })
         .catch((error) => {
             console.error('Error during graceful shutdown:', error);
