@@ -2,7 +2,7 @@ import {ErrorEmptyResponse, ErrorRateLimit, StreetsService} from 'data-gov-il-cl
 import {kafkaProduce} from '../kafkaProducer';
 import {KafkaMessage} from 'kafkajs';
 import {KAFKA_TOPIC_STREETS, KAFKA_TOPIC_STREETS_DLQ, KAFKA_TOPIC_STREETS_THRESHOLD} from "../../config";
-import {counterStreets} from "../../metrics";
+import {metricCounterStreets} from "../../metrics";
 import {Collection, Document} from "mongodb";
 import {registerRateLimitFailure, registerRateLimitSuccess} from "../../throttler/rateAdjust";
 import Redis from "ioredis";
@@ -24,20 +24,20 @@ export async function handleStreet(
     try {
         const response = await StreetsService.getStreetInfoById(streetId);
         await mongo.insertOne(response);
-        counterStreets.inc({status: 'OK'});
+        metricCounterStreets.inc({status: 'OK'});
         await registerRateLimitSuccess(redisClient);
     } catch (error) {
 
         if (error instanceof ErrorEmptyResponse) {
             console.error('Caught an ErrorEmptyResponse, no further action needed.');
-            counterStreets.inc({status: 'empty'});
+            metricCounterStreets.inc({status: 'Error-Empty'});
             await registerRateLimitSuccess(redisClient);
             return; // don`t do anything, street not found or the like
         }
 
         if (error instanceof ErrorRateLimit) {
             console.error('Caught an ErrorRateLimit, re-queue with same attempt #');
-            counterStreets.inc({status: 'Error-RateLimited'});
+            metricCounterStreets.inc({status: 'Error-RateLimited'});
             await registerRateLimitFailure(redisClient);
             await kafkaProduce({
                 topic: KAFKA_TOPIC_STREETS, messages: [streetId.toString()], attempt: (attempt).toString()
@@ -49,14 +49,14 @@ export async function handleStreet(
         if (attempt < KAFKA_TOPIC_STREETS_THRESHOLD) {
             // requeue with incremented attempt #
             console.log(`Re-queue message, attempt [${attempt}]/[${KAFKA_TOPIC_STREETS_THRESHOLD}]`);
-            counterStreets.inc({status: 'Error-Recoverable'});
+            metricCounterStreets.inc({status: 'Error-Recoverable'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_STREETS, messages: [streetId.toString()], attempt: (attempt + 1).toString()
             });
         } else {
             // DLQ
             console.warn('Max retry attempts reached. Moving message to DLQ');
-            counterStreets.inc({status: 'Error-DLQ'});
+            metricCounterStreets.inc({status: 'Error-DLQ'});
             await kafkaProduce({
                 topic: KAFKA_TOPIC_STREETS_DLQ, messages: [streetId.toString()], attempt: (attempt + 1).toString()
             });
