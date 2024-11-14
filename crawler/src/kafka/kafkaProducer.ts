@@ -3,7 +3,7 @@ import {kafka} from "./kafka";
 
 let producer: Producer;
 
-// Function to initialize and connect the Kafka producer with idempotency
+// Connect to kafka with idempotency
 export async function kafkaProducerConnect() {
 
     // Prepare producer
@@ -12,7 +12,7 @@ export async function kafkaProducerConnect() {
         maxInFlightRequests: 5, // Ensures no more than 5 in-flight requests to maintain idempotency
     });
 
-    // Connect producer
+    // Connect Producer
     await producer.connect();
 
     // Report
@@ -37,19 +37,19 @@ export async function kafkaProduce(
     for (let retry = 1; retry <= retries; retry++) {
         try {
             await kafkaProduceOnce({topic, messages, attempt});
-            return; // Exit if successful
+            return; // return if successful
         } catch (error) {
             if (retry <= retries) {
                 console.warn(`Retrying to send messages to Kafka, retry [${retry}/${retries}]...`);
                 await new Promise(resolve => setTimeout(resolve, delay * retry)); // Exponential backoff
             } else {
-                console.error('All retry attempts failed, i give up ... kafka is unavailable:', error);
+                console.error('All retry attempts exhausted, i give up ... kafka is simply unavailable.');
             }
         }
     }
 }
 
-// send once
+// Produce once
 async function kafkaProduceOnce(
     {
         topic,
@@ -72,7 +72,7 @@ async function kafkaProduceOnce(
     console.log('Message(s) sent to Kafka:', messages);
 }
 
-// Function to gracefully disconnect the producer
+// Gracefully disconnect
 export async function kafkaProducerDisconnect() {
     if (producer) {
         await producer.disconnect();

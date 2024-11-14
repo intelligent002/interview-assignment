@@ -55,16 +55,18 @@ export class redisLeadership {
     }
 
     async relinquishLeadership(): Promise<void> {
-        // wipe redis mention
-        if (await this.isLeader()) {
-            await this.redisClient.del(this.responsibility);
-            console.log(`Hostname [${this.instanceId}] has relinquished its leadership`);
+        // Wipe leadership mention in redis
+        if (this.redisClient) {
+            if (await this.isLeader()) {
+                await this.redisClient.del(this.responsibility);
+            }
         }
         // wipe renew interval
         if (this.renewInterval) {
             clearInterval(this.renewInterval);
             this.renewInterval = null;
         }
+        console.log(`Hostname [${this.instanceId}] has relinquished its leadership`);
     }
 
     private scheduleRenewal(): void {

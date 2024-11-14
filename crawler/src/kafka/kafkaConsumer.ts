@@ -77,8 +77,10 @@ export async function kafkaConsume(
     console.log('Kafka consumer is running');
 }
 
-// Graceful shutdown
+// Gracefully disconnect
 export async function kafkaConsumerDisconnect() {
-    await consumer.disconnect();
-    console.log("Kafka Consumer gracefully disconnected");
+    if (consumer) {
+        await consumer.disconnect();
+        console.log('Kafka Consumer disconnected.');
+    }
 }

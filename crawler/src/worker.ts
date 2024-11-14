@@ -34,16 +34,16 @@ const main = async () => {
     try {
         redisClient = await getRedisClient();
     } catch (error) {
-        console.error('Failed to connect to Redis:', error);
+        console.error('Failed to connect to Redis as client:', error);
         process.exit(1);
     }
 
-    // get additional redis client for Subscribe mode,
+    // get additional redis client for Subscribe mode
     // during which other commands are unavailable
     try {
         redisSubscriber = await getRedisSubscriber();
     } catch (error) {
-        console.error('Failed to get Redis subscriber:', error);
+        console.error('Failed to connect to Redis as subscriber:', error);
         process.exit(1);
     }
 

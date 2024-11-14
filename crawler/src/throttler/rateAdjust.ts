@@ -93,12 +93,14 @@ export function scheduleThrottlerAdjustments(
     console.log(`Scheduled first rate adjustment in [${millisecondsUntilNextMinute}] ms from now to align with the start of the next minute.`);
 }
 
-export function unscheduleThrottlerAdjustments() {
+export async function unscheduleThrottlerAdjustments() {
     // wipe renew interval
     if (intervalId) {
         clearInterval(intervalId);
         intervalId = null;
     }
+    console.log('Throttler adjustments unscheduled.');
+    return true;
 }
 
 

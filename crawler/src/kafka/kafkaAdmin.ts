@@ -37,19 +37,16 @@ async function kafkaAdminConnect() {
 
 // init topics
 async function kafkaAdminInit() {
-    try {
-        // Create topics
-        await createTopic({topic: KAFKA_TOPIC_CITIES, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_STREETS, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
-        await createTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
-    } catch (error) {
-        console.error('Error during Kafka topics creation:', error);
-    }
+
+    // Create topics
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_CITIES, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_STREETS, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
 }
 
-// create a topic
-async function createTopic(
+// Function that creates a topic
+async function kafkaCreateTopic(
     {
         topic,
         numPartitions
@@ -59,8 +56,8 @@ async function createTopic(
     }) {
     try {
         // Check if the topic already exists
-        const existingTopics = await admin.listTopics();
-        if (existingTopics.includes(topic)) {
+        const topics = await admin.listTopics();
+        if (topics.includes(topic)) {
             console.log(`Topic [${topic}] already exists.`);
             return;
         }
