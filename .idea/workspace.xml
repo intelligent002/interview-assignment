@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="lints">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+    <list default="true" id="2761849f-a337-4207-8146-66093a36d411" name="Changes" comment="metrics">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sub/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grafana/provisioning/dashboards/processed_items.json" beforeDir="false" afterPath="$PROJECT_DIR$/grafana/provisioning/dashboards/processed_items.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grafana/provisioning/datasources/prometheus.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/grafana/provisioning/datasources/prometheus.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prometheus/prometheus.yml" beforeDir="false" afterPath="$PROJECT_DIR$/prometheus/prometheus.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sub/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sub/src/throttler/rateAdjust.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/throttler/rateAdjust.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sub/src/throttler/rateLimit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sub/src/throttler/rateLimit.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +48,7 @@
     "Docker.docker-compose.yml.grafana: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.npm: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.prometheus: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.redis-commander: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.redis: Compose Deployment.executor": "Run",
     "Node.js.bar.ts.executor": "Run",
     "Node.js.getCities.ts.executor": "Run",
@@ -56,7 +59,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "rateLimit",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/www/testedrecruits/interview-assignment/grafana",
+    "last_opened_file_path": "D:/www/testedrecruits/interview-assignment/sub/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -76,11 +79,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\www\testedrecruits\interview-assignment\sub\src" />
       <recent name="D:\www\testedrecruits\interview-assignment\grafana" />
       <recent name="D:\www\testedrecruits\interview-assignment\sub\src\redis" />
       <recent name="D:\www\testedrecruits\interview-assignment\sub\src\limiter" />
       <recent name="D:\www\testedrecruits\interview-assignment" />
-      <recent name="D:\www\testedrecruits\interview-assignment\pub\src\kafka" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\www\testedrecruits\interview-assignment\sub" />
@@ -90,10 +93,7 @@
       <recent name="D:\www\testedrecruits\interview-assignment\grafana\provisioning" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.lint">
-    <configuration name="index.ts" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/sub/src/index.ts" typescript-loader="bundled" working-dir="$PROJECT_DIR$/sub/src">
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Docker.docker-compose.yml.redis-commander: Compose Deployment">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -126,6 +126,19 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml.redis-commander: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="redis-commander" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml.redis: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -151,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-compose.yml.redis-commander: Compose Deployment" />
         <item itemvalue="npm.lint" />
         <item itemvalue="Docker.docker-compose.yml.grafana: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.prometheus: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.redis: Compose Deployment" />
-        <item itemvalue="Node.js.index.ts" />
       </list>
     </recent_temporary>
   </component>
@@ -191,7 +204,8 @@
       <workItem from="1731442914061" duration="206000" />
       <workItem from="1731443152422" duration="3550000" />
       <workItem from="1731482954743" duration="31895000" />
-      <workItem from="1731538429473" duration="2014000" />
+      <workItem from="1731538429473" duration="10813000" />
+      <workItem from="1731574323203" duration="2021000" />
     </task>
     <task id="LOCAL‎-00001" summary="infra">
       <option name="closed" value="true" />
@@ -249,7 +263,55 @@
       <option name="project" value="LOCAL‎" />
       <updated>1731540271620</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL‎-00008" summary="configs">
+      <option name="closed" value="true" />
+      <created>1731540794410</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL‎-00008" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1731540794410</updated>
+    </task>
+    <task id="LOCAL‎-00009" summary="configs">
+      <option name="closed" value="true" />
+      <created>1731582163312</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL‎-00009" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1731582163312</updated>
+    </task>
+    <task id="LOCAL‎-00010" summary="dashboard">
+      <option name="closed" value="true" />
+      <created>1731582177550</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL‎-00010" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1731582177550</updated>
+    </task>
+    <task id="LOCAL‎-00011" summary="replicas 4">
+      <option name="closed" value="true" />
+      <created>1731582193457</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL‎-00011" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1731582193457</updated>
+    </task>
+    <task id="LOCAL‎-00012" summary="dashboards">
+      <option name="closed" value="true" />
+      <created>1731582209995</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL‎-00012" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1731582209995</updated>
+    </task>
+    <task id="LOCAL‎-00013" summary="metrics">
+      <option name="closed" value="true" />
+      <created>1731582238664</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL‎-00013" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1731582238664</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,6 +321,11 @@
     <MESSAGE value="infra" />
     <MESSAGE value="minimum" />
     <MESSAGE value="lints" />
-    <option name="LAST_COMMIT_MESSAGE" value="lints" />
+    <MESSAGE value="configs" />
+    <MESSAGE value="dashboard" />
+    <MESSAGE value="replicas 4" />
+    <MESSAGE value="dashboards" />
+    <MESSAGE value="metrics" />
+    <option name="LAST_COMMIT_MESSAGE" value="metrics" />
   </component>
 </project>
