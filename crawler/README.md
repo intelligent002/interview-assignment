@@ -1,5 +1,7 @@
 # Pub Kafka App
 
+[![cov](https://we-cli.github.io/jayin/badges/coverage.svg)](https://github.com/intelligent002/interview-assignment/actions)
+
 This app pulls street IDs from Kafka, queries street data using `data-gov-il-client`, and pushes the data into MongoDB.
 
 ## Prerequisites

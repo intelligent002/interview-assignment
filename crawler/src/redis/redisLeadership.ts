@@ -63,7 +63,7 @@ export class redisLeadership {
             }
         }
         // wipe renew interval
-        if (this.renewInterval) {
+        if (this.renewInterval !== null) {
             clearInterval(this.renewInterval);
             this.renewInterval = null;
         }
@@ -71,7 +71,11 @@ export class redisLeadership {
     }
 
     private scheduleRenewal(): void {
-        clearInterval(this.renewInterval!);
+        // Prevent duplication
+        if (this.renewInterval) {
+            clearInterval(this.renewInterval!);
+            this.renewInterval = null;
+        }
 
         // Schedule renewal at half the TTL to ensure leadership retention
         this.renewInterval = setInterval(async () => {

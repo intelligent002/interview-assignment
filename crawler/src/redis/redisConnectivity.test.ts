@@ -62,7 +62,7 @@ describe('Redis Connectivity Module', () => {
         expect(mockedLogger.info).toHaveBeenCalledWith('Connected to Redis (subscriber)');
     });
 
-    test('should get Redis client', async () => {
+    test('should get redisClient', async () => {
         const client = await getRedisClient();
 
         expect(client).toBeDefined();
@@ -70,11 +70,39 @@ describe('Redis Connectivity Module', () => {
         expect(mockedLogger.info).toHaveBeenCalledWith('Connected to Redis (client)');
     });
 
-    test('should get Redis subscriber', async () => {
+    test('should get redisClient from cache', async () => {
+        let client1 = await getRedisClient();
+        expect(client1).toBeDefined();
+        expect(MockedRedis).toHaveBeenCalledTimes(1);
+        expect(mockedLogger.info).toHaveBeenCalledWith('Connected to Redis (client)');
+        MockedRedis.mockClear();
+
+        let client2 = await getRedisClient();
+        expect(client2).toBeDefined();
+        expect(client2).toBe(client1);
+        expect(MockedRedis).not.toHaveBeenCalled();
+        expect(mockedLogger.info).toHaveBeenCalledWith('Connected to Redis (client)');
+    });
+
+    test('should get redisSubscriber', async () => {
         const subscriber = await getRedisSubscriber();
 
         expect(subscriber).toBeDefined();
         expect(MockedRedis).toHaveBeenCalledTimes(1);
+        expect(mockedLogger.info).toHaveBeenCalledWith('Connected to Redis (subscriber)');
+    });
+
+    test('should get redisSubscriber from cache', async () => {
+        let subscriber1 = await getRedisSubscriber();
+        expect(subscriber1).toBeDefined();
+        expect(MockedRedis).toHaveBeenCalledTimes(1);
+        expect(mockedLogger.info).toHaveBeenCalledWith('Connected to Redis (subscriber)');
+        MockedRedis.mockClear();
+
+        let subscriber2 = await getRedisSubscriber();
+        expect(subscriber2).toBeDefined();
+        expect(subscriber2).toBe(subscriber1);
+        expect(MockedRedis).not.toHaveBeenCalled();
         expect(mockedLogger.info).toHaveBeenCalledWith('Connected to Redis (subscriber)');
     });
 

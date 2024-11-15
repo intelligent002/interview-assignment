@@ -15,10 +15,21 @@ networks:
         - subnet: 172.16.57.0/24
 
 services:
+
+  test:
+    build:
+      context: ./crawler
+      dockerfile: Dockerfile-worker
+      target: test
+    restart: no
+    env_file:
+      - .env
+
   cli:
     build:
       context: ./crawler
       dockerfile: Dockerfile-cli
+      target: production
     restart: no
     env_file:
       - .env
@@ -31,6 +42,7 @@ services:
     build:
       context: ./crawler
       dockerfile: Dockerfile-worker
+      target: production
     restart: always
     env_file:
       - .env
