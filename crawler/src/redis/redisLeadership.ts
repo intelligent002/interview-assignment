@@ -63,7 +63,7 @@ export class redisLeadership {
             }
         }
         // wipe renew interval
-        if (this.renewInterval) {
+        if (this.renewInterval !== null) {
             clearInterval(this.renewInterval);
             this.renewInterval = null;
         }
