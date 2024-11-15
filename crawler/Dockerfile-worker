@@ -1,38 +1,49 @@
 # Stage 1: Install dependencies
 FROM node:16.20.0-alpine3.18 AS dependencies
-# add some coziness
+
+# Add some coziness
 RUN apk update && apk add --no-cache \
     curl \
     jq \
     nano \
     wget \
     && rm -rf /var/cache/apk/* /tmp/*
+
 # Set working directory in the container
 WORKDIR /app
+
 # Copy the package files
 COPY package*json ./
+
 # Install dependencies
 RUN npm ci
 
 # Stage 2: Build the application
 FROM dependencies AS build
+
 # Copy the rest of the app files into the container
 COPY . .
+
 # Build the app
 RUN npm run build
 
-# Stage 3: Run tests
-FROM build AS tete
+# Stage 3: Run the tests
+FROM build AS test
+
 # Set environment flag
 ENV NODE_ENV=testing
+
 # Test the app
 RUN npm run test
 
 # Stage 4: Production
 FROM dependencies AS production
+
 # Copy the built project
 COPY --from=build /app/dist ./dist
+
 # Set environment flag
 ENV NODE_ENV=production
+
 # Run the app
 ENTRYPOINT ["node", "/app/dist/worker.js"]

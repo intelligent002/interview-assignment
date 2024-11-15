@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
 import logger from '../logger';
-import { redisLeadership } from './redisLeadership';
+import {redisLeadership} from './redisLeadership';
 
 jest.mock('ioredis');
 jest.mock('../logger');
@@ -52,168 +52,179 @@ describe('redisLeadership Class', () => {
         expect(leader).toBeDefined();
         expect(leader['instanceId']).toBe(actualHostname);
     });
-    /*
 
-        test('should check if instance is leader', async () => {
-            redisClientMock.get = jest.fn().mockResolvedValue(actualHostname);
+    test('should check if instance is leader', async () => {
+        redisClientMock.get = jest.fn().mockResolvedValue(actualHostname);
 
-            const isLeader = await leader.isLeader();
+        const isLeader = await leader.isLeader();
 
-            expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
-            expect(isLeader).toBe(true);
-        });
+        expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
+        expect(isLeader).toBe(true);
+    });
 
-        test('should check if leader is elected', async () => {
-            redisClientMock.get = jest.fn().mockResolvedValue('some-leader');
+    test('should check if leader is elected', async () => {
+        redisClientMock.get = jest.fn().mockResolvedValue('some-leader');
 
-            const isLeaderElected = await leader.isLeaderElected();
+        const isLeaderElected = await leader.isLeaderElected();
 
-            expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
-            expect(isLeaderElected).toBe(true);
-        });
+        expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
+        expect(isLeaderElected).toBe(true);
+    });
 
-        test('should claim leadership when not leader', async () => {
-            redisClientMock.get = jest.fn().mockResolvedValueOnce(null); // isLeader
-            redisClientMock.set = jest.fn().mockResolvedValue('OK');
+    test('should claim leadership when not leader', async () => {
+        redisClientMock.get = jest.fn().mockResolvedValueOnce(null); // isLeader
+        redisClientMock.set = jest.fn().mockResolvedValue('OK');
 
-            leader['scheduleRenewal'] = jest.fn();
+        leader['scheduleRenewal'] = jest.fn();
 
-            const result = await leader.claimLeadership();
+        const result = await leader.claimLeadership();
 
-            expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
-            expect(redisClientMock.set).toHaveBeenCalledWith(
-                'test-responsibility',
-                actualHostname,
-                'PX',
-                10000,
-                'NX'
-            );
-            expect(mockedLogger.info).toHaveBeenCalledWith(`Hostname [${actualHostname}] is the horde leader now!`);
-            expect(leader['scheduleRenewal']).toHaveBeenCalled();
-            expect(result).toBe(true);
-        });
+        expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
+        expect(redisClientMock.set).toHaveBeenCalledWith(
+            'test-responsibility',
+            actualHostname,
+            'PX',
+            10000,
+            'NX'
+        );
+        expect(mockedLogger.info).toHaveBeenCalledWith(`Hostname [${actualHostname}] is the horde leader now!`);
+        expect(leader['scheduleRenewal']).toHaveBeenCalled();
+        expect(result).toBe(true);
+    });
 
-        test('should not claim leadership if already leader', async () => {
-            redisClientMock.get = jest.fn().mockResolvedValue(actualHostname);
+    test('should not claim leadership if already leader', async () => {
+        redisClientMock.get = jest.fn().mockResolvedValue(actualHostname);
 
-            const result = await leader.claimLeadership();
+        const result = await leader.claimLeadership();
 
-            expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
-            expect(redisClientMock.set).not.toHaveBeenCalled();
-            expect(result).toBe(true);
-        });
+        expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
+        expect(redisClientMock.set).not.toHaveBeenCalled();
+        expect(result).toBe(true);
+    });
 
-        test('should fail to claim leadership if another leader exists', async () => {
-            redisClientMock.get = jest.fn().mockResolvedValue('another-hostname');
-            redisClientMock.set = jest.fn().mockResolvedValue(null); // set returns null if not successful
+    test('should fail to claim leadership if another leader exists', async () => {
+        redisClientMock.get = jest.fn().mockResolvedValue('another-hostname');
+        redisClientMock.set = jest.fn().mockResolvedValue(null); // set returns null if not successful
 
-            const result = await leader.claimLeadership();
+        const result = await leader.claimLeadership();
 
-            expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
-            expect(redisClientMock.set).toHaveBeenCalledWith(
-                'test-responsibility',
-                actualHostname,
-                'PX',
-                10000,
-                'NX'
-            );
-            expect(mockedLogger.debug).toHaveBeenCalledWith(
-                `Hostname [${actualHostname}] is just a sidekick, dreaming of the Big Chair!`
-            );
-            expect(result).toBe(false);
-        });
+        expect(redisClientMock.get).toHaveBeenCalledWith('test-responsibility');
+        expect(redisClientMock.set).toHaveBeenCalledWith(
+            'test-responsibility',
+            actualHostname,
+            'PX',
+            10000,
+            'NX'
+        );
+        expect(mockedLogger.debug).toHaveBeenCalledWith(
+            `Hostname [${actualHostname}] is just a sidekick, dreaming of the Big Chair!`
+        );
+        expect(result).toBe(false);
+    });
 
-        test('should schedule leader ambitions', async () => {
-            leader.claimLeadership = jest.fn();
-            await leader.scheduleLeaderAmbitions();
+    test('should schedule leader ambitions', async () => {
+        leader.claimLeadership = jest.fn();
+        await leader.scheduleLeaderAmbitions();
 
-            expect(leader.claimLeadership).toHaveBeenCalled();
+        expect(leader.claimLeadership).toHaveBeenCalled();
 
-            // Fast-forward time to simulate interval execution
-            jest.advanceTimersByTime(10000); // ttl
+        // Fast-forward time to simulate interval execution
+        jest.advanceTimersByTime(10000); // ttl
 
-            expect(leader.claimLeadership).toHaveBeenCalledTimes(2); // Initial call + one interval
-        });
+        expect(leader.claimLeadership).toHaveBeenCalledTimes(2); // Initial call + one interval
+    });
 
-        test('should schedule renewal when leader', async () => {
-            // Initialize spies and store them in variables
-            const setIntervalSpy = jest.spyOn(global, 'setInterval');
-            const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+    test('should schedule renewal when leader', async () => {
+        // Initialize spies and store them in variables
+        const setIntervalSpy = jest.spyOn(global, 'setInterval');
+        const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
-            leader['scheduleRenewal']();
+        // Mock `scheduleRenewal` to set `renewInterval`
+        leader['scheduleRenewal']();
 
-            expect(clearIntervalSpy).toHaveBeenCalled();
-            expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 5000); // ttl / 2
+        // should not be called as renewInterval was not set
+        expect(clearIntervalSpy).not.toHaveBeenCalled();
+        expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 5000); // ttl / 2
 
-            // Simulate the interval function execution
-            const renewalFunction = setIntervalSpy.mock.calls[0][0] as () => Promise<void>;
+        // We will test it again now
+        setIntervalSpy.mockClear();
 
-            // Mock isLeader to return true
-            leader.isLeader = jest.fn().mockResolvedValue(true);
-            redisClientMock.pexpire = jest.fn().mockResolvedValue(1);
+        // Mock `scheduleRenewal` to set `renewInterval`
+        leader['scheduleRenewal']();
 
-            // Execute the renewal function and wait for it to complete
-            await renewalFunction();
+        // and now it should be called as renewInterval was set
+        expect(clearIntervalSpy).toHaveBeenCalled();
+        expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 5000); // ttl / 2
 
-            expect(leader.isLeader).toHaveBeenCalled();
-            expect(redisClientMock.pexpire).toHaveBeenCalledWith('test-responsibility', 10000);
-            expect(mockedLogger.info).toHaveBeenCalledWith(`Hostname [${actualHostname}] had its leadership extended`);
-        });
+        // Simulate the interval function execution
+        const renewalFunction = setIntervalSpy.mock.calls[0][0] as () => Promise<void>;
 
-        test('should relinquish leadership', async () => {
-            leader.isLeader = jest.fn().mockResolvedValue(true);
-            redisClientMock.del = jest.fn().mockResolvedValue(true);
-            const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+        // Mock isLeader to return true
+        leader.isLeader = jest.fn().mockResolvedValue(true);
+        redisClientMock.pexpire = jest.fn().mockResolvedValue(1);
 
-            // Mock `scheduleRenewal` to set `renewInterval`
-            leader['renewInterval'] = setInterval(jest.fn(), 1000);
+        // Execute the renewal function and wait for it to complete
+        await renewalFunction();
 
-            // Mock `redisClient.set` to resolve successfully
-            redisClientMock.set = jest.fn().mockResolvedValue('OK');
+        expect(leader.isLeader).toHaveBeenCalled();
+        expect(redisClientMock.pexpire).toHaveBeenCalledWith('test-responsibility', 10000);
+        expect(mockedLogger.info).toHaveBeenCalledWith(`Hostname [${actualHostname}] had its leadership extended`);
+    });
 
-            // issue test function
-            await leader.relinquishLeadership();
+    test('should relinquish leadership', async () => {
+        leader.isLeader = jest.fn().mockResolvedValue(true);
+        redisClientMock.del = jest.fn().mockResolvedValue(true);
+        const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
-            expect(leader.isLeader).toHaveBeenCalled();
-            expect(redisClientMock.del).toHaveBeenCalledWith('test-responsibility');
-            expect(clearIntervalSpy).toHaveBeenCalled();
-            expect(leader['renewInterval']).toBeNull();
-            expect(mockedLogger.info).toHaveBeenCalledWith(`Hostname [${actualHostname}] has relinquished its leadership`);
-        });
+        // Mock `scheduleRenewal` to set `renewInterval`
+        leader['renewInterval'] = setInterval(jest.fn(), 1000);
 
-        test('should handle losing leadership during renewal', async () => {
-            // Initialize spies and store them in variables
-            const setIntervalSpy = jest.spyOn(global, 'setInterval');
-            const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+        // Mock `redisClient.set` to resolve successfully
+        redisClientMock.set = jest.fn().mockResolvedValue('OK');
 
-            leader['scheduleRenewal']();
+        // issue test function
+        await leader.relinquishLeadership();
 
-            // Simulate the interval function execution
-            const renewalFunction = setIntervalSpy.mock.calls[0][0] as () => Promise<void>;
+        expect(leader.isLeader).toHaveBeenCalled();
+        expect(redisClientMock.del).toHaveBeenCalledWith('test-responsibility');
+        expect(clearIntervalSpy).toHaveBeenCalled();
+        expect(leader['renewInterval']).toBeNull();
+        expect(mockedLogger.info).toHaveBeenCalledWith(`Hostname [${actualHostname}] has relinquished its leadership`);
+    });
 
-            // Mock isLeader to return false
-            leader.isLeader = jest.fn().mockResolvedValue(false);
+    test('should handle losing leadership during renewal', async () => {
+        // Initialize spies and store them in variables
+        const setIntervalSpy = jest.spyOn(global, 'setInterval');
+        const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
-            // Execute the renewal function and wait for it to complete
-            await renewalFunction();
+        leader['scheduleRenewal']();
 
-            expect(leader.isLeader).toHaveBeenCalled();
-            expect(clearIntervalSpy).toHaveBeenCalled();
-            expect(leader['renewInterval']).toBeNull();
-            expect(mockedLogger.warn).toHaveBeenCalledWith(`Hostname [${actualHostname}] has lost its leadership`);
-        });
+        // Simulate the interval function execution
+        const renewalFunction = setIntervalSpy.mock.calls[0][0] as () => Promise<void>;
 
-        test('should handle errors in claimLeadership', async () => {
-            const error = new Error('Redis error');
-            redisClientMock.get = jest.fn().mockRejectedValue(error);
+        // Mock isLeader to return false
+        leader.isLeader = jest.fn().mockResolvedValue(false);
 
-            await expect(leader.claimLeadership()).rejects.toThrow('Redis error');
-        });
+        // Execute the renewal function and wait for it to complete
+        await renewalFunction();
 
-        test('should handle errors in isLeader', async () => {
-            const error = new Error('Redis error');
-            redisClientMock.get = jest.fn().mockRejectedValue(error);
+        expect(leader.isLeader).toHaveBeenCalled();
+        expect(clearIntervalSpy).toHaveBeenCalled();
+        expect(leader['renewInterval']).toBeNull();
+        expect(mockedLogger.warn).toHaveBeenCalledWith(`Hostname [${actualHostname}] has lost its leadership`);
+    });
 
-            await expect(leader.isLeader()).rejects.toThrow('Redis error');
-        });*/
+    test('should handle errors in claimLeadership', async () => {
+        const error = new Error('Redis error');
+        redisClientMock.get = jest.fn().mockRejectedValue(error);
+
+        await expect(leader.claimLeadership()).rejects.toThrow('Redis error');
+    });
+
+    test('should handle errors in isLeader', async () => {
+        const error = new Error('Redis error');
+        redisClientMock.get = jest.fn().mockRejectedValue(error);
+
+        await expect(leader.isLeader()).rejects.toThrow('Redis error');
+    });
 });

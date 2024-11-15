@@ -8,7 +8,7 @@
     "start": "node dist/worker.js",
     "cli": "ts-node src/cli.ts",
     "worker": "ts-node src/worker.ts",
-    "test": "jest"
+    "test": "jest --coverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",
