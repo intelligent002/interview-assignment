@@ -23,6 +23,7 @@
   "dependencies": {
     "bottleneck": "^2.19.5",
     "data-gov-il-client": "^1.0.41",
+    "didyoumean2": "^7.0.4",
     "express": "^4.21.1",
     "ioredis": "^5.4.1",
     "kafkajs": "^2.2.3",
