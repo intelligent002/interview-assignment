@@ -1,11 +1,15 @@
+// redisConnectivity.test.ts
+
 import Redis from 'ioredis';
 import logger from '../logger';
+
 import {
-    redisConnect,
     getRedisClient,
     getRedisSubscriber,
-    redisSubscribe,
+    redisConnect,
     redisDisconnect,
+    redisSubscribe,
+    resetEncapsulatedForTests
 } from './redisConnectivity';
 
 jest.mock('ioredis');
@@ -13,27 +17,34 @@ jest.mock('../logger');
 
 describe('Redis Connectivity Module', () => {
     let MockedRedis: jest.MockedClass<typeof Redis>;
-    let redisClientMock: jest.Mocked<Redis>;
-    let redisSubscriberMock: jest.Mocked<Redis>;
     let mockedLogger: jest.Mocked<typeof logger>;
 
     beforeEach(() => {
         jest.clearAllMocks();
 
+        // Reset the module's internal variables to ensure test isolation
+        resetEncapsulatedForTests();
+
         // Mock Redis constructor
         MockedRedis = Redis as jest.MockedClass<typeof Redis>;
         MockedRedis.mockImplementation(() => {
-            return {
+            const redisInstance = {
                 on: jest.fn(),
                 subscribe: jest.fn(),
                 onMessage: jest.fn(),
                 quit: jest.fn().mockResolvedValue('OK'),
-            } as any;
-        });
+            } as unknown as jest.Mocked<Redis>;
 
-        // Mock instances
-        redisClientMock = new Redis() as jest.Mocked<Redis>;
-        redisSubscriberMock = new Redis() as jest.Mocked<Redis>;
+            // Simulate 'connect' event
+            redisInstance.on.mockImplementation((event, callback) => {
+                if (event === 'connect') {
+                    callback();
+                }
+                return redisInstance;
+            });
+
+            return redisInstance;
+        });
 
         // Mock logger
         mockedLogger = logger as jest.Mocked<typeof logger>;
@@ -44,21 +55,6 @@ describe('Redis Connectivity Module', () => {
     });
 
     test('should connect to Redis client and subscriber', async () => {
-        // Mock the 'on' method to simulate 'connect' event
-        redisClientMock.on.mockImplementation((event, callback) => {
-            if (event === 'connect') {
-                callback();
-            }
-            return redisClientMock;
-        });
-
-        redisSubscriberMock.on.mockImplementation((event, callback) => {
-            if (event === 'connect') {
-                callback();
-            }
-            return redisSubscriberMock;
-        });
-
         await redisConnect();
 
         expect(MockedRedis).toHaveBeenCalledTimes(2);
@@ -67,13 +63,6 @@ describe('Redis Connectivity Module', () => {
     });
 
     test('should get Redis client', async () => {
-        redisClientMock.on.mockImplementation((event, callback) => {
-            if (event === 'connect') {
-                callback();
-            }
-            return redisClientMock;
-        });
-
         const client = await getRedisClient();
 
         expect(client).toBeDefined();
@@ -82,13 +71,6 @@ describe('Redis Connectivity Module', () => {
     });
 
     test('should get Redis subscriber', async () => {
-        redisSubscriberMock.on.mockImplementation((event, callback) => {
-            if (event === 'connect') {
-                callback();
-            }
-            return redisSubscriberMock;
-        });
-
         const subscriber = await getRedisSubscriber();
 
         expect(subscriber).toBeDefined();
@@ -98,11 +80,22 @@ describe('Redis Connectivity Module', () => {
 
     test('should handle Redis connection error', async () => {
         const error = new Error('Connection error');
-        redisClientMock.on.mockImplementation((event, callback) => {
-            if (event === 'error') {
-                callback(error);
-            }
-            return redisClientMock;
+
+        // Mock Redis constructor to simulate 'error' event for this test
+        MockedRedis.mockImplementationOnce(() => {
+            const redisInstance = {
+                on: jest.fn(),
+                quit: jest.fn().mockResolvedValue('OK'),
+            } as unknown as jest.Mocked<Redis>;
+
+            redisInstance.on.mockImplementation((event, callback) => {
+                if (event === 'error') {
+                    callback(error);
+                }
+                return redisInstance;
+            });
+
+            return redisInstance;
         });
 
         await expect(getRedisClient()).rejects.toThrow('Connection error');
@@ -112,10 +105,15 @@ describe('Redis Connectivity Module', () => {
     test('should subscribe to Redis channel and handle messages', async () => {
         // Mock client
         const client = {
-            subscribe: jest.fn((channel: string, callback: (err: Error | null, count: number) => void) => {
-                callback(null, 1); // Simulate successful subscription
-                return Promise.resolve();
-            }),
+            subscribe: jest.fn(
+                (
+                    channel: string,
+                    callback: (err: Error | null, count: number) => void
+                ): Promise<void> => {
+                    callback(null, 1); // Simulate successful subscription
+                    return Promise.resolve();
+                }
+            ),
             on: jest.fn(),
         } as unknown as jest.Mocked<Redis>;
 
@@ -148,9 +146,10 @@ describe('Redis Connectivity Module', () => {
         const client = {
             subscribe: jest.fn((channel, callback) => {
                 callback(new Error('Subscription error'), 0);
+                return Promise.resolve();
             }),
             on: jest.fn(),
-        } as unknown as Redis;
+        } as unknown as jest.Mocked<Redis>;
 
         const callback = jest.fn();
 
@@ -168,27 +167,25 @@ describe('Redis Connectivity Module', () => {
     });
 
     test('should disconnect from Redis', async () => {
-        // Mock clients
-        redisClientMock.quit.mockResolvedValue('OK');
-        redisSubscriberMock.quit.mockResolvedValue('OK');
+        // Set up clients
+        const clientInstance = await getRedisClient();
+        const subscriberInstance = await getRedisSubscriber();
 
-        // Set the clients in the module's scope
-        (await getRedisClient()) as any;
-        (await getRedisSubscriber()) as any;
+        clientInstance.quit = jest.fn().mockResolvedValue('OK');
+        subscriberInstance.quit = jest.fn().mockResolvedValue('OK');
 
         await redisDisconnect();
 
-        expect(redisClientMock.quit).toHaveBeenCalled();
-        expect(redisSubscriberMock.quit).toHaveBeenCalled();
+        expect(clientInstance.quit).toHaveBeenCalled();
+        expect(subscriberInstance.quit).toHaveBeenCalled();
         expect(mockedLogger.info).toHaveBeenCalledWith('Redis disconnected.');
     });
 
     test('should handle error during Redis disconnect', async () => {
         const error = new Error('Disconnect error');
-        redisClientMock.quit.mockRejectedValue(error);
 
-        // Set the clients in the module's scope
-        (await getRedisClient()) as any;
+        const clientInstance = await getRedisClient();
+        clientInstance.quit = jest.fn().mockRejectedValue(error);
 
         await redisDisconnect();
 

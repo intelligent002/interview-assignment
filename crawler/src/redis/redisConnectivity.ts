@@ -2,8 +2,14 @@ import Redis from "ioredis";
 import {REDIS_HOST, REDIS_PASS, REDIS_PORT, REDIS_USER} from "../config";
 import logger from "../logger";
 
-let client: Redis | null = null;
-let subscriber: Redis | null = null;
+let client: Redis | undefined;
+let subscriber: Redis | undefined;
+
+// Exported reset function for testing purposes
+export function resetEncapsulatedForTests() {
+    client = undefined;
+    subscriber = undefined;
+}
 
 // combo method
 export async function redisConnect() {
