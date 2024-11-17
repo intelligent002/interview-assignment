@@ -31,6 +31,34 @@
 
 *As a potential side project, an optional adjustment strategy has been formulated: continuously increase the rate until rate limits are encountered, at which point decrement by the number of rate-limited responses. This approach would require comparing the time taken by successful responses to the time taken by rate-limited ones. To achieve this, all response times would need to be measured and an appropriate ratio calculated to adjust the decrement amount. Due to the complexity and time required for implementation, this feature is considered out of scope.*
 
+## Infrastructure
+
+### Redis Standalone Container
+- A standalone Redis container has been included in the infrastructure and serves multiple purposes:
+	* Stores global counters for the rate limiter feature, ensuring continuity during leader transitions.
+	* Manages leader election processes.
+	* Facilitates broadcasting rate update messages to `worker` instances.
+
+### Prometheus
+- Prometheus is configured to automatically collect metrics from all `worker` replicas, enabling effective monitoring and observability.
+
+available on http://localhost:9091
+
+![prometheus with dns based targets](docs/prometheus.png)
+
+### Grafana
+- A pre-configured Grafana dashboard has been implemented, featuring three primary visualizations:
+	1. City request metrics, including counts for successful, rate-limited, and error responses.
+	2. Street request metrics, showing counts for successful, rate-limited, and error responses.
+	3. The current rate limit level, providing insight into system adjustments and performance.
+
+available on http://localhost:3000 
+
+![grafana with built in dashboard](docs/grafana.png)
+
+### Health Checks
+- All newly added services are equipped with Docker health check features to ensure they are functioning properly and can be monitored effectively.
+
 ## Architecture and Data Flow
 
 ### Microservices Architecture
@@ -216,7 +244,10 @@ PS D:\www\interview-assignment>
 
 ## Testing and Validation
 **Testing**:
-- Limited to running services and observing system behavior via logs and Grafana.
+- Unit tests have been created, covering only two files related to leadership and Redis connectivity.
+- These tests achieve 100% line and branch coverage, representing a thorough approach to testing and reflecting the entire code.
+- While this level of coverage may be considered excessive, it demonstrates a commitment to comprehensive testing.
+- It is noted that testing could potentially be limited to the final outcomes of each method for a more streamlined approach.
 
 **Observations**:
 - Validated rate limit adjustments and retry mechanisms.
