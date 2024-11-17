@@ -78,8 +78,6 @@ available on http://localhost:3000
 **City Request**:
 1. The `cli` service publishes a city name to the `cities` Kafka topic.
 ![city push](docs/charts/city.add.png)
-
-
 2. `worker` services consume messages from the `cities` topic.
 3. Upon receiving a city name, a `worker` requests the list of street IDs from the external API.
 4. Street IDs are published to the `streets` Kafka topic.
