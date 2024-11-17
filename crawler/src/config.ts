@@ -6,6 +6,7 @@ export const KAFKA_TOPIC_CITIES = process.env.KAFKA_TOPIC_CITIES || 'topic-citie
 export const KAFKA_TOPIC_CITIES_DLQ = process.env.KAFKA_TOPIC_CITIES_DLQ || 'topic-cities-dlq';
 export const KAFKA_TOPIC_CITIES_PARTITIONS = parseInt(process.env.KAFKA_TOPIC_CITIES_PARTITIONS as string) || 2;
 export const KAFKA_TOPIC_CITIES_THRESHOLD = parseInt(process.env.KAFKA_TOPIC_CITIES_THRESHOLD as string) || 1;
+export const KAFKA_TOPIC_CREATION_WAIT_SECONDS = parseInt(process.env.KAFKA_TOPIC_CREATION_WAIT_SECONDS as string) || 2;
 export const KAFKA_TOPIC_STREETS = process.env.KAFKA_TOPIC_STREETS || 'topic-streets';
 export const KAFKA_TOPIC_STREETS_DLQ = process.env.KAFKA_TOPIC_STREETS_DLQ || 'topic-streets-dlq';
 export const KAFKA_TOPIC_STREETS_PARTITIONS = parseInt(process.env.KAFKA_TOPIC_STREETS_PARTITIONS as string) || 2;

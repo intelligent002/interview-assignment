@@ -4,7 +4,12 @@ import {startMetricsServer} from './metrics';
 import {kafkaProducerConnect, kafkaProducerDisconnect} from "./kafka/kafkaProducer";
 import {getThrottler, updateThrottler} from "./throttler/rateLimit";
 import {getRedisClient, getRedisSubscriber, redisDisconnect, redisSubscribe} from "./redis/redisConnectivity";
-import {RATE_LIMIT_LEADER_CADENCE, REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE} from "./config";
+import {
+    KAFKA_TOPIC_CREATION_WAIT_SECONDS,
+    RATE_LIMIT_LEADER_CADENCE,
+    REDIS_UPDATES_CHANNEL,
+    REDIS_UPDATES_MESSAGE
+} from "./config";
 import {scheduleThrottlerAdjustments, unscheduleThrottlerAdjustments} from "./throttler/rateAdjust";
 import {redisLeadership} from "./redis/redisLeadership";
 import {kafkaAdmin, kafkaAdminDisconnect} from "./kafka/kafkaAdmin";
@@ -85,7 +90,7 @@ const main = async () => {
         // if subscriber will connect first,
         // topics will be created with single partition
         logger.info("Topic creation - non leader started short wait");
-        await sleep(20_000);
+        await sleep(KAFKA_TOPIC_CREATION_WAIT_SECONDS * 1_000);
         logger.info("Topic creation - non leader ended short wait");
     }
 

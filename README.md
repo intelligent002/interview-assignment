@@ -113,7 +113,9 @@ PS D:\www\interview-assignment>
 ## Leader Election and Coordination
 **Implementation**:
 - Leader election is managed through Redis, where one `worker` instance assumes the role of leader.
-- The leader is responsible for rate limit evaluation and communication.
+- The leader is responsible for creating Kafka topics and setting the partitions to 30, aligning with the maximum estimated number of worker replicas for the POC.
+- Non-leader instances wait during this step for a period defined by `KAFKA_TOPIC_CREATION_WAIT_SECONDS`, which is configurable via the `.env` file.
+- The leader evaluates rate limit adjustments and communicates these changes via Redis Pub/Sub.
 - If the leader fails or shuts down, another `worker` is elected to maintain system stability.
 
 ## Technologies and Tools Used
