@@ -33,6 +33,10 @@ services:
     restart: no
     env_file:
       - .env
+    deploy:
+      replicas: 0
+      restart_policy:
+        condition: on-failure
     depends_on:
       - redpanda
     networks:
