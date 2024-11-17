@@ -33,9 +33,13 @@
 ### Data Flow
 **City Request**:
 1. The `cli` service publishes a city name to the `cities` Kafka topic.
-2. `worker` services consume messages from the `cities` topic.
+2. `worker` services consume messages from the `cities` topic *. 
 3. Upon receiving a city name, a `worker` requests the list of street IDs from the external API.
 4. Street IDs are published to the `streets` Kafka topic.
+
+why it is importaint to traverse the cities requests via topic with retry policy:
+![Alt text](docs/cities.requests.rate.limited.png)
+
 
 **Street Data Processing**:
 1. `worker` services consume messages from the `streets` topic.
