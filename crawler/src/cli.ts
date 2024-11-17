@@ -5,9 +5,6 @@ import {KAFKA_TOPIC_CITIES} from './config';
 
 const main = async () => {
     try {
-        // Connect the Kafka producer
-        await kafkaProducerConnect();
-
         // Get the city from the command line argument
         let cityName: city = <city>process.argv[2]?.toString();
 
@@ -27,9 +24,12 @@ const main = async () => {
             console.log(`Auto corrected the city name: [${closestMatch}]`);
             cityName = <city>closestMatch; // Assign the closest match to cityName
         } else {
-            console.warn('No close match found for the provided city name.');
-            process.exit(1);
+            throw new Error('No close match found for the provided city name.');
         }
+
+        // Connect the Kafka producer
+        await kafkaProducerConnect();
+
         // Produce the city into the cities topic, to guarantee processing
         await kafkaProduce({topic: KAFKA_TOPIC_CITIES, messages: [cityName]});
     } catch (error) {
