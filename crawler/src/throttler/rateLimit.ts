@@ -39,7 +39,7 @@ export async function updateThrottler(
         throttler: Bottleneck
     }) {
 
-    const rateLimit = parseInt(await redisClient.get(RATE_LIMIT_REDIS_LIMIT) || RATE_LIMIT_GLOBAL_MIN.toString());
+    const rateLimit = parseInt(await redisClient.get(RATE_LIMIT_REDIS_LIMIT) || RATE_LIMIT_GLOBAL_INIT.toString());
     const minTime = calculateDelayFromRate(rateLimit);
     throttler.updateSettings({
         maxConcurrent: 1,
