@@ -32,14 +32,32 @@
 
 ### Data Flow
 **City Request**:
-1. The `cli` service publishes a city name to the `cities` Kafka topic.
-2. `worker` services consume messages from the `cities` topic *. 
+1. The `cli` service publishes a city name to the `cities` Kafka topic *.
+2. `worker` services consume messages from the `cities` topic. 
 3. Upon receiving a city name, a `worker` requests the list of street IDs from the external API.
 4. Street IDs are published to the `streets` Kafka topic.
 
-why it is importaint to traverse the cities requests via topic with retry policy:
-![Alt text](docs/cities.requests.rate.limited.png)
+* it is importaint to traverse the cities requests via topic with retry policy, since if system is under load, the city request also may be throttled by rate limit of the data.gov.il.
 
+![city request being rate limited](docs/cities.requests.rate.limited.png)
+
+* this is the way the cli command is being triggered:
+```powershell
+PS D:\www\interview-assignment> .\cli.ps1 --cities "tel aviv jaffo" "jerusalem" "ashdod" "ashkelon" "haifa" "maale adumim"
+Processing city: tel aviv jaffo
+Auto corrected the city name: [Tel Aviv Jaffa]
+Processing city: jerusalem
+Auto corrected the city name: [Jerusalem]
+Processing city: ashdod
+Auto corrected the city name: [Ashdod]
+Processing city: ashkelon
+Auto corrected the city name: [Ashkelon]
+Processing city: haifa
+Auto corrected the city name: [Haifa]
+Processing city: maale adumim
+Auto corrected the city name: [Ma'ale Adumim]
+PS D:\www\interview-assignment>
+```
 
 **Street Data Processing**:
 1. `worker` services consume messages from the `streets` topic.
