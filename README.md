@@ -1,23 +1,23 @@
 # Services Overview
 
 ## 1. `cli` Service
-**Purpose**: The `cli` service is a Dockerized command-line interface that allows users to input a city name. It then pushes the requested city into a dedicated Kafka topic (`cities`), enabling the `worker` services to process the data asynchronously.
+**Purpose**: The `cli` service is a Dockerized command-line interface that allows users to input a city name. It then pushes the requested city into a dedicated Kafka topic (`topic-cities`), enabling the `worker` services to process the data asynchronously.
 
 **Functionality**:
 - Accepts user input for city names.
-- Publishes city names to the Kafka `cities` topic.
+- Publishes city names to the Kafka `topic-cities` topic.
 - Handles potential rate limiting by deferring requests to the Kafka queue, ensuring retries and eventual consistency.
 - The city names stored in the npm package are used as "correct spelling" of the city name to improve UX of the operator, as typing in a wrong city name will result in a bad response from the API. It may be, however, that the list of city names includes errors, and it would be best to confirm this against the API (a side quest outside the scope).
 - Uses the npm package **"didyoumean2"** for correcting city names, improving the user experience by preventing incorrect API responses.
 
 ## 2. `worker` Service
-**Purpose**: The `worker` service listens to Kafka topics (`cities` and `streets`), processes messages, interacts with external APIs, and stores data in MongoDB. It also handles dynamic rate limiting, leader election, and inter-service communication.
+**Purpose**: The `worker` service listens to Kafka topics (`topic-cities` and `topic-streets`), processes messages, interacts with external APIs, and stores data in MongoDB. It also handles dynamic rate limiting, leader election, and inter-service communication.
 
 **Functionality**:
 - Consumes messages from Kafka topics (`topic-cities`, `topic-streets`).
 - Acts according to the origin topic:
-  - If from `cities`, requests street IDs from an external API.
-  - If from `streets`, requests detailed street data.
+  - If from `topic-cities`, requests street IDs from an external API.
+  - If from `topic-streets`, requests detailed street data.
 - Implements dynamic throttling to comply with the external API's rate limits.
 - Stores successful data responses in MongoDB.
 - Implements retry mechanisms and dead-letter queues for failed messages.
@@ -76,11 +76,11 @@ available on http://localhost:3000
 
 ### Data Flow
 **City Request**:
-1. The `cli` service publishes a city name to the `cities` Kafka topic.
+1. The `cli` service publishes a city name to the `topic-cities` Kafka topic.
 ![city push](docs/charts/city.add.png)
-2. `worker` services consume messages from the `cities` topic.
+2. `worker` services consume messages from the `topic-cities` topic.
 3. Upon receiving a city name, a `worker` requests the list of street IDs from the external API.
-4. Street IDs are published to the `streets` Kafka topic.
+4. Street IDs are published to the `topic-streets` Kafka topic.
 
 ![city parse](docs/charts/city.parse.png)
 
@@ -107,7 +107,7 @@ PS D:\www\interview-assignment>
 ```
 
 **Street Data Processing**:
-1. `worker` services consume messages from the `streets` topic.
+1. `worker` services consume messages from the `topic-streets` topic.
 2. For each street ID, a `worker` requests detailed street data from the external API.
 3. Successful responses are stored in MongoDB.
 4. Failures are retried up to 3 times; persistent failures are sent to a dead-letter queue (DLQ).
