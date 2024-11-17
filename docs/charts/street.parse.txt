@@ -1,10 +1,10 @@
 @startuml
 !include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/bluegray/puml-theme-bluegray.puml
-participant Streets_Topic as "Streets Kafka Topic"
+participant Streets_Topic as "Kafka `topic-cities`"
 participant Worker_Services as "Worker Services"
 participant External_API as "External API (data.gov.il)"
 participant MongoDB as "MongoDB"
-participant DLQ as "Streets Kafka Topic DLQ"
+participant DLQ as "Kafka `topic-streets-DQL`"
 
 Streets_Topic -> Worker_Services: Consume street ID message
 Worker_Services -> External_API: Request detailed street data
@@ -26,5 +26,3 @@ else 500 Error
     Worker_Services -> DLQ: Send to Kafka DLQ if attempt = 4
 end
 @enduml
-
-https://cdn-0.plantuml.com/plantuml/png/bPDVgzD04CNVzrECULBaDbVGbu1orLOeNa4RmSSoJQR9SZUxSMRsrkkdDtzIR4eB-bAwPyxlxComkHD5rjWuyypwmiMIe5Pj9KjJniEYibh7NHJY8dWbhuiYDEbEYlg0_3jjE_16Qsf8qWP5YTFfj7EHAiQd4ylDKLlqcccHrHQsHQ-GAnEfRB-7rXQ00icam6VSFo0CUZ93VWH-8Dxcn8-s81cWKOEZDWTMlvJOezk-_xeUt4S1Uk5vYOgBAZmkh7in1xy4NuNbXu6P_iyDo_jlrthkQuany_bktfrtdy77u2Ks138uORs4XaIm8dDcxUZPA1biw6SaKIX9qJegZndzHERKUl7Y3MbaVnasw1JoM7H6CG005tgPDf91he5fvCW9mQffzQcBb-Xqf7rG0hPLhH3svrc30oQAHmfivGDJETJ8bqF2cBv19RYtZLNuXDP5fciDpdRVpzl6dRDIdwnQmtGGqDurNl7czXPMp87_E_bWjOQQi2I615Mf6mfUmgladzUmtly5tyBhPBw1A_rqRos3l7Tfc1vX9u7TmqcKwUhchllfly4_

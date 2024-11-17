@@ -4,13 +4,17 @@ participant PS_Script as "PowerShell Script (ps2)"
 participant CLI_Service as "CLI Service"
 participant didyoumean2 as "didyoumean2 npm package"
 participant City_List as "List of Cities (Array)"
-participant Kafka as "Kafka (Redpanda)"
+participant Kafka as "Kafka `topic-cities`"
 
-PS_Script -> CLI_Service: Calls the container once per city name
-CLI_Service -> didyoumean2: Calls for city name correction
-didyoumean2 -> City_List: Checks city against list
-CLI_Service -> CLI_Service: Skips bad cities
-CLI_Service -> Kafka: Pushes corrected city name
+loop For each city as argument
+    PS_Script -> CLI_Service: Calls the container with city name
+    CLI_Service -> didyoumean2: Calls for city name correction
+    didyoumean2 -> City_List: Checks city against list
+alt success
+    CLI_Service -> Kafka: Pushes corrected city name
+else Malformed city name
+    note right of CLI_Service
+      Bad cities ignored
+    end note
+end
 @enduml
-
-https://cdn-0.plantuml.com/plantuml/png/PLB1Zk8m3BttAxoSs0DKuiXXnOhJQZcWwGSWDp5Dr3I9udGGy_NZ5X21kTdEUy_lMTbnnfJ7mLM_h5Tkr0GcvyZRkavuMNSscx4TcP8AFfFFQnM6kcLbBfY-wYZ4LJOq4DS3SgPKtxlMZTGbl1QGrMEsdcPLbBrMsOW-mx4vDIhPc04P5iTmeTGOSWxkqsNapU_52sL_-7TgA7rQHJD9UhZthq1jzJMC0w7VpC2ozt60YAh7ZjxKRRwU3fPlXkOYdAUf9ORbtoGftlpyntEFC_fMBJz8ouD6mLNFVAi_fVCjxD4vXcm8fWEZzPGWU4KGfL3Y0ZmEL1KSaIWpFIJEeS2BM4gaiWs-Ah12VIOJeY7Lyus5dUoMb4vUocq_33UzZGmjQb3pDTx1S_ej74Ssn0yVf8iiE_9w-W3V
