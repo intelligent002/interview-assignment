@@ -12,12 +12,12 @@ External_API -> Worker_Service: Return street IDs
 
 alt Success
     Worker_Service -> Streets_Topic: Publish street IDs
-else Rate Limit
-    Worker_Service -> Kafka: Republish city to `topic-cities`
 else Empty Result
     note right of Worker_Service
       Empty result ignored
     end note
+else Rate Limit
+    Worker_Service -> Kafka: Republish city to `topic-cities`
 else 500 Error
     Worker_Service -> Kafka: Republish to `topic-cities` with header "attempts + 1"
     note right of Worker_Service
