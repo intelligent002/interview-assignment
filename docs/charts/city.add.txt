@@ -12,3 +12,5 @@ didyoumean2 -> City_List: Checks city against list
 CLI_Service -> CLI_Service: Skips bad cities
 CLI_Service -> Kafka: Pushes corrected city name
 @enduml
+
+https://cdn-0.plantuml.com/plantuml/png/PLB1Zk8m3BttAxoSs0DKuiXXnOhJQZcWwGSWDp5Dr3I9udGGy_NZ5X21kTdEUy_lMTbnnfJ7mLM_h5Tkr0GcvyZRkavuMNSscx4TcP8AFfFFQnM6kcLbBfY-wYZ4LJOq4DS3SgPKtxlMZTGbl1QGrMEsdcPLbBrMsOW-mx4vDIhPc04P5iTmeTGOSWxkqsNapU_52sL_-7TgA7rQHJD9UhZthq1jzJMC0w7VpC2ozt60YAh7ZjxKRRwU3fPlXkOYdAUf9ORbtoGftlpyntEFC_fMBJz8ouD6mLNFVAi_fVCjxD4vXcm8fWEZzPGWU4KGfL3Y0ZmEL1KSaIWpFIJEeS2BM4gaiWs-Ah12VIOJeY7Lyus5dUoMb4vUocq_33UzZGmjQb3pDTx1S_ej74Ssn0yVf8iiE_9w-W3V

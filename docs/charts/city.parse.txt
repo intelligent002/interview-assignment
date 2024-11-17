@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/bluegray/puml-theme-bluegray.puml
+participant Kafka as "Kafka (Redpanda)"
+participant Worker_Services as "Worker Services"
+participant External_API as "External API (data.gov.il)"
+participant Streets_Topic as "Streets Kafka Topic"
+
+Kafka -> Worker_Services: Consume city message from cities topic
+Worker_Services -> External_API: Request list of street IDs
+External_API -> Worker_Services: Return street IDs
+Worker_Services -> Streets_Topic: Publish street IDs
+
+alt Failure Occurs
+    Worker_Services -> Kafka: Republish city to cities topic (retry)
+end
+@enduml
+
+https://cdn-0.plantuml.com/plantuml/png/RPBDxjem4CJlVeej9pYGt7EegFeXeHwAe5AFQECiYOLZfxjhA7twVpv08eWShFYddPsPA1jHP4sjDvzSi3vL18rg9qMUCrwpsccJoYJ4DWQbe9cDRLwARQx8__Ek5wwrePOaRr6KEB_VIf-ePhmzZQmVB1kOwP3LMTTXKFY9fpC22Yocj-MUgWv3XQl5REvFv3FnyK1ySPPaL4mC7cmk-FvFYGFwuvVTTfn-01Z0iaB5h8wNpFaNfuCoaShnT-oS7PLtSiywyeKnqstz-JLQ0LzZaDGIMAStQ4a4Qu8JntOWZWHqM65UTFsgMUW2zlGtaIXurn_n13BcWEqtCRDsxpBiIHE7PyaRkrdL0dQfxAsQPv51h_03dKzCyClQn6AWVzui6x_7ODnDQwRw6cUbOScaV5iP2fNPzCVmFtm0
