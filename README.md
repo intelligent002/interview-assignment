@@ -222,13 +222,7 @@ to include necessary configurations, healthcheck and dependencies.
 - Messages are retried up to 3 times; persistent failures are moved to the DLQ.
 - Rate limit errors do not count towards retry limits.
 
-### 8. Leader's Rate Limit Evaluation
-**Process**:
-
-- The leader evaluates the success to rate-limited response ratio every 60 seconds.
-- Adjusts the rate limit and broadcasts it to workers via Redis Pub/Sub.
-
-### 9. Configuration Management
+### 8. Configuration Management
 **Implementation**:
 
 - `.env` files manage environment variables.
@@ -264,7 +258,7 @@ to include necessary configurations, healthcheck and dependencies.
 
 - Implemented sequential disconnection tasks with bounded timeout.
 
-### 4. Handling External API Limitations
+### 4. Handling External API Clock drift (lag)
 **Issue**:
 
 - The external API's dynamic rate limit and 5-second clock lag.
