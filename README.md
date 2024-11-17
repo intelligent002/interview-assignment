@@ -17,7 +17,7 @@
 - Consumes messages from Kafka topics (`topic-cities`, `topic-streets`).
 - Acts according to the origin topic:
   - If from `topic-cities`, requests street IDs from an external API.
-  - If from `topic-streets`, requests detailed street data.
+  - If from `topic-streets`, requests detailed street data from an external API.
 - Implements dynamic throttling to comply with the external API's rate limits.
 - Stores successful data responses in MongoDB.
 - Implements retry mechanisms and dead-letter queues for failed messages.
