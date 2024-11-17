@@ -144,16 +144,28 @@ PS D:\www\interview-assignment>
 - **Grafana and Prometheus**: Used for monitoring system metrics and visualizing performance.
 
 ## Containerization and Deployment
-- **Docker and Docker Compose**:
-	- Services are containerized with custom Dockerfiles.
-	- Docker Compose manages multi-container deployment.
-- **Custom Dockerfiles**: Created for `cli`, `worker`, Grafana, Redis, and Prometheus to include necessary configurations and dependencies.
+**Docker and Docker Compose**:
+  - Services are containerized with custom Dockerfiles.
+  - Docker Compose manages multi-container deployment.
+
+**Custom Dockerfiles Created for:**
+  - `cli`
+  - `worker`
+  - Grafana
+  - Redis
+  - Prometheus
+
+to include necessary configurations, healthcheck and dependencies.
 
 ## Key Features and Implementations
 
 ### 1. Dynamic Rate Limiting and Throttling
-**Challenge**: The external API (data.gov.il) has a dynamic rate limit and applies a Fixed Window algorithm. Their system clock lags by approximately 5 seconds.
+**Challenge**:
+
+- The external API (data.gov.il) has a dynamic rate limit and applies a Fixed Window algorithm. Their system clock lags by approximately 5 seconds.
+
 **Solution**:
+
 - Implemented a custom distributed rate limiter using Redis to coordinate between `worker` instances.
 - The leader collects request statistics and adjusts the rate limit every 60 seconds.
 - Workers adjust their throttling based on the leader's instructions, preventing overloading of the API.
@@ -161,115 +173,155 @@ PS D:\www\interview-assignment>
 
 ### 2. Leader Election and Coordination
 **Implementation**:
+
 - Used Redis-based leader election for high availability.
 - The leader communicates rate limit changes via Redis Pub/Sub.
 - If the leader fails, another `worker` is elected to ensure continuity.
 
 ### 3. Exponential Rate Limit Adjustment
 **Implementation**:
+
 - The rate adjustment feature in `worker` uses exponential rate limit modification based on trends and multiplication factors. This is configurable through the `.env` file to allow dynamic tuning based on system behavior.
 
 ### 4. Graceful Shutdown
-**Challenge**: Ensuring that services disconnect from resources without data loss during shutdown.
+**Challenge**:
+
+- Ensuring that services disconnect from resources without data loss during shutdown.
+
 **Solution**:
+
 - Implemented a graceful shutdown mechanism with a Promise-based approach.
 - Handled asynchronous disconnection tasks with timeouts.
 
 ### 5. Logging with Winston and KafkaJS Integration
 **Implementation**:
+
 - Configured Winston for JSON log output.
 - Integrated KafkaJS logging with Winston for uniform log formatting.
 
 ### 6. Metrics and Monitoring
 **Implementation**:
+
 - Exposed metrics via `/metrics` using `prom-client`.
 - Grafana dashboards visualize metrics such as request rates, success counts, and rate limit adjustments.
 
 ### 7. Retry Mechanism and Dead-Letter Queue
 **Implementation**:
+
 - Messages are retried up to 3 times; persistent failures are moved to the DLQ.
 - Rate limit errors do not count towards retry limits.
 
 ### 8. Leader's Rate Limit Evaluation
 **Process**:
+
 - The leader evaluates the success to rate-limited response ratio every 60 seconds.
 - Adjusts the rate limit and broadcasts it to workers via Redis Pub/Sub.
 
 ### 9. Configuration Management
 **Implementation**:
+
 - `.env` files manage environment variables.
 - A central `config.ts` module ensures consistent configuration access.
 
 ## Challenges Faced and Solutions
 
 ### 1. Rate Limiting Complexity
-**Issue**: Existing rate limiting libraries were inadequate for a distributed setup.
+**Issue**:
+
+- Existing rate limiting libraries were inadequate for a distributed setup.
+
 **Solution**:
+
 - Developed a custom solution with Redis for synchronization and dynamic adjustments.
 
 ### 2. Logging and TypeScript Integration
-**Issue**: KafkaJS and Winston integration led to TypeScript errors.
+**Issue**:
+
+- KafkaJS and Winston integration led to TypeScript errors, and extra noise in logs.
+ 
 **Solution**:
+
 - Created a custom log function and resolved type errors with explicit annotations.
 
 ### 3. Graceful Shutdown with Timeout
-**Issue**: Ensuring sequential shutdowns within a set time limit.
+**Issue**:
+
+- Ensuring sequential shutdowns within a set time limit.
+
 **Solution**:
+
 - Implemented sequential disconnection tasks with bounded timeouts.
 
 ### 4. Handling External API Limitations
-**Issue**: The external API's dynamic rate limit and 5-second clock lag.
+**Issue**:
+
+- The external API's dynamic rate limit and 5-second clock lag.
+
 **Solution**:
+
 - Adjusted rate evaluations to align with the system clock and prevent penalties from persisting into subsequent cycles.
 
 ## Deployment and Configuration
 
 ### Docker and Docker Compose
 **Containerization**:
+
 - Containerized services with custom Dockerfiles.
 
 **Docker Compose**:
+
 - Orchestrated services using `docker-compose.yml` with dependencies like Redis, MongoDB, and Prometheus.
 
 ### Customizations
-- **Grafana and Prometheus**:
-	- Custom images with pre-configured dashboards.
+**Grafana and Prometheus**:
 
-- **Redis Security**:
-	- Implemented authentication for Redis.
+- Custom images with pre-configured dashboards and configuration.
+
+**Redis Security**:
+ 
+- Implemented authentication for Redis.
 
 ## Logging and Monitoring
 
 ### Logging with Winston
 **Configuration**:
+
 - JSON logs to stdout.
 - Integrated KafkaJS logs for consistent formatting.
 
 ### Monitoring with Grafana and Prometheus
 **Metrics Collection**:
+
 - Exposed metrics via `/metrics` for Prometheus scraping.
-  **Visualization**:
+
+**Visualization**:
+
 - Grafana dashboards for real-time system monitoring.
 
 ## Testing and Validation
 **Testing**:
+
 - Unit tests have been created, covering only two files related to leadership and Redis connectivity.
 - These tests achieve 100% line and branch coverage, representing a thorough approach to testing and reflecting the entire code.
 - While this level of coverage may be considered excessive, it demonstrates a commitment to comprehensive testing.
 - It is noted that testing could potentially be limited to the final outcomes of each method for a more streamlined approach.
+- Validation of user input implemented, incorrect city names will be autocorrected.
 
 **Observations**:
+
 - Validated rate limit adjustments and retry mechanisms.
 - Confirmed leader election stability.
 
 ![unit tests](docs/unit.tests.png)
 
 ## Security Considerations
-- **Redis Authentication**:
-	- Used user/password authentication.
+**Redis Authentication**:
 
-- **Credentials Management**:
-	- Acknowledged potential improvements with secrets management in production.
+- Used user/password authentication.
+
+**Credentials Management**:
+
+- Acknowledged potential improvements with secrets management in production.
 
 ## Performance Optimizations
 
