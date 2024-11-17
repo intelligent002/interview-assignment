@@ -3,7 +3,7 @@
 participant Kafka as "Kafka `topic-cities`"
 participant Worker_Service as "Worker Service"
 participant External_API as "External API (data.gov.il)"
-participant Streets_Topic as "Streets Kafka Topic"
+participant Streets_Topic as "Kafka `topic-streets`"
 participant DLQ as "Kafka `topic-cities-DQL`"
 
 Kafka -> Worker_Service: Consume city message from cities topic
