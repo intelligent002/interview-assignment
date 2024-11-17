@@ -40,7 +40,7 @@
 	* Facilitates broadcasting rate update messages to `worker` instances.
 
 ### Prometheus
-- Prometheus is configured to automatically collect metrics from all `worker` replicas, enabling effective monitoring and observability.
+- A pre-configured Prometheus was implemented, that automatically collect metrics from all `worker` replicas, enabling effective monitoring and observability.
 
 available on http://localhost:9091
 
@@ -129,12 +129,13 @@ PS D:\www\interview-assignment>
 - **Express.js**: Used in the `worker` service to expose Prometheus metrics.
 
 ### Packages and Libraries
-- **kafkajs**: Kafka client for Node.js, used for interacting with Redpanda.
-- **ioredis**: Redis client for Node.js, used for leader election, rate limit storage, and Pub/Sub messaging.
-- **mongodb**: MongoDB driver for Node.js, used for data storage.
-- **prom-client**: Used for collecting metrics to expose to Prometheus.
-- **winston**: Logging library, configured to output logs in JSON format.
-- **bottleneck**: Initially used for rate limiting but later replaced due to limitations.
+- **kafkajs**: A Kafka client for Node.js, used for seamless interaction with Redpanda.
+- **ioredis**: A Redis client for Node.js, facilitating leader election, rate limit storage, and Pub/Sub messaging.
+- **mongodb**: The MongoDB driver for Node.js, providing a connection to the data store.
+- **prom-client**: A library for collecting and exposing metrics to Prometheus.
+- **winston**: A robust logging library configured for JSON output to ensure consistent and structured logs.
+- **bottleneck**: Initially used for rate limiting but was later replaced due to its limitations in handling the project's requirements.
+- **didyoumean2**: A package used in the `cli` service for correcting user-input city names to enhance user experience and prevent incorrect API responses.
 
 ### Infrastructure Services
 - **Kafka (Redpanda)**: Message broker for decoupling services and enabling asynchronous communication.
@@ -226,12 +227,14 @@ PS D:\www\interview-assignment>
 ### Docker and Docker Compose
 **Containerization**:
 - Containerized services with custom Dockerfiles.
-  **Docker Compose**:
+
+**Docker Compose**:
 - Orchestrated services using `docker-compose.yml` with dependencies like Redis, MongoDB, and Prometheus.
 
 ### Customizations
 - **Grafana and Prometheus**:
 	- Custom images with pre-configured dashboards.
+
 - **Redis Security**:
 	- Implemented authentication for Redis.
 
@@ -259,9 +262,12 @@ PS D:\www\interview-assignment>
 - Validated rate limit adjustments and retry mechanisms.
 - Confirmed leader election stability.
 
+![unit tests](docs/unit.tests.png)
+
 ## Security Considerations
 - **Redis Authentication**:
 	- Used user/password authentication.
+
 - **Credentials Management**:
 	- Acknowledged potential improvements with secrets management in production.
 
