@@ -1,5 +1,3 @@
-// redisConnectivity.test.ts
-
 import Redis from 'ioredis';
 import logger from '../logger';
 

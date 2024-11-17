@@ -67,6 +67,7 @@ foreach ($city in $cities)
 {
     Write-Host "Processing city: $city"
     docker run --rm `
+            --env LOG_LEVEL="error" `
             --env KAFKA_BROKER="redpanda:29092" `
             --env KAFKAJS_NO_PARTITIONER_WARNING=1 `
             --network interview-assignment_default `

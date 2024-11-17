@@ -4,7 +4,7 @@ import {startMetricsServer} from './metrics';
 import {kafkaProducerConnect, kafkaProducerDisconnect} from "./kafka/kafkaProducer";
 import {getThrottler, updateThrottler} from "./throttler/rateLimit";
 import {getRedisClient, getRedisSubscriber, redisDisconnect, redisSubscribe} from "./redis/redisConnectivity";
-import {RATE_LIMIT_LEADER_DURATION, REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE} from "./config";
+import {RATE_LIMIT_LEADER_CADENCE, REDIS_UPDATES_CHANNEL, REDIS_UPDATES_MESSAGE} from "./config";
 import {scheduleThrottlerAdjustments, unscheduleThrottlerAdjustments} from "./throttler/rateAdjust";
 import {redisLeadership} from "./redis/redisLeadership";
 import {kafkaAdmin, kafkaAdminDisconnect} from "./kafka/kafkaAdmin";
@@ -12,6 +12,7 @@ import {hostname} from "os";
 import {Collection, Document} from "mongodb";
 import Redis from "ioredis";
 import logger from "./logger";
+import {sleep} from "./sleep";
 
 let mongo: Collection<Document>;
 let redisClient: Redis;
@@ -52,7 +53,10 @@ const main = async () => {
     // get throttler
     const throttler = await getThrottler();
 
-    // subscribe for throttler updates
+    // update throttler right away
+    await updateThrottler({redisClient, throttler});
+
+    // and subscribe for future throttler updates
     await redisSubscribe({
         client: redisSubscriber,
         channel: REDIS_UPDATES_CHANNEL,
@@ -61,7 +65,7 @@ const main = async () => {
     });
 
     // Power to the people!
-    leader = new redisLeadership({redisClient, responsibility: 'general', ttl: RATE_LIMIT_LEADER_DURATION});
+    leader = new redisLeadership({redisClient, responsibility: 'general', ttl: RATE_LIMIT_LEADER_CADENCE});
     await leader.scheduleLeaderAmbitions();
 
     // Let them fight!
@@ -72,8 +76,17 @@ const main = async () => {
 
     // Prepare to admin
     if (await leader.isLeader()) {
-        // combo
+        // create topics
+        logger.info("Topic creation - leader has created topics creation");
         await kafkaAdmin();
+        logger.info("Topic creation - leader has ended topics creation");
+    } else {
+        // Wait for Leader to create topics
+        // if subscriber will connect first,
+        // topics will be created with single partition
+        logger.info("Topic creation - non leader started short wait");
+        await sleep(20_000);
+        logger.info("Topic creation - non leader ended short wait");
     }
 
     // Schedule throttler adjustments

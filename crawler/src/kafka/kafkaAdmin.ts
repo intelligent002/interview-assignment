@@ -41,9 +41,11 @@ async function kafkaAdminInit() {
 
     // Create topics
     await kafkaCreateTopic({topic: KAFKA_TOPIC_CITIES, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
-    await kafkaCreateTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: KAFKA_TOPIC_CITIES_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_CITIES_DLQ, numPartitions: 1}); // memory constraints
     await kafkaCreateTopic({topic: KAFKA_TOPIC_STREETS, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
-    await kafkaCreateTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: KAFKA_TOPIC_STREETS_PARTITIONS});
+    await kafkaCreateTopic({topic: KAFKA_TOPIC_STREETS_DLQ, numPartitions: 1}); // memory constraints
+
+    return true;
 }
 
 // Function that creates a topic
