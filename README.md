@@ -34,25 +34,31 @@
 ## Infrastructure
 
 ### Redis Standalone Container
-- A standalone Redis container has been included in the infrastructure and serves multiple purposes:
-	* Stores global counters for the rate limiter feature, ensuring continuity during leader transitions.
-	* Manages leader election processes.
-	* Facilitates broadcasting rate update messages to `worker` instances.
+A standalone Redis container has been included in the infrastructure and serves multiple purposes:
+
+- Stores global counters for the rate limiter feature, ensuring continuity during leader transitions.
+- Manages leader election processes.
+- Facilitates broadcasting rate update messages to `worker` instances.
 
 ### Prometheus
-- A pre-configured Prometheus was implemented, that automatically collect metrics from all `worker` replicas, enabling effective monitoring and observability.
+A pre-configured Prometheus was implemented.
+
+- Automatically collect metrics from all `worker` replicas
+- Enabling effective monitoring and observability.
 
 available on http://localhost:9091
 
 ![prometheus with dns based targets](docs/prometheus.png)
 
 ### Grafana
-- A pre-configured Grafana dashboard has been implemented, featuring three primary visualizations:
-	1. City request metrics, including counts for successful, rate-limited, and error responses.
-	2. Street request metrics, showing counts for successful, rate-limited, and error responses.
-	3. The current rate limit level, providing insight into system adjustments and performance.
+A pre-configured Grafana dashboard has been implemented, featuring three primary visualizations:
 
-available on http://localhost:3000 
+- City request metrics, including counts for successful, rate-limited, and error responses.
+- Street request metrics, showing counts for successful, rate-limited, and error responses.
+- The current rate limit level, providing insight into system adjustments and performance.
+
+available on http://localhost:3000
+- **credentials:** admin / very-secret (configurable via `.env`)
 
 ![grafana with built in dashboard](docs/grafana.png)
 
