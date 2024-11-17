@@ -118,6 +118,10 @@ PS D:\www\interview-assignment>
 - The leader evaluates rate limit adjustments and communicates these changes via Redis Pub/Sub.
 - If the leader fails or shuts down, another `worker` is elected to maintain system stability.
 
+*Verifying that topics are created with the intended number of partitions is crucial. By default, Kafka creates a topic with a single partition when a consumer connects, which would result in only one worker actively querying the external API.*
+
+![intended kafka topics](docs/kafka.png)
+
 ## Technologies and Tools Used
 
 ### Programming Languages and Frameworks
