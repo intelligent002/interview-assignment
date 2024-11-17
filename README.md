@@ -25,6 +25,12 @@
 - To handle the data.gov.il clock drift (approximately 5 seconds), the service issues a reflection of statistics on the 10th second, which is statically configured through the `.env` file. This mechanism helps prevent unnecessary lowering of the rate limit.
 - The rate adjustment feature uses exponential rate limit modification based on observed trends and multiplication factors, all of which are configurable via the `.env` file.
 
+*Because linear rate limit modifications take too long to reach the desired state, exponential adjustments have been implemented, although this method may also have its own limitations.*
+
+![city request being rate limited](docs/rate.limit.modifications.exponential.png)
+
+*As a potential side project, an optional adjustment strategy has been formulated: continuously increase the rate until rate limits are encountered, at which point decrement by the number of rate-limited responses. This approach would require comparing the time taken by successful responses to the time taken by rate-limited ones. To achieve this, all response times would need to be measured and an appropriate ratio calculated to adjust the decrement amount. Due to the complexity and time required for implementation, this feature is considered out of scope.*
+
 ## Architecture and Data Flow
 
 ### Microservices Architecture
