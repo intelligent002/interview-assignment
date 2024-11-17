@@ -1,7 +1,7 @@
 # Services Overview
 
 ## 1. `cli` Service
-**Purpose**: The `cli` service is a Dockerized command-line interface that allows users to input a city name. It then pushes the requested city into a dedicated Kafka topic (`cities`), enabling the worker services to process the data asynchronously.
+**Purpose**: The `cli` service is a Dockerized command-line interface that allows users to input a city name. It then pushes the requested city into a dedicated Kafka topic (`cities`), enabling the `worker` services to process the data asynchronously.
 
 **Functionality**:
 - Accepts user input for city names.
@@ -14,14 +14,14 @@
 **Purpose**: The `worker` service listens to Kafka topics (`cities` and `streets`), processes messages, interacts with external APIs, and stores data in MongoDB. It also handles dynamic rate limiting, leader election, and inter-service communication.
 
 **Functionality**:
-- Consumes messages from Kafka topics (`cities`, `streets`).
+- Consumes messages from Kafka topics (`topic-cities`, `topic-streets`).
 - Acts according to the origin topic:
-	- If from `cities`, requests street IDs from an external API.
-	- If from `streets`, requests detailed street data.
+  - If from `cities`, requests street IDs from an external API.
+  - If from `streets`, requests detailed street data.
 - Implements dynamic throttling to comply with the external API's rate limits.
 - Stores successful data responses in MongoDB.
 - Implements retry mechanisms and dead-letter queues for failed messages.
-- Participates in leader election using Redis to coordinate rate limit adjustments.
+- Participates in leader election using Redis to coordinate rate limit adjustments (during init also creates topics).
 - To handle the data.gov.il clock drift (approximately 5 seconds), the service issues a reflection of statistics on the 10th second, which is statically configured through the `.env` file. This mechanism helps prevent unnecessary lowering of the rate limit.
 - The rate adjustment feature uses exponential rate limit modification based on observed trends and multiplication factors, all of which are configurable via the `.env` file.
 
@@ -126,12 +126,12 @@ PS D:\www\interview-assignment>
 ## Leader Election and Coordination
 **Implementation**:
 - Leader election is managed through Redis, where one `worker` instance assumes the role of leader.
-- The leader is responsible for creating Kafka topics and setting the partitions to 30, aligning with the maximum estimated number of worker replicas for the POC.
+- The leader is responsible for creating Kafka topics and setting the partitions to 30, aligning with the maximum estimated number of `worker` replicas for the POC.
 - Non-leader instances wait during this step for a period defined by `KAFKA_TOPIC_CREATION_WAIT_SECONDS`, which is configurable via the `.env` file.
 - The leader evaluates rate limit adjustments and communicates these changes via Redis Pub/Sub.
 - If the leader fails or shuts down, another `worker` is elected to maintain system stability.
 
-*Verifying that topics are created with the intended number of partitions is crucial. By default, Kafka creates a topic with a single partition when a consumer connects, which would result in only one worker actively querying the external API.*
+*Verifying that topics are created with the intended number of partitions is crucial. By default, Kafka creates a topic with a single partition when a consumer connects, which would result in only one `worker` actively querying the external API.*
 
 ![intended kafka topics](docs/kafka.png)
 
@@ -147,7 +147,7 @@ PS D:\www\interview-assignment>
 - **mongodb**: The MongoDB driver for Node.js, providing a connection to the data store.
 - **prom-client**: A library for collecting and exposing metrics to Prometheus.
 - **winston**: A robust logging library configured for JSON output to ensure consistent and structured logs.
-- **bottleneck**: Initially used for rate limiting but was later replaced due to its limitations in handling the project's requirements.
+- **bottleneck**: Initially used as redis based system wide for rate limiting but was later limited to single worker instance as it cannot work with authentication and limiting by memory based instance is less resource hungry.
 - **didyoumean2**: A package used in the `cli` service for correcting user-input city names to enhance user experience and prevent incorrect API responses.
 
 ### Infrastructure Services
@@ -182,7 +182,7 @@ to include necessary configurations, healthcheck and dependencies.
 - Implemented a custom distributed rate limiter using Redis to coordinate between `worker` instances.
 - The leader collects request statistics and adjusts the rate limit every 60 seconds.
 - Workers adjust their throttling based on the leader's instructions, preventing overloading of the API.
-- To handle clock drift, the `worker` service issues a reflection of statistics on the 10th minute, configurable via the `.env` file.
+- To handle clock drift, the `worker` service issues a reflection of statistics on the 10th second, configurable via the `.env` file.
 
 ### 2. Leader Election and Coordination
 **Implementation**:
@@ -204,13 +204,13 @@ to include necessary configurations, healthcheck and dependencies.
 **Solution**:
 
 - Implemented a graceful shutdown mechanism with a Promise-based approach.
-- Handled asynchronous disconnection tasks with timeouts.
+- Handled synchronous cascade style disconnection tasks with global timeout.
 
 ### 5. Logging with Winston and KafkaJS Integration
 **Implementation**:
 
 - Configured Winston for JSON log output.
-- Integrated KafkaJS logging with Winston for uniform log formatting.
+- Integrated KafkaJS logging with Winston for uniform log levels and formatting.
 
 ### 6. Metrics and Monitoring
 **Implementation**:
@@ -241,7 +241,8 @@ to include necessary configurations, healthcheck and dependencies.
 ### 1. Rate Limiting Complexity
 **Issue**:
 
-- Existing rate limiting libraries were inadequate for a distributed setup.
+- Reviewed rate limiting libraries were inadequate for a distributed setup.
+- I do believe there are a good ones in the wild ... Just did not found them the other day.
 
 **Solution**:
 
@@ -256,14 +257,14 @@ to include necessary configurations, healthcheck and dependencies.
 
 - Created a custom log function and resolved type errors with explicit annotations.
 
-### 3. Graceful Shutdown with Timeout
+### 3. Graceful Shutdown with Global Timeout
 **Issue**:
 
 - Ensuring sequential shutdowns within a set time limit.
 
 **Solution**:
 
-- Implemented sequential disconnection tasks with bounded timeouts.
+- Implemented sequential disconnection tasks with bounded timeout.
 
 ### 4. Handling External API Limitations
 **Issue**:
@@ -288,7 +289,7 @@ to include necessary configurations, healthcheck and dependencies.
 ### Customizations
 **Grafana and Prometheus**:
 
-- Custom images with pre-configured dashboards and configuration.
+- Custom images with pre-configured dashboards, healthcheck and configuration.
 
 **Redis Security**:
  
@@ -314,9 +315,9 @@ to include necessary configurations, healthcheck and dependencies.
 ## Testing and Validation
 **Testing**:
 
-- Unit tests have been created, covering only two files related to leadership and Redis connectivity.
+- Unit tests have been created, covering two files related to leadership and Redis connectivity.
 - These tests achieve 100% line and branch coverage, representing a thorough approach to testing and reflecting the entire code.
-- While this level of coverage may be considered excessive, it demonstrates a commitment to comprehensive testing.
+- While this level of coverage considered excessive, it demonstrates a commitment to comprehensive testing.
 - It is noted that testing could potentially be limited to the final outcomes of each method for a more streamlined approach.
 - Validation of user input implemented, incorrect city names will be autocorrected.
 
