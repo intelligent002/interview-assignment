@@ -159,9 +159,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - prometheus
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=very-secret
-      - GF_USERS_DEFAULT_THEME=light
+    env_file:
+      - .env
     healthcheck:
       # Test availability of Grafana service, listening & actually serving
       interval: 60s

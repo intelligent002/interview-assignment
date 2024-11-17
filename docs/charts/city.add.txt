@@ -1,0 +1,20 @@
+@startuml
+!include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/bluegray/puml-theme-bluegray.puml
+participant PS_Script as "PowerShell Script (ps2)"
+participant CLI_Service as "CLI Service"
+participant didyoumean2 as "didyoumean2 npm package"
+participant City_List as "List of Cities (Array)"
+participant Kafka as "Kafka `topic-cities`"
+
+loop For each city as argument
+    PS_Script -> CLI_Service: Calls the container with city name
+    CLI_Service -> didyoumean2: Calls for city name correction
+    didyoumean2 -> City_List: Checks city against list
+alt success
+    CLI_Service -> Kafka: Pushes corrected city name
+else Malformed city name
+    note right of CLI_Service
+      Bad cities ignored
+    end note
+end
+@enduml
