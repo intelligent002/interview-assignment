@@ -77,6 +77,7 @@ available on http://localhost:3000
 ### Data Flow
 **City Request**:
 1. The `cli` service publishes a city name to the `cities` Kafka topic.
+![city push](https://cdn-0.plantuml.com/plantuml/png/PLB1Zk8m3BttAxoSs0DKuiXXnOhJQZcWwGSWDp5Dr3I9udGGy_NZ5X21kTdEUy_lMTbnnfJ7mLM_h5Tkr0GcvyZRkavuMNSscx4TcP8AFfFFQnM6kcLbBfY-wYZ4LJOq4DS3SgPKtxlMZTGbl1QGrMEsdcPLbBrMsOW-mx4vDIhPc04P5iTmeTGOSWxkqsNapU_52sL_-7TgA7rQHJD9UhZthq1jzJMC0w7VpC2ozt60YAh7ZjxKRRwU3fPlXkOYdAUf9ORbtoGftlpyntEFC_fMBJz8ouD6mLNFVAi_fVCjxD4vXcm8fWEZzPGWU4KGfL3Y0ZmEL1KSaIWpFIJEeS2BM4gaiWs-Ah12VIOJeY7Lyus5dUoMb4vUocq_33UzZGmjQb3pDTx1S_ej74Ssn0yVf8iiE_9w-W3V)
 2. `worker` services consume messages from the `cities` topic.
 3. Upon receiving a city name, a `worker` requests the list of street IDs from the external API.
 4. Street IDs are published to the `streets` Kafka topic.
