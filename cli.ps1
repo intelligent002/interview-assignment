@@ -1,13 +1,13 @@
 # Define the help message
 $helpMessage = @"
 
-Usage: cli.ps1 --cities "city1","city2",... [--help]
---cities: Specify one or more city names, each enclosed in quotes and separated by commas.
+Usage: cli.ps1 --cities "city1" "city2",... [--help]
+--cities: Specify one or more city names, each enclosed in quotes and separated by space.
 --help: Show this help message.
 
 Examples:
 ./cli.ps1 --cities "Tel-Aviv"
-./cli.ps1 --cities "Tel-Aviv","Ashdod","Jerusalem"
+./cli.ps1 --cities "Tel-Aviv" "Ashdod" "Jerusalem"
 ./cli.ps1 --help
 
 "@
@@ -19,17 +19,19 @@ function Show-Help
     exit 0
 }
 
-# Check if no arguments are provided
+# nothing passed in - show help
 if ($args.Length -eq 0)
 {
     Show-Help
 }
 
+# no --cities argument - show help
 if ($args[0] -ne '--cities')
 {
     Show-Help
 }
 
+# only --cities argument without actual cities - show help
 if ($args.Length -lt 2)
 {
     Show-Help
