@@ -1,7 +1,10 @@
 import didYouMean from 'didyoumean2';
-import {cities, city} from 'data-gov-il-client';
+import {cities, city, ErrorEmptyResponse} from 'data-gov-il-client';
 import {kafkaProduce, kafkaProducerConnect, kafkaProducerDisconnect} from './kafka/kafkaProducer';
 import {KAFKA_TOPIC_CITIES} from './config';
+import logger from "./logger";
+import {NoCloseMatchCity} from "./errors/NoCloseMatchCity";
+import {registerRateLimitSuccess} from "./throttler/rateAdjust";
 
 const main = async () => {
     try {
@@ -24,7 +27,7 @@ const main = async () => {
             console.log(`Auto corrected the city name: [${closestMatch}]`);
             cityName = <city>closestMatch; // Assign the closest match to cityName
         } else {
-            throw new Error('No close match found for the provided city name.');
+            throw new NoCloseMatchCity('No close match found for the provided city name.');
         }
 
         // Connect the Kafka producer
@@ -33,10 +36,18 @@ const main = async () => {
         // Produce the city into the cities topic, to guarantee processing
         await kafkaProduce({topic: KAFKA_TOPIC_CITIES, messages: [cityName]});
     } catch (error) {
-        console.error('Error:', error);
+        if (error instanceof NoCloseMatchCity) {
+            console.log(error.message);
+        } else {
+            logger.error('Error processing city:', error);
+        }
     } finally {
         await kafkaProducerDisconnect();
     }
 };
 
-main();
+main()
+    .then(() => logger.info("City dispatched"))
+    .catch(async (error) => {
+        logger.error('Error:', error);
+    });
