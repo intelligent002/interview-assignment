@@ -2,7 +2,7 @@
   "name": "data-gov-il-client",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "1.0.42",
+  "version": "1.0.45",
   "description": "A client that talks to data-gov-il about streets",
   "scripts": {
     "build": "tsc && npx copyfiles -f src/index.d.ts dist/",
