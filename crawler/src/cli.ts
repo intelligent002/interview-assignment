@@ -22,20 +22,30 @@ const main = async () => {
         // Find the closest match using didyoumean2
         const closestMatch = didYouMean(cityName, cityList);
 
-        if (closestMatch) {
-            let message = `Auto corrected the city name: [${closestMatch}] from [${cityName}]`;
-            // for user
-            console.log(message)
-            // for dev
-            logger.debug(message)
-            // for kafka
-            cityName = <city>closestMatch;
-        } else {
-            let message = 'No close match found for the provided city name.';
-            // for kafka
-            throw new NoCloseMatchCity(message);
+        switch (true) {
+            // nothing to correct, all was good
+            case (closestMatch == cityName) : {
+                // so don't do anything
+                break;
+            }
+            // failed to correct, all is bad
+            case (closestMatch === null) : {
+                let message = 'No close match found for the provided city name.';
+                // for kafka
+                throw new NoCloseMatchCity(message);
+            }
+            // autocorrection helped out
+            default : {
+                let message = `Auto corrected the city name: [${closestMatch}] from [${cityName}]`;
+                // for user
+                console.log(message)
+                // for dev
+                logger.debug(message)
+                // for kafka
+                cityName = <city>closestMatch;
+            }
         }
-
+      
         // Connect the Kafka producer
         await kafkaProducerConnect();
 
