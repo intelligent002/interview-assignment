@@ -24,8 +24,6 @@ const main = async () => {
 
         if (closestMatch) {
             let message = `Auto corrected the city name: [${closestMatch}] from [${cityName}]`;
-            // for user
-            console.log(message)
             // for dev
             logger.debug(message)
             // for kafka
@@ -49,7 +47,7 @@ const main = async () => {
     } catch (error) {
         if (error instanceof NoCloseMatchCity) {
             // for user
-            console.error(error.message);
+            console.warn(error.message);
         } else {
             // for dev
             logger.error('Error processing city:', error);
