@@ -24,15 +24,15 @@ const main = async () => {
 
         if (closestMatch) {
             let message = `Auto corrected the city name: [${closestMatch}] from [${cityName}]`;
+            // for user
+            console.log(message)
             // for dev
             logger.debug(message)
             // for kafka
             cityName = <city>closestMatch;
         } else {
             let message = 'No close match found for the provided city name.';
-            // for dev
-            console.log(message)
-            // for user
+            // for kafka
             throw new NoCloseMatchCity(message);
         }
 
