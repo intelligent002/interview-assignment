@@ -1,10 +1,9 @@
 import didYouMean from 'didyoumean2';
-import {cities, city, ErrorEmptyResponse} from 'data-gov-il-client';
+import {cities, city} from 'data-gov-il-client';
 import {kafkaProduce, kafkaProducerConnect, kafkaProducerDisconnect} from './kafka/kafkaProducer';
 import {KAFKA_TOPIC_CITIES} from './config';
 import logger from "./logger";
 import {NoCloseMatchCity} from "./errors/NoCloseMatchCity";
-import {registerRateLimitSuccess} from "./throttler/rateAdjust";
 
 const main = async () => {
     try {
@@ -24,10 +23,19 @@ const main = async () => {
         const closestMatch = didYouMean(cityName, cityList);
 
         if (closestMatch) {
-            console.log(`Auto corrected the city name: [${closestMatch}]`);
-            cityName = <city>closestMatch; // Assign the closest match to cityName
+            let message = `Auto corrected the city name: [${closestMatch}] from [${cityName}]`;
+            // for user
+            console.log(message)
+            // for dev
+            logger.debug(message)
+            // for kafka
+            cityName = <city>closestMatch;
         } else {
-            throw new NoCloseMatchCity('No close match found for the provided city name.');
+            let message = 'No close match found for the provided city name.';
+            // for dev
+            console.log(message)
+            // for user
+            throw new NoCloseMatchCity(message);
         }
 
         // Connect the Kafka producer
@@ -35,10 +43,15 @@ const main = async () => {
 
         // Produce the city into the cities topic, to guarantee processing
         await kafkaProduce({topic: KAFKA_TOPIC_CITIES, messages: [cityName]});
+
+        // log the success
+        logger.info(`Submitted city: [${cityName}] into kafka`)
     } catch (error) {
         if (error instanceof NoCloseMatchCity) {
-            console.log(error.message);
+            // for user
+            console.error(error.message);
         } else {
+            // for dev
             logger.error('Error processing city:', error);
         }
     } finally {
