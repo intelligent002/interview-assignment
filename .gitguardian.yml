@@ -1,0 +1,2 @@
+ignore-paths:
+  - packages/data-gov-il-client/.npmrc
