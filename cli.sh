@@ -1,25 +1,22 @@
 #!/bin/bash
 
-# Define the help message
-helpMessage="
-Usage: cli.sh --cities \"city1\",\"city2\",... [--help]
---cities: Specify one or more city names, each enclosed in quotes and separated by commas.
+# Function to display the help message and exit
+show_help() {
+    echo "
+Usage: cli.sh --cities \"city1\" \"city2\" ... [--help]
+--cities: Specify one or more city names, each enclosed in quotes and separated by space.
 --help: Show this help message.
 
 Examples:
 ./cli.sh --cities \"Tel-Aviv\"
-./cli.sh --cities \"Tel-Aviv\",\"Ashdod\",\"Jerusalem\"
+./cli.sh --cities \"Tel-Aviv\" \"Ashdod\" \"Jerusalem\"
 ./cli.sh --help
 "
-
-# Function to display help and exit
-function show_help {
-    echo "$helpMessage"
     exit 0
 }
 
-# nothing passed in - show help
-if [ "$#" -eq 0 ]; then
+# Check if no arguments are passed
+if [ $# -eq 0 ]; then
     show_help
 fi
 
@@ -29,13 +26,14 @@ if [ "$1" != "--cities" ]; then
 fi
 
 # only --cities argument without actual cities - show help
-if [ "$#" -lt 2 ]; then
+if [ $# -lt 2 ]; then
     show_help
 fi
 
-# Collect city names, ignoring empty strings
+# Collect city names, ignoring empty or too-short strings
 cities=()
-for city in $(echo "$2" | tr ',' '\n'); do
+shift  # Shift to skip the '--cities' argument
+for city in "$@"; do
     city=$(echo "$city" | xargs)  # Trim leading/trailing spaces
 
     # Skip city if too short or empty
@@ -43,7 +41,7 @@ for city in $(echo "$2" | tr ',' '\n'); do
         continue
     fi
 
-    # Seems kosher
+    # Add kosher city to the list
     cities+=("$city")
 done
 

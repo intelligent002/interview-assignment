@@ -1,13 +1,13 @@
 # Define the help message
 $helpMessage = @"
 
-Usage: cli.ps1 --cities "city1","city2",... [--help]
---cities: Specify one or more city names, each enclosed in quotes and separated by commas.
+Usage: cli.ps1 --cities "city1" "city2",... [--help]
+--cities: Specify one or more city names, each enclosed in quotes and separated by space.
 --help: Show this help message.
 
 Examples:
 ./cli.ps1 --cities "Tel-Aviv"
-./cli.ps1 --cities "Tel-Aviv","Ashdod","Jerusalem"
+./cli.ps1 --cities "Tel-Aviv" "Ashdod" "Jerusalem"
 ./cli.ps1 --help
 
 "@

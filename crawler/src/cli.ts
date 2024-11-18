@@ -45,7 +45,7 @@ const main = async () => {
                 cityName = <city>closestMatch;
             }
         }
-      
+
         // Connect the Kafka producer
         await kafkaProducerConnect();
 
