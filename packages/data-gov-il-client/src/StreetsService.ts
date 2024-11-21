@@ -23,9 +23,18 @@ interface ApiStreet {
 export class StreetsService {
     private static _axios: Axios;
     private static get axios() {
-        if (!this._axios) {
-            this._axios = axios.create({});
+        // Singleton Axios Agent
+        if (this._axios) {
+            return this._axios
         }
+
+        // Configure Axios instance with the agent
+        this._axios = axios.create({
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
         return this._axios;
     }
 
