@@ -177,7 +177,7 @@ describe('redisLeadership Class', () => {
         const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
         // Mock `scheduleRenewal` to set `renewInterval`
-        leader['renewInterval'] = setInterval(jest.fn(), 1000);
+        leader['renewInterval'] = setInterval(jest.fn(), 1000) as unknown as NodeJS.Timeout;
 
         // Mock `redisClient.set` to resolve successfully
         redisClientMock.set = jest.fn().mockResolvedValue('OK');
@@ -185,6 +185,7 @@ describe('redisLeadership Class', () => {
         // issue test function
         await leader.relinquishLeadership();
 
+        // validate stuff
         expect(leader.isLeader).toHaveBeenCalled();
         expect(redisClientMock.del).toHaveBeenCalledWith('test-responsibility');
         expect(clearIntervalSpy).toHaveBeenCalled();
