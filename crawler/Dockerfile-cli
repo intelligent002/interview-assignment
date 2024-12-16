@@ -1,13 +1,14 @@
 # Stage 1: Install dependencies
-FROM node:20.18.1-alpine3.20 AS dependencies
+FROM node:20.18.1 AS dependencies
 
 # Add some coziness
-RUN apk update && apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     jq \
     nano \
     wget \
-    && rm -rf /var/cache/apk/* /tmp/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/*
 
 # Set working directory in the container
 WORKDIR /app

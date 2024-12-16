@@ -69,7 +69,7 @@ async function kafkaCreateTopic(
         const topicConfig = {
             topic,                  // The name of the topic
             numPartitions,          // The number of partitions
-            replicationFactor: 1,   // The replication factor (ensure the cluster has enough brokers)
+            replicationFactor: 3,   // The replication factor (ensure the cluster has enough brokers)
         };
 
         const result = await admin.createTopics({

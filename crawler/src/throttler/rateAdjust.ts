@@ -61,7 +61,7 @@ async function autoAdjustThrottler(
         // proceed only if there are some stats that are above the current limit,
         // otherwise we will continuously increment the rate during idle mode
         if (successCount + failureCount < currentLimit) {
-            logger.warning("no jobs in queue or network throughput is low, will not modify rate.")
+            logger.warn("no jobs in queue or network throughput is low, will not modify rate.")
             return;
         }
 
@@ -83,12 +83,12 @@ async function autoAdjustThrottler(
         // Cap minimum
         if (adjustedRate < RATE_LIMIT_GLOBAL_MIN) {
             adjustedRate = RATE_LIMIT_GLOBAL_MIN;
-            logger.warn('The calculated rate limit is at minimum, seems like the minimum need to be lowered')
+            logger.info('The calculated rate limit is at minimum, seems like the minimum need to be lowered')
         }
         // Cap maximum
         if (adjustedRate > RATE_LIMIT_GLOBAL_MAX) {
             adjustedRate = RATE_LIMIT_GLOBAL_MAX;
-            logger.warn('The calculated rate limit is at maximum, seems like the maximum can to be enlarged')
+            logger.info('The calculated rate limit is at maximum, seems like the maximum can to be enlarged')
         }
         // Persist data
         await redisClient.set(RATE_LIMIT_REDIS_LIMIT, adjustedRate);

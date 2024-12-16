@@ -32,9 +32,10 @@ const kafkaLogLevels: { [key: string]: logLevel } = {
     debug: logLevel.DEBUG,
 };
 
+const kafkaBrokers = KAFKA_BROKER.split(',');
 export const kafka = new Kafka({
     clientId: KAFKA_APP,
-    brokers: [KAFKA_BROKER],
+    brokers: kafkaBrokers,
     logLevel: kafkaLogLevels[LOG_LEVEL] || logLevel.INFO,
     logCreator: customLogCreator,
 });
