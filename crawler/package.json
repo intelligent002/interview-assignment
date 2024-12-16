@@ -24,7 +24,7 @@
     "bottleneck": "^2.19.5",
     "data-gov-il-client": "^1.0.54",
     "didyoumean2": "^7.0.4",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "ioredis": "^5.4.1",
     "kafkajs": "^2.2.4",
     "mongodb": "^6.11.0",
