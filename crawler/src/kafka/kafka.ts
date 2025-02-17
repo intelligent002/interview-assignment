@@ -33,6 +33,10 @@ const kafkaLogLevels: { [key: string]: logLevel } = {
     debug: logLevel.DEBUG,
 };
 
+console.log('ca:',KAFKA_SSL_CA);
+console.log('cert:',KAFKA_SSL_USER_CERT);
+console.log('key:',KAFKA_SSL_USER_KEY);
+
 const kafkaBrokers = KAFKA_BROKER.split(',');
 export const kafka = new Kafka({
     clientId: KAFKA_APP,
