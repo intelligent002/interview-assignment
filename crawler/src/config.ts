@@ -1,6 +1,9 @@
 export const DATA_GOV_IL_DRIFT = parseInt(process.env.DATA_GOV_IL_DRIFT as string) || 2;
 export const KAFKA_APP = process.env.KAFKA_APP || 'streets-demo-app';
 export const KAFKA_BROKER = process.env.KAFKA_BROKER || 'localhost:9092';
+export const KAFKA_SSL_CA = process.env.KAFKA_SSL_CA || '';
+export const KAFKA_SSL_USER_CERT = process.env.KAFKA_SSL_USER_CERT || '';
+export const KAFKA_SSL_USER_KEY = process.env.KAFKA_SSL_USER_KEY || '';
 export const KAFKA_CONSUMER_GROUP = process.env.KAFKA_CONSUMER_GROUP || 'consumer-streets';
 export const KAFKA_TOPIC_CITIES = process.env.KAFKA_TOPIC_CITIES || 'topic-cities';
 export const KAFKA_TOPIC_CITIES_DLQ = process.env.KAFKA_TOPIC_CITIES_DLQ || 'topic-cities-dlq';

@@ -1,6 +1,7 @@
 import {Kafka, LogEntry, logLevel} from "kafkajs";
-import {KAFKA_APP, KAFKA_BROKER, LOG_LEVEL} from "../config";
+import {KAFKA_APP, KAFKA_BROKER, KAFKA_SSL_CA, KAFKA_SSL_USER_CERT, KAFKA_SSL_USER_KEY, LOG_LEVEL} from "../config";
 import logger from "../logger";
+import * as fs from "node:fs";
 
 const customLogCreator = () => {
     const logLevels: { [key in logLevel]: string } = {
@@ -38,4 +39,10 @@ export const kafka = new Kafka({
     brokers: kafkaBrokers,
     logLevel: kafkaLogLevels[LOG_LEVEL] || logLevel.INFO,
     logCreator: customLogCreator,
+    ssl: {
+        ca: [fs.readFileSync(KAFKA_SSL_CA, 'utf-8')],
+        cert: fs.readFileSync(KAFKA_SSL_USER_CERT, 'utf-8'),
+        key: fs.readFileSync(KAFKA_SSL_USER_KEY, 'utf-8'),
+        rejectUnauthorized: true,
+    },
 });
