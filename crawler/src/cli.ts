@@ -47,9 +47,12 @@ const main = async () => {
         }
 
         // Connect the Kafka producer
+        console.log('about to connect producer');
         await kafkaProducerConnect();
 
+
         // Produce the city into the cities topic, to guarantee processing
+        console.log('about to produce');
         await kafkaProduce({topic: KAFKA_TOPIC_CITIES, messages: [cityName]});
 
         // log the success
