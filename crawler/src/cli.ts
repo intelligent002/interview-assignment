@@ -54,6 +54,7 @@ const main = async () => {
         // Produce the city into the cities topic, to guarantee processing
         console.log('about to produce');
         await kafkaProduce({topic: KAFKA_TOPIC_CITIES, messages: [cityName]});
+        console.log('produced');
 
         // log the success
         logger.info(`Submitted city: [${cityName}] into kafka`)
