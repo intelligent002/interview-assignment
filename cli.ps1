@@ -1,3 +1,5 @@
+#!/usr/bin/pwsh
+
 # Define the help message
 $helpMessage = @"
 
@@ -72,6 +74,6 @@ foreach ($city in $cities)
             --env-file=.env-cluster `
             --env KAFKAJS_NO_PARTITIONER_WARNING=1 `
             --network interview-assignment_default `
-            -v .\certs:/certs `
+            -v ./certs:/certs `
             interview-assignment-cli:latest $city
 }

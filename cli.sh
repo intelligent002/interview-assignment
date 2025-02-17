@@ -55,8 +55,9 @@ for city in "${cities[@]}"; do
     echo "Processing city: $city"
     docker run --rm \
         --env LOG_LEVEL="error" \
-        --env KAFKA_BROKER="kafka-node-4.intel.r7g.org:9092" \
+        --env-file=".env-cluster" \
         --env KAFKAJS_NO_PARTITIONER_WARNING=1 \
         --network interview-assignment_default \
+        -v ./certs:/certs \
         interview-assignment-cli:latest "$city"
 done
