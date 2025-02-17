@@ -37,12 +37,13 @@ const kafkaBrokers = KAFKA_BROKER.split(',');
 export const kafka = new Kafka({
     clientId: KAFKA_APP,
     brokers: kafkaBrokers,
-    logLevel: kafkaLogLevels[LOG_LEVEL] || logLevel.INFO,
+    // logLevel: kafkaLogLevels[LOG_LEVEL] || logLevel.INFO,
+    logLevel: logLevel.DEBUG,
     logCreator: customLogCreator,
     ssl: {
         ca: [fs.readFileSync(KAFKA_SSL_CA, 'utf-8')],
         cert: fs.readFileSync(KAFKA_SSL_USER_CERT, 'utf-8'),
         key: fs.readFileSync(KAFKA_SSL_USER_KEY, 'utf-8'),
-        rejectUnauthorized: true,
+        rejectUnauthorized: false,
     },
 });
