@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/intelligent002/interview-assignment#readme",
   "dependencies": {
-    "axios": "^0.28.0",
+    "axios": "^0.30.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
