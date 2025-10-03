@@ -22,7 +22,7 @@
   "homepage": "https://github.com/dataloop-ai/data-managment-interview#readme",
   "dependencies": {
     "bottleneck": "^2.19.5",
-    "data-gov-il-client": "^1.0.54",
+    "data-gov-il-client": "^1.0.49",
     "didyoumean2": "^7.0.4",
     "express": "^5.1.0",
     "ioredis": "^5.4.1",
